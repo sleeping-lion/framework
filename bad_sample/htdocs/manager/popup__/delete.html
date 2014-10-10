@@ -1,0 +1,71 @@
+<?
+	# 패스 및 클래스
+	include $cf_Root_Path."Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	// 입력값에 대한 타당성 검사를 수행한다.
+	if(!$cf_cook_id && (!$fr_passwd || strlen($fr_passwd) < 4))
+	{
+		error_msg("패스워드는 4자 이상 입력하세요.!", "back");
+		exit;
+	}
+
+	// 삭제 후 메일발송을 위해 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 비공개글인경우
+	if($my_public_yn == "N" && $cf_top_level_yn != "Y" && (!$cf_cook_id || $cf_cook_id != $my_input_id))
+	{
+		error_msg("비공개글입니다.\\n\\n삭제할 수 있는 권한이 없습니다.", "back");
+		exit;
+	}
+
+	// 로그인한경우 (최고관리자가 아니고 내글이 아닌경우)
+	if($cf_top_level_yn != "Y" && $cf_cook_id && $cf_cook_id != $my_input_id)
+	{
+		error_msg("삭제하실 수 없습니다.", "back");
+		exit;
+	}
+
+	
+
+	# -------------------------------------------------------------- #
+	#	삭제 작업 시작
+	#	- 하위게시물이 있는경우 하위게시물의 모든 정보까지 삭제한다.
+	#	- 코멘트, 화일, 레코드
+	# -------------------------------------------------------------- #
+	
+########################################################################
+		// 1.첨부화일 삭제
+		$tm_file_path_physical = $cf_savedir_physical . "/" . $my_popup_img;
+		if(is_file($tm_file_path_physical) && !Delete_File($tm_file_path_physical))
+		{
+			error_msg("첨부화일을 삭제하는데 실패했습니다.", "back");
+			exit;
+		}
+		
+########################################################################
+	
+		
+		// 레코드 삭제
+		$query = "DELETE FROM $cf_table_col_nm WHERE NO = '" . $my_no . "'";
+	
+		$DB->Delete_Query($query);
+		
+	
+
+	
+	// 삭제 후 list 페이지로 이동
+	error_msg("", "list.html?$po_adv_query&page=$page");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

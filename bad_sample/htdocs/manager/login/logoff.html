@@ -1,0 +1,22 @@
+<?php
+	# 변수관련
+	include $_SERVER['DOCUMENT_ROOT']."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# 함수관련
+	include_once "user_function.inc";
+
+	// ------------------------------------------------------------ //
+	//	쿠키해제 시작
+	// ------------------------------------------------------------ //
+	
+	unset($_SESSION['USER_ID']);
+  unset($_SESSION['USER_NAME']);
+	unset($_SESSION['USER_LEVEL']);
+	// ------------------------------------------------------------ //
+	//	쿠키해제 끝
+	// ------------------------------------------------------------ //
+error_msg("","/");
+//	error_msg("","/manager");
+
+?>

@@ -1,0 +1,62 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	include "t.inc";
+
+	# ------------------------------------------------------- #
+	#	권한체크
+	# ------------------------------------------------------- #
+	
+	// 로그인한경우 (최고관리자가 아니고 내글이 아닌경우)
+	if($cf_top_level_yn != "Y" && $cf_cook_id && $cf_cook_id != $my_input_id)
+	{
+		error_msg("수정하실 수 없습니다.", "back");
+		exit;
+	}
+
+	
+	# ------------------------------------------------------- #
+	#	입력값 정리 시작
+	# ------------------------------------------------------- #
+	// 제목과 본문의 문자열에 포함된 특수문자를 escape시킨다.
+
+	# -------------------------------------------------------------- #
+	#	Update Query
+	# -------------------------------------------------------------- #
+	
+	// 자신이 게시물에서만 변경하는 것들 변경
+	$query = "UPDATE " . $cf_table_col_nm . " SET " .
+
+					"SITE_NM = '$fr_site_nm', " .
+					"SITE_TEL = '$fr_site_tel', " .
+					"META_TITLE = '$fr_meta_title', " .
+					"META_KEYWD = '$fr_meta_keywd', " .
+					"META_DESC = '$fr_meta_desc', " .
+					"MAIL_FROM = '$fr_mail_from' " .
+				"WHERE NO = '$po_no'";
+	$DB->Update_Query($query);
+
+    // 프로그램 관리에도 강제로 입력
+	$query = "UPDATE CM_TABLE_T SET " .
+					"META_TITLE = '$fr_meta_title', " .
+					"META_KEYWD = '$fr_meta_keywd', " .
+					"META_DESC = '$fr_meta_desc' ";
+	$DB->Update_Query($query);
+
+	//통계테이블
+
+	error_msg("", "modifyform.html?$po_adv_query&po_no=$po_no");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

@@ -1,0 +1,75 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	$query = "SELECT MAX(NO) FROM $cf_table_col_nm";
+	$arr = $DB->Row($query);
+
+	$my_no = $arr[0] + 1;
+   
+	// 작성자관련정보 설정
+    $signdate = time();
+    $tm_input_id = $cf_cook_id ? $cf_cook_id : "";
+    $tm_input_nm = $cf_cook_nm ? $cf_cook_nm : "";
+    $tm_input_ip = $_SERVER[REMOTE_ADDR];
+    $tm_input_ymdhms = date("YmdHis", $signdate);
+    $tm_sign_id = $tm_input_id;
+    $tm_sign_nm = $tm_input_nm;
+    $tm_sign_ip = $tm_input_ip;
+    $tm_sign_ymdhms = $tm_input_ymdhms;
+	# ------------------------------------------------------- #
+	#	입력값 정리 끝
+	# ------------------------------------------------------- #
+
+	# 여러글 읽기 여부
+	# 입력쿼리
+    $query = "INSERT INTO $cf_table_col_nm (" .
+					"NO, " .
+					"POLL_TYPE, " .
+					"SUBJECT, " .
+					"START_DATE, " .
+					"END_DATE, " .
+					"POLL_CNT, " .
+					"INPUT_ID, " .
+					"INPUT_NM, " .
+					"INPUT_IP, " .
+					"INPUT_YMDHMS, " .
+					"SIGN_ID, " .
+					"SIGN_NM, " .
+					"SIGN_IP, " .
+					"SIGN_YMDHMS" .
+
+				") VALUES (" .
+					"'$my_no', " .
+					"'$fr_poll_type', " .
+					"'$fr_subject', " .
+					"'$fr_start_date', " .
+					"'$fr_end_date', " .
+					"'0', " .
+					"'$tm_input_id', " .
+					"'$tm_input_nm', " .
+					"'$tm_input_ip', " .
+					"'$tm_input_ymdhms', " .
+					"'$tm_sign_id', " .
+					"'$tm_sign_nm', " .
+					"'$tm_sign_ip', " .
+					"'$tm_sign_ymdhms'" .
+				");";
+	//echo $query;
+	//exit;
+	$DB->Insert_Query($query);
+
+	error_msg("", "list.html?$po_basic_query");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

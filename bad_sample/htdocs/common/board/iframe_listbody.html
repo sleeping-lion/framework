@@ -1,0 +1,24 @@
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<link rel='stylesheet' href='/css/gray.css' type='text/css' />
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/javascript.js"></script>
+<script language="javascript" src="t.js"></script>
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	
+	# 게시판 본문
+	include "iframe_listbody.inc";
+?>

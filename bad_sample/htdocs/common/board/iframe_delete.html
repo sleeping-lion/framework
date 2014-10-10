@@ -1,0 +1,148 @@
+<?
+
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	$po_adv_query = $po_adv_query."&shop_no=".$shop_no;
+
+	// 입력값에 대한 타당성 검사를 수행한다.
+	if(!$cf_cook_id && (!$fr_passwd || strlen($fr_passwd) < 4))
+	{
+		error_msg("패스워드는 4자 이상 입력하세요.!", "back");
+		exit;
+	}
+
+	// 삭제 후 메일발송을 위해 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 비공개글인경우
+	if($my_public_yn == "N" && $cf_top_level_yn != "Y" && (!$cf_cook_id || $cf_cook_id != $my_input_id))
+	{
+		error_msg("비공개글입니다.\\n\\n삭제할 수 있는 권한이 없습니다.", "back");
+		exit;
+	}
+
+	// 로그인한경우 (최고관리자가 아니고 내글이 아닌경우)
+	if($cf_top_level_yn != "Y" && $cf_cook_id && $cf_cook_id != $my_input_id)
+	{
+		error_msg("삭제하실 수 없습니다.", "back");
+		exit;
+	}
+
+	// 로그인하지 않은경우 승인패스워드가 없거나 승인패스워드와 입력인패스워드가 틀린경우
+	if(!$cf_cook_id && (!$my_passwd || $my_passwd && $fr_passwd != $my_passwd))
+	{
+		error_msg("비밀번호가 일치하지 않습니다.", "back");
+		exit;
+	}
+
+	// 현재과 같은 부모글을 가지고 답변정렬이 큰놈들중 가장 작은 정렬번호를 찾는다.
+	$query = "SELECT MIN(SORT) FROM $cf_table_col_nm WHERE FID = $my_fid AND SORT > $my_sort AND DEPTH <= $my_depth";
+	$my_next_sort = $DB->Value($query);
+
+	if($my_next_sort != 0 && is_numeric($my_next_sort))
+	{
+	}
+	else
+	{
+		$query = "SELECT MAX(SORT) FROM $cf_table_col_nm WHERE FID = $my_fid";
+		$my_next_sort = $DB->Value($query) + 1;
+	}
+
+	// 답변글이 있으면 삭제할 수 없도록 한다.
+	if($cf_allow_delete_thread_yn == "N")
+	{
+		// 현재글의 SORT와 $my_max_sort 사이의 글이 있으면 답변글이 존재하는것!!
+		$query = "SELECT COUNT(*) FROM $cf_table_col_nm WHERE SORT > $my_sort AND SORT < $my_next_sort";
+		$rep_count = $DB->Value($query);
+
+		if($rep_count >= 1)
+		{
+			include "logoff.inc";
+			error_msg("답변글이 있어서 삭제가 불가능합니다.", "back");
+			exit;
+		}
+	}
+
+	# -------------------------------------------------------------- #
+	#	삭제 작업 시작
+	#	- 하위게시물이 있는경우 하위게시물의 모든 정보까지 삭제한다.
+	#	- 코멘트, 화일, 레코드
+	# -------------------------------------------------------------- #
+	// 답변글이 있는경우 모든 정보를 가져온다.
+	unset($arr);
+	$query = "SELECT * FROM $cf_table_col_nm WHERE FID = $my_fid AND SORT >= $my_sort AND SORT < $my_next_sort ORDER BY SORT ASC";
+	$arr = $DB->Pipe_Arr($query);
+
+	$tm_post_cnt = 0;
+	$tm_reply_cnt = 0;
+	$tm_comm_cnt = 0;
+	for($i=0; $i<sizeof($arr); $i++)
+	{
+		// 게시물 작성/답변갯수를 센다.
+		if($arr[$i][DEPTH] == 0 && ($arr[$i][INPUT_ID] == $cf_cook_id || $arr[$i][SIGN_ID] == $cf_cook_id))
+		{
+			$tm_post_cnt++;
+		}
+		else if($arr[$i][DEPTH] > 0 && ($arr[$i][INPUT_ID] == $cf_cook_id || $arr[$i][SIGN_ID] == $cf_cook_id))
+		{
+			$tm_reply_cnt++;
+		}
+########################################################################
+		// 첨부화일 삭제
+		
+		$f_query = "SELECT * FROM CM_FILE_T WHERE P_NO='".$arr[$i][NO]."' AND GB ='".$a_gb."' AND CD ='".$a_cd."' AND ITEM ='".$a_item."'";
+		$f_arr = $DB->Pipe_Arr($f_query);
+		for($y=0; $y<count($f_arr); $y++){
+			$tm_file_path_physical = $cf_savedir_physical . "/" . $f_arr[$y]["REAL_PATH"];
+			if(preg_match("/[xA1-xFE][xA1-xFE]/", $tm_file_path_physical))  //true면 한글이썩여있고 false엄따..
+			{
+				$tm_file_path_physical  = iconv("UTF-8","EUC-KR",$tm_file_path_physical);
+			}
+
+			if(is_file($tm_file_path_physical) && !Delete_File($tm_file_path_physical))
+			{
+				error_msg("첨부화일을 삭제하는데 실패했습니다.", "back");
+				exit;
+			}
+
+		}
+		$f_query = "DELETE  FROM CM_FILE_T WHERE P_NO='".$arr[$i][NO]."' AND GB ='".$a_gb."' AND CD ='".$a_cd."' AND ITEM ='".$a_item."' ";
+		$DB->Delete_Query($f_query);
+
+########################################################################
+		// 코멘트 삭제
+		$query = "DELETE FROM CM_BOARD_COMM_T WHERE P_NO = '" . $arr[$i][NO] . "'";
+
+		$DB->Delete_Query($query);
+
+		// 레코드 삭제
+		$query = "DELETE FROM $cf_table_col_nm WHERE NO = '" . $arr[$i][NO] . "'";
+
+		$DB->Delete_Query($query);
+
+	}
+
+	// 게시물 작성/삭제/코멘트갯수 수정
+	if($cf_cook_id)
+	{
+		// 게시물 작성갯수 업데이트.
+//		$query = "UPDATE $cf_table_mem_nm SET CM_POST_CNT = CM_POST_CNT - $tm_post_cnt, CM_REPLY_CNT = CM_REPLY_CNT - $tm_reply_cnt WHERE CM_ID = '$cf_cook_id'";
+//		$DB->Update_Query($query);
+	}
+
+	// 삭제 후 list 페이지로 이동
+	error_msg("", "iframe_list.html?$po_adv_query&page=$page");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

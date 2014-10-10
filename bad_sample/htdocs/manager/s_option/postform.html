@@ -1,0 +1,73 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language=\"javascript\" src=\"t.js\"></script>\n";
+  //	$ONLOAD = "focusSubject()";
+
+	include "manager/manager_top.inc";
+
+
+	// 첨부화일 최대용량
+	$sys_attach_size = getMaxUploadSize();
+	$tm_attach_size = $cf_attach_size * 1000;
+	if($sys_attach_size < $tm_attach_size)
+	{
+		$tm_attach_size = $sys_attach_size;
+	}
+	$tm_attach_size = (int)($tm_attach_size / 104857.6) / 10;
+	if($tm_attach_size > 0){
+		$tm_attach_size = $tm_attach_size ." MB";
+	}
+
+
+?>
+
+
+<form name="signform" enctype="multipart/form-data" method="post" action="post.html?<?=$po_adv_query?>">
+
+<input type="hidden" name="fr_post_check" value="<?=$tm_post_check?>">
+<?
+	$sell_arr = array("Y" => "판매가능", "N" => "판매불가");
+	$service_arr = array("Y" => "공개함", "N" => "공개하지 않음");
+	$my_it_sell_yn = "Y";
+	$my_it_service_yn = "Y";
+ 
+  # 070628 mir9 무료/유료 배송비 선택 #
+  $basong_arr = array("Y" => "무료", "N" => "유료");
+  $my_basong_yn = "N";
+ 
+	# 판매가격단위(원 고정)
+	$unit_arr = get_code_arr("unit");
+
+	# 상품분류
+	$event_arr = get_code_arr("event");
+
+	# 브랜드
+	$brand_arr = get_code_arr("brand");
+
+	// 버튼관련변수 정의 - 글올리기 버튼
+	$post_button = $cf_images_dir . "/ok.gif";
+
+	
+	# 쓰기폼
+	include $cf_skin_nm . "/postform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

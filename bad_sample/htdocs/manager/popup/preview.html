@@ -1,0 +1,67 @@
+<?
+	# 패스 및 클래스
+	include $cf_Root_Path."Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+   
+   	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+   $query="select * from $cf_table_col_nm where no=$no";
+   $arr=$DB->Pipe_Row($query);
+    if(is_array($arr))
+    {
+        foreach($arr as $k => $v)
+			${"my_" . strtolower($k)} = $v;
+        unset($arr);
+    }
+
+	if($my_display=="0"){ // 일반 텍스트 형
+      $tm_content=$my_content;
+	}
+	else{  // 이미지 팝업
+	   $tm_real_path = $cf_savedir . "/" . $my_popup_img;
+	   $tm_real_path_physical = $cf_doc_root . $tm_real_path;
+	
+       $tm_content="<a href='http://".$my_link_url."' target='_blank'><img src='".$tm_real_path."' border='0'></a>";
+	}
+   
+   if($my_live=="0"){
+     $tm_live="오늘은 이창을 다시 띄우지 않음";
+   }
+   else{
+     $tm_live="이창을 다시 띄우지 않음";
+   }
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+<title><?=$my_title_bar;?></title>
+<link rel="stylesheet" href="/css/text.css" type="text/css">
+</HEAD>
+ <BODY leftmargin="0" topmargin="0">
+  <table border="0" cellpadding="0" cellspacing="0" width="100">
+  <tr>
+    <td> <?=$tm_content;?>
+    </td>
+  </tr>
+  
+   <tr>
+    <td align="center" height="20"><input type="checkbox"> <?=$tm_live;?> <a href="javascript:self.close();">[닫기]</a>
+    </td>
+  </tr>
+</table>
+
+ </BODY>
+</HTML>
+
+
+
+<?
+
+  	include "logoff.inc";
+?>

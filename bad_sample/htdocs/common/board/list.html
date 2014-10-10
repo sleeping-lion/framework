@@ -1,0 +1,42 @@
+<?php
+		# 패스 및 클래스
+		include $_SERVER['DOCUMENT_ROOT']."/Root_Path.inc";
+		include "variable_config.inc";
+
+		# DB 접속 및 함수
+		include "logon.inc";
+		include "user_function.inc";
+
+		# 변수 및 설정
+		include "config.inc";
+		
+		include "t_config.inc";
+
+		# 상단 HTML
+		$JS = "<script language=\"javascript\" src=\"t.js\"></script>\n";
+	
+		include "top.inc";
+		switch($_GET['a_cd']) {
+			case '1' :
+		        echo '<img src="/images/club_txt.gif" alt="" />';
+				break;
+			case '2' :
+				echo '<img src="/images/academy_txt.gif" alt="" />';
+				break;
+			case '3' :
+				echo '<img src="/images/free_txt.gif" alt="" />';
+				break;
+			case '4' :
+				echo '<img src="/images/notice_txt.gif" alt="" />';
+				break;
+		}
+		include "listview.inc";
+
+		# 하단 HTML
+		include "t_footer.inc";
+
+		include "footer.inc";
+
+		# DB 접속종료
+		include "logoff.inc";
+?>

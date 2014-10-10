@@ -1,0 +1,108 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	include "manager/manager_top.inc";
+	include "t_top.inc";
+?>
+<form name="signform" enctype="multipart/form-data" method="post" action="post.html?<?=$po_basic_query?>">
+<input type="hidden" name="fr_post_check" value="<?=$tm_post_check?>">
+<?
+	// 초기값
+	$my_gb							= "board";
+	$my_item						= "0";
+	$my_table_nm					= "cm_board";
+	$my_path_url					="/common/board";
+	$my_co_table_nm				= "cm_board_com";
+	$my_con_cd					= "";
+	$my_reply_yn					= "N";                                  // 답변여부
+	$my_con_cd					= "";
+	$my_reply_yn					= "Y";					// 답변여부
+	$my_post_level				= "bb";					// 쓰기레벨
+	$my_post_nm					= "최고운영자";
+	$my_read_level				= "zz";					// 상세읽기레벨
+	$my_body_nm					= "비회원";
+	$my_body_level				= "zz";					// 읽기레벨
+	$my_read_nm					= "비회원";
+	$my_reply_level				= "bb";					// 답변레벨
+	$my_reply_nm					= "최고운영자";
+	$my_modify_level				= "bb";					// 수정레벨
+	$my_modify_nm				= "최고운영자";
+	$my_delete_level				= "bb";					// 삭제레벨
+	$my_delete_nm				= "최고운영자";
+	$my_notify_email_yn			= "";					// 메일통보여부
+	$my_modify_review_yn		= "";					// 수정미리보기
+	$my_mult_read_yn			= "";					// 여러글 읽기여부
+	$my_num_per_page			= 10;					//출력게시물수
+	$my_page_per_block			= 10;					//하단블록수
+	$my_allow_html_yn			= "";					//태그허용여부
+	$my_reply_indent				= 5;					//답변글한계수
+	$my_allow_delete_thread	= "";					//답변글삭제여부
+	$my_notify_new_article		= "0";					//게시물설정시간
+	$my_savedir					= "";					//첨부파일저장위치
+	$my_table_wd_large			= "600";      			//큰테이블크기
+	$my_table_wd_small			= "100%";     			//작은테이블크기
+	$my_passwd_yn				= "";        			//비밀번호저장여부
+	$my_images_dir				= 'images_sblue'; 	//이미지저장위치
+	$my_css_dir					= "/css/sblue.css";              //이미지저장위치
+	$my_meta_title					= $cf_meta_title;
+	$my_meta_desc				= $cf_meta_desc;
+	$my_meta_keywd				= $cf_meta_keywd;
+	$my_skin_nm					= "/common/board/html_color";
+	$my_board_cd					="ba_100";
+	$my_search_cd				="search100";
+
+
+	// 구분(프로그램명)
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'a_pgm_nm' ORDER BY NM ASC";
+
+	$my_a_pgm_nm_arr = $DB->Arr($query);
+
+	// 사용테이블
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'a_table_nm' ORDER BY NM ASC";
+	$my_a_table_nm_arr = $DB->Arr($query);
+
+	// 코멘트 사용테이블
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'a_ctable_nm' ORDER BY NM ASC";
+	$my_c_table_nm_arr = $DB->Arr($query);
+
+	// 관리자 아이디
+	//$query = "SELECT CM_ID, CM_ID FROM $cf_table_mem_nm WHERE CM_DEL_YN = 'N' AND CM_LEVEL <= 'bb' ORDER BY CM_ID ASC";
+	$query = "SELECT CM_ID, CM_ID FROM $cf_table_mem_nm WHERE CM_DEL_YN = 'N' AND CM_LEVEL <= 'xx' ORDER BY CM_ID ASC";
+	$my_cm_id_arr = $DB->Arr($query);
+
+	// 회원레벨(각종레벨)
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'level' ORDER BY CD ASC";
+	$my_level_arr = $DB->Arr($query);
+
+	// 게시판종류
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'board_cd' ORDER BY CD ASC";
+	$my_board_cd_arr = $DB->Arr($query);
+
+	// 검색창종류
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'search_cd' ORDER BY CD ASC";
+	$my_search_cd_arr = $DB->Arr($query);
+
+	# 입력폼
+	include "html/postform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "t_footer.inc";
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

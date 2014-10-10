@@ -1,0 +1,115 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	include "top.inc";
+	include "t_top.inc";
+
+	// 선택한 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 비공개글인경우
+	if($my_public_yn == "N" && $cf_top_level_yn != "Y" && (!$cf_cook_id || $cf_cook_id != $my_input_id))
+	{
+		//삭제할 수 있는 권한이 없습니다.
+		error_msg("Do not have permission to delete.", "back");
+		exit;
+	}
+
+	// 글쓴이 처리
+   	if(!$my_email)
+		$tm_sign_nm = $my_sign_nm;
+	else
+		$tm_sign_nm = "<a href=\"mailto:$my_email\">$my_sign_nm</a>";
+
+	// 글쓴날 처리
+	if(substr($my_input_ymdhms, 8, 2) < 12)
+	{
+		$tm_pm = "AM"; //오전
+		$tm_h = substr($my_input_ymdhms, 8, 2);
+	}
+	else
+	{
+		$tm_pm = "PM"; //오후
+		$tm_h = substr($my_input_ymdhms, 8, 2) - 12;
+	}
+
+	$tm_input_ymdhms = substr($my_input_ymdhms, 0, 4) . "." .
+						substr($my_input_ymdhms, 4, 2) . "." .
+						substr($my_input_ymdhms, 6, 2);
+
+	// 첨부화일
+	$tm_real_path = $cf_savedir . "/" . $my_real_path;
+	$tm_real_path_physical = $cf_doc_root . "/" . $tm_real_path;
+	if($cf_attach_size > 0 || $my_attach_path)
+	{
+		if($my_attach_path && is_file($tm_real_path_physical))
+		{
+			$tm_attach_file_tmp = "<img src='$cf_images_dir/file.gif' align='absmiddle'> <a href='/files/download.html?file=" . base64_encode($tm_real_path_physical) . "&output=" . base64_encode($my_attach_path) . "'>$my_attach_path</a>
+			";
+		}
+		else
+		{
+			//첨부된 화일이 없습니다.
+			$tm_attach_file_tmp = "No attachment file.";
+		}
+	}
+
+	// 이미지 관련처리
+	$tm_image_board = "";
+	$tm_image = "";
+	if($my_attach_path && is_file($tm_real_path_physical))
+	{
+		$tm_file_info_arr = getimagesize($tm_real_path_physical);
+
+		if($tm_file_info_arr[2] > 0 && $tm_file_info_arr[2] < 4)
+		{
+			// 이미지보드 이미지
+			$tm_image_board = "<IMG src='" . $tm_real_path . "' width='226' height='178' hspace=5 vspace=5 border=1 bodercolor='#000000' align=left class=starimage><br>";
+
+			// 포토갤러리 스타일
+			$tm_image_info = get_image_size($tm_real_path_physical, 450);
+			$tm_image = "<center><a href='$tm_real_path' target='_blank'><img src='$tm_real_path'" . $tm_image_info[2] . "></a></center><br>";
+		}
+	}
+
+	// 패스워드
+	if($cf_top_level_yn == "Y")
+		$admin_passwd = $my_passwd;
+	else
+		$admin_passwd = "";
+
+	// ------------------------------------------------------------ //
+	//	버튼처리 시작
+	// ------------------------------------------------------------ //
+	# 리스트 버튼
+	$LIST = "<a href=\"list.html?$po_adv_query&page=$page\" onMouseOver=\"status='reload articles';return true;\" onMouseOut=\"status=''\"><img src=\"$cf_images_dir/list.gif\" align='absmiddle'></a>";
+	// ------------------------------------------------------------ //
+	//	버튼처리 끝
+	// ------------------------------------------------------------ //
+?>
+<form name="signform" method="post" action="delete.html?<?=$po_adv_query?>&page=<?=$page?>&po_no=<?=$po_no?>" onSubmit="return checkpasswd()";>
+<?
+	# 게시판 본문
+	include $cf_skin_nm . "/deleteform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "t_footer.inc";
+	include "footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

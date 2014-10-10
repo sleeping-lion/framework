@@ -1,0 +1,38 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	include "manager/manager_top.inc";
+	include "t_top.inc";
+
+	# 현재출력 GB
+	$tm_gb = $po_gb ? $po_gb : $cf_c_cd_gb;
+?>
+<form name="signform" method="post" action="modify.html?<?=$po_adv_query?>&po_gb=<?=$po_gb?>&po_cd=<?=$po_cd?>&page=<?=$page?>">
+<?
+	# 해당 레코드 값
+	include "t.inc";
+
+	# 입력폼
+	include "html/postform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "t_footer.inc";
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

@@ -1,0 +1,38 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language=\"javascript\" src=\"t.js\"></script>\n";
+//	$ONLOAD = "focusSubject()";
+	include "manager/manager_top.inc";
+
+?>
+<form name="signform" enctype="multipart/form-data" method="post" action="modify.html?<?=$po_adv_query?>&page=<?=$page?>&po_no=<?=$po_no?>">
+<?
+	// 선택한 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+
+
+	# 쓰기폼
+	include $cf_skin_nm . "/modifyform.inc";
+?>
+
+</form>
+<?
+	# 하단 HTML
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

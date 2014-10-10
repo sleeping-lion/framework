@@ -1,0 +1,90 @@
+<?php
+session_start();
+//	# 변수관련
+include $_SERVER['DOCUMENT_ROOT']."/Root_Path.inc";
+include "variable_config.inc";
+
+include "logon.inc";
+include "user_function.inc";
+
+##########################################
+// 관리자 인 사람만 접근 가능
+//$query = "SELECT md5('$fr_cm_passwd')";
+//echo $tm_cm_passwd = $DB->Value($query);
+
+	$tm_cm_passwd = $DB->Value("SELECT md5('$fr_cm_passwd')");
+
+//$tm_cm_passwd = $fr_cm_passwd;
+
+
+
+$query_where = " WHERE CM_ID   = '$fr_cm_id' " .
+				" AND CM_PASSWD = '$tm_cm_passwd'" .
+				" AND (CM_LEVEL = 'aa' OR CM_LEVEL = 'bb')" .
+				" AND CM_DEL_YN = 'N' ";
+
+$query =	"SELECT count(cm_id) " .
+			" FROM " . $cf_table_mem_nm .
+			$query_where;
+
+
+$total_record = $DB->Value($query);
+
+if($total_record) {
+	$query =	"SELECT * " .
+				" FROM " . $cf_table_mem_nm .
+				$query_where;
+	$arr = $DB->Pipe_Row($query);
+
+	$my_cm_id = $arr[CM_ID];
+	$my_cm_nm = $arr[CM_NM];
+	$my_cm_nick_nm = $arr[CM_NICK_NM];
+	$my_cm_passwd = $arr[CM_PASSWD];
+	$my_cm_email = $arr[CM_EMAIL];
+	$my_cm_level = $arr[CM_LEVEL];
+	$my_cm_log_cnt = $arr[CM_LOG_CNT];
+	$my_cm_time = $arr[CM_TIME];
+
+	$tm_cm_time = date("YmdHis",time());
+	$my_cm_log_cnt = $my_cm_log_cnt + 1;
+
+	$upd_query =    "UPDATE " .$cf_table_mem_nm .
+					" SET CM_LOG_CNT = $my_cm_log_cnt, " .
+					" CM_TIME = $tm_cm_time " .
+					"WHERE CM_ID = '$fr_cm_id' ";
+
+	unset($err);
+	$err = $DB->Update_Query($upd_query);
+	if($err[log] == "error")
+	{
+		error_msg( $err[error],"");
+		exit;
+	}
+
+	// ------------------------------------------------------------ //
+	//	쿠키설정 시작
+	// ------------------------------------------------------------ //
+	$_SESSION['USER_ID']=$my_cm_id;
+	$_SESSION['USER_NAME']=$my_cm_nm;
+	$_SESSION['USER_LEVEL']=$my_cm_level;	
+	
+	// ------------------------------------------------------------ //
+	//	쿠키설정 끝
+	// ------------------------------------------------------------ //
+
+
+	if($_SESSION['USER_ID']=='mir9') {
+	error_msg("","/manager");
+	} else {
+	error_msg("","/");
+	}
+	exit;
+
+} else {
+	error_msg("회원정보가 존재하지 않습니다.\\n\\n 다시 입력하여 주십시오.", "back");
+	exit;
+}
+
+# DB Disconnection
+include "logoff.inc";
+?>

@@ -1,0 +1,34 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+	
+	include "t.inc";
+
+	if(trim($fr_passwd)==""){
+		error_msg("비밀번호를 입력해주세요.","list.html?".$po_adv_query);
+		exit;
+	}
+
+	if($fr_passwd==$my_cm_passwd){
+		$counsel_no = $my_no."ok";
+
+		SetCookie("CK_KC_COUNSEL_NO",$counsel_no,0,"/",$cf_cookie_url);
+		error_msg("", "listbody.html?$po_adv_query&page=$page&po_no=$po_no");
+	}
+	else{
+		error_msg("비밀번호가 틀렸습니다.","list.html?".$po_adv_query);
+	}
+
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

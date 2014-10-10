@@ -1,0 +1,40 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+
+	# 관리자가 아닌경우 패스워드를 구한다.
+	if($cf_cook_de_level != "de_10")
+	{
+		$query = " SELECT PASSWD " .
+					"FROM " . $cf_table_col_nm .
+					" WHERE NO = '$po_no' " .
+					" " ;
+		$stmt1 = mysql_query($query,$DB -> connect());
+		$arr = mysql_fetch_row($stmt1);
+	}
+	# 관리자인경우와 패스워드가 일치하는 경우 수정한다.
+	
+	if($cf_top_level_yn == "Y" || $arr[0] == $fr_passwd )
+	{
+		$counsel_no = $po_fid.$fr_passwd;
+
+		SetCookie("CK_KC_COUNSEL_NO",$counsel_no,0,"/",$cf_cookie_url);
+
+		error_msg("열람 인증확인", "listbody.html?$po_adv_query&page=$page&po_no=$po_no");
+	}
+	else
+	{
+		error_msg("비밀번호가 일치하지 않습니다.\\n\\n 다시 입력하여 주십시오.", "listbody.html?$po_adv_query&page=$page&po_no=$po_no");
+		exit;
+	}
+?>

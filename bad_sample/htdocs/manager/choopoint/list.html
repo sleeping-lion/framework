@@ -1,0 +1,34 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language=\"javascript\" src=\"t.js\"></script>\n";
+	include "manager/manager_top.inc";
+
+	$query = "SELECT CON_CD FROM $cf_table_cod_nm WHERE CD = 'choo_point'";
+	$arr = $DB->Pipe_Row($query);
+
+	foreach ($arr as $k => $v)
+	{
+		${"my_" . strtolower($k)} = stripslashes($v);
+	}
+
+	include $cf_skin_nm . "/list.inc";
+
+	# 하단 HTML
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

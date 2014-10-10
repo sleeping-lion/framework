@@ -1,0 +1,450 @@
+<?
+include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+include "variable_config.inc";
+include  "logon.inc";
+include  "user_function.inc";
+
+include "t_config.inc";
+
+$counter_type = $_POST[counter_type];
+//echo $mod_type;exit;
+
+
+// 결제리스트 중 입금완료 되었으면
+//$credit_query = "select count(*) from  " . $cf_table_cre_nm .
+//                " where ORDER_NO='$po_no' AND RECEIPT_CD ='20' ";
+
+//$total_record = $DB->Value($credit_query);
+
+//if ($total_record >= 1) {
+//	error_msg("입금완료된 결제리스트가 있어서 삭제가 불가능합니다.","back");
+//	exit;
+//}
+$po_adv_query = $po_adv_query;
+if($counter_type=="1"){
+
+		$day=date("Y-m-d");		
+		$b_name = "year";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+		$excel = "<table width='300' cellpadding=0 cellspacing=0 border=1 bordercolor='black'>";
+
+		unset($arr);
+		$query = "SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm";
+		$total = $DB->Value($query);
+
+		unset($arr);
+		$query = "SELECT DATE_FORMAT(CO_TIME,'%Y') as YEAR FROM $cf_table_cti_nm GROUP BY YEAR ORDER BY YEAR DESC";
+		$arr = $DB->Pipe_Arr($query);
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='25' class='count_01'> <b><font color='#6600CC' face='Tahoma'>";
+			$excel = $excel."	<font color='#FF6600'>年</font></font></b>별 방문자수 <font face='Tahoma'><b>Total</b></font>";
+			$excel = $excel."	: <b>".$total."</b>명</td>";
+			$excel = $excel."</tr>";
+
+		for($i = 0; $i < count($arr); $i++) {
+			$query = "SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE DATE_FORMAT(CO_TIME,'%Y') = '".$arr[$i][YEAR]."'";
+			$total2 = $DB->Value($query);
+			$percent = round(100*$total2/$total, 2);
+			$percent_width = 344*$percent/100;
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='33'>"; 
+			$excel = $excel."	<table width='300' border='0' cellpadding='0' cellspacing='0' class='text-2'>";
+			$excel = $excel."	  <tr>";			
+			$excel = $excel."		<td width='100' class='count_01'><b>".$arr[$i][YEAR]."</b>년</td>";
+			$excel = $excel."		<td width='100' class='count_01' align='right'><b>".$total2."</b>명</td>";			
+			$excel = $excel."		<td width='100' class='count_01'><b>".$percent."</b>%</td>";
+			$excel = $excel."	  </tr>";
+			$excel = $excel."	</table>";
+			$excel = $excel."  </td>";
+			$excel = $excel."</tr>";
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='1' bgcolor='cdcdcd'></td>";
+			$excel = $excel."</tr>";
+
+		}
+		$excel = $excel."</table>";
+		echo $excel;
+
+}elseif($counter_type=="2"){
+
+		$day=date("Y-m-d");		
+		$b_name = "month";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+		$excel = "<table width='300' cellpadding=0 cellspacing=0 border=1 bordercolor='black'>";
+
+		if(!$po_year) $po_year = date("Y");
+		if(!$po_month) $po_month = date("n");
+		unset($arr);
+		$query = "SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE DATE_FORMAT(CO_TIME,'%Y')='$po_year'";
+		$total = $DB->Value($query);
+
+		if(!$total) $total = 0;
+
+		for($i=1;$i<=12;$i++){
+			$query="SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$i'";
+			//echo $query;
+			$t_sum = $DB->Value($query);
+			if($max<$t_sum) {
+				$max=$t_sum;
+			}
+		}
+
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='25' class='count_01'> <b><font color='#6600CC' face='Tahoma'>";
+			$excel = $excel."	<font color='#FF6600'>月</font></font></b>별 방문자수 : <b>".$po_year."</b>년 <font face='Tahoma'><b>Total</b></font>";
+			$excel = $excel."	: <b>".$total."</b>명</td>";
+			$excel = $excel."</tr>";
+
+
+		for($i=1;$i<=12;$i++){
+			$query="SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$i'";
+			$total2 = $DB->Value($query);
+			if(!$total2) {
+				$total2 = 0;
+			}
+			if($total) {
+				$percent = round(100*$total2/$total, 2);
+				$percent1 = round(100*$total2/$max, 2);
+				$percent_width = 344*$percent1/100;
+			}
+			if(!$percent_width) $percent_width = "1";
+			if($max == $total2) {
+				$back_color = "background='images/pix04.gif'";
+			}else {
+				$back_color = "background='images/pix03.gif'";
+			}			
+
+
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='33'>";
+			$excel = $excel."	<table width='600' border='0' cellpadding='0' cellspacing='0' class='text-2'>";
+			$excel = $excel."	  <tr>";
+			$excel = $excel."		<td width='10' class='count_01'></td>";
+			$excel = $excel."		<td width='50' class='count_01'><b>".$i."</b>월</td>";
+			$excel = $excel."		<td width='100' class='count_01' align='right'><b>".$total2."</b>명</td>";
+			$excel = $excel."		<td width='10'></td>";
+			$excel = $excel."		<td width='345' style='text-align:left'>";
+			$excel = $excel."		  <table width='".$percent_width."' border='0' cellspacing='0' cellpadding='0'>";
+			$excel = $excel."			<tr>";
+			$excel = $excel."			  <td ".$back_color." height='8'></td>";
+			$excel = $excel."			</tr>";
+			$excel = $excel."		  </table>";
+			$excel = $excel."		</td>";
+			$excel = $excel."		<td width='15' class='count_01'>&nbsp;</td>";
+			$excel = $excel."		<td width='70' class='count_01'>".$percent."</b>%</td>";
+			$excel = $excel."	  </tr>";
+			$excel = $excel."	</table>";
+			$excel = $excel."  </td>";
+			$excel = $excel."</tr>";
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='1' bgcolor='cdcdcd'></td>";
+			$excel = $excel."</tr>";
+
+		
+
+		}
+		$excel = $excel."</table>";
+		echo $excel;
+
+}elseif($counter_type=="3"){
+
+		$day=date("Y-m-d");		
+		$b_name = "day";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+		$excel = "<table width='300' cellpadding=0 cellspacing=0 border=1 bordercolor='black'>";
+
+		$po_year = $po_year_v;
+		$po_month = $po_month_v;
+
+		if(!$po_year) $po_year = date("Y");
+		if(!$po_month) $po_month = date("m");
+		unset($arr);
+		$query = "SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME)='$po_year' AND MONTH(CO_TIME)='$po_month'";
+		$total = $DB->Value($query);
+
+		if(!$total) $total = 0;
+
+
+			
+			$excel = $excel."	<tr>";
+			$excel = $excel."	  <td height='25' class='count_01'> <b><font color='#6600CC' face='Tahoma'>";
+			$excel = $excel."		<font color='#FF6600'>日</font></font></b>별 방문자수 : <b>".$po_year."</b>년 <b>".$po_month."</b>월  <font face='Tahoma'><b>Total</b></font>";
+			$excel = $excel."		: <b>".$total."</b>명</td>";
+			$excel = $excel."	</tr>";
+		    
+
+
+		for($i=1;$i<=31;$i++){
+			$query="SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$po_month' AND DATE_FORMAT(CO_TIME,'%e')='$i'";
+			$t_sum = $DB->Value($query);
+			if($max<$t_sum) {
+				$max=$t_sum;
+			}
+		}
+		for($i=1;$i<=31;$i++){
+			$query="SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$po_month' AND DATE_FORMAT(CO_TIME,'%e')='$i'";
+			$total2 = $DB->Value($query);
+			if(!$total2) {
+				$total2 = 0;
+			}
+			if($total) {
+				$percent = round(100*$total2/$total, 2);
+				$percent1 = round(100*$total2/$max, 2);
+				$percent_width = 344*$percent1/100;
+			}
+			if(!$percent_width) $percent_width = "1";
+			if($max == $total2) {
+				$back_color = "background='images/pix04.gif'";
+			}else {
+				$back_color = "background='images/pix03.gif'";
+			}
+
+
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='33'>";
+			$excel = $excel."	<table width='600' border='0' cellpadding='0' cellspacing='0' class='text-2'>";
+			$excel = $excel."	  <tr>";
+			$excel = $excel."		<td width='10' class='count_01'></td>";
+			$excel = $excel."		<td width='50' class='count_01'><b>".$i."</b>일</td>";
+			$excel = $excel."		<td width='100' class='count_01' align='right'><b>".$total2."</b>명</td>";
+			$excel = $excel."		<td width='10'></td>";			
+			$excel = $excel."		<td width='15' class='count_01'>&nbsp;</td>";
+			$excel = $excel."		<td width='70' class='count_01'><b>".$percent."</b>%</td>";
+			$excel = $excel."	  </tr>";
+			$excel = $excel."	</table>";
+			$excel = $excel."  </td>";
+			$excel = $excel."</tr>";
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='1' bgcolor='cdcdcd'></td>";
+			$excel = $excel."</tr>";
+
+		
+
+		}
+		$excel = $excel."</table>";
+		echo $excel;
+
+}elseif($counter_type=="4"){
+
+		$day=date("Y-m-d");		
+		$b_name = "hour";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+		$excel = "<table width='300' cellpadding=0 cellspacing=0 border=1 bordercolor='black'>";
+
+		$po_year = $po_year_v;
+		$po_month = $po_month_v;
+		$po_day = $po_day_v;
+
+		if(!$po_year) $po_year = date("Y");
+		if(!$po_month) $po_month = date("n");
+		if(!$po_day) $po_day = date("j");
+		unset($arr);
+		$query = "SELECT SUM(CO_VISIT) FROM $cf_table_cti_nm WHERE YEAR(CO_TIME)='$po_year' AND MONTH(CO_TIME)='$po_month' AND DATE_FORMAT(CO_TIME,'%e')='$po_day'";
+		$total = $DB->Value($query);
+
+		if(!$total) $total = 0;
+
+
+			
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='25' class='count_01'> <b><font color='#6600CC' face='Tahoma'>";
+			$excel = $excel."	<font color='#FF6600'>時</font></font></b>별 방문자수 : <b>".$po_year."</b>년 <b>".$po_month."</b>월  <b>".$po_day."</b>일  <font face='Tahoma'><b>Total</b></font>";
+			$excel = $excel."	: <b>".$total."</b>명</td>";
+			$excel = $excel."</tr>";
+		    
+
+
+		for($i=0;$i<=23;$i++){
+			if(strlen($i) == 1) {
+				$tm_d = "0".$i;
+			} else {
+				$tm_d = $i;
+			}
+			$query="SELECT CO_H$tm_d FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$po_month' AND DATE_FORMAT(CO_TIME,'%e')='$po_day'";
+			$t_sum = $DB->Value($query);
+			if($max<$t_sum) {
+				$max=$t_sum;
+			}
+		}
+		for($i=0;$i<=23;$i++){
+			if(strlen($i) == 1) {
+				$tm_d = "0".$i;
+			} else {
+				$tm_d = $i;
+			}
+			$query="SELECT CO_H$tm_d FROM $cf_table_cti_nm WHERE YEAR(CO_TIME) = '$po_year' AND MONTH(CO_TIME)='$po_month' AND DATE_FORMAT(CO_TIME,'%e')='$po_day'";
+			$total2 = $DB->Value($query);
+			if(!$total2) {
+				$total2 = 0;
+			}
+			if($total) {
+				$percent = round(100*$total2/$total, 2);
+				$percent1 = round(100*$total2/$max, 2);
+				$percent_width = 344*$percent1/100;
+			}
+			if(!$percent_width) $percent_width = "1";
+			if($max == $total2) {
+				$back_color = "background='images/pix04.gif'";
+			}else {
+				$back_color = "background='images/pix03.gif'";
+			}
+
+
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='33'>";
+			$excel = $excel."	<table width='600' border='0' cellpadding='0' cellspacing='0' class='text-2'>";
+			$excel = $excel."	  <tr>";
+			$excel = $excel."		<td width='10' class='count_01'></td>";
+			$excel = $excel."		<td width='50' class='count_01'><b>".$i."</b>시</td>";
+			$excel = $excel."		<td width='100' class='count_01' align='right'><b>".$total2."</b>명</td>";
+			$excel = $excel."		<td width='10'></td>";			
+			$excel = $excel."		<td width='15' class='count_01'>&nbsp;</td>";
+			$excel = $excel."		<td width='70' class='count_01'><b>".$percent."</b>%</td>";
+			$excel = $excel."	  </tr>";
+			$excel = $excel."	</table>";
+			$excel = $excel."  </td>";
+			$excel = $excel."</tr>";
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='1' bgcolor='cdcdcd'></td>";
+			$excel = $excel."</tr>";
+
+		
+
+		}
+		$excel = $excel."</table>";
+		echo $excel;
+
+}elseif($counter_type=="5"){
+
+		$day=date("Y-m-d");		
+		$b_name = "route";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+		$excel = "<table width='300' cellpadding=0 cellspacing=0 border=1 bordercolor='black'>";
+
+		$query = "select count(*) from CM_MEMBER_ROUTE ";
+		$total_record = $DB->Value($query);
+
+
+			
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='25' class='count_01'> <b><font color='#6600CC' face='Tahoma'>";
+			$excel = $excel."	참여 <font face='Tahoma'><b>Total</b></font>";
+			$excel = $excel."	: <b>".$total_record."</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(가입경로)</td>";
+			$excel = $excel."</tr>";
+		    
+
+
+		unset($arr);
+								
+			$query3 = "select choice_v,count(choice_v) as cnt from CM_MEMBER_ROUTE group by choice_v order by cnt desc ";
+			$arr = $DB->Pipe_Arr($query3);
+
+			for($k=0; $k < 6 ; $k++){
+				$choice_v = "";
+				$cnt = "";
+
+				$choice_v = $arr[$k][choice_v];
+				$cnt = $arr[$k][cnt];
+
+				if($choice_v==1){
+					$choice_text = "인터넷 검색";
+				}elseif($choice_v==2){
+					$choice_text = "TV광고";
+				}elseif($choice_v==3){
+					$choice_text = "서적이나 잡지, 또는 신문 광고";
+				}elseif($choice_v==4){
+					$choice_text = "지인들을 통해";
+				}elseif($choice_v==5){
+					$choice_text = "세미나, 박람회 등을 통해";
+				}elseif($choice_v==6){
+					$choice_text = "기타";
+				}else{
+					$choice_text = "TV광고";
+					$cnt = 0;
+				}
+
+
+				$percent = round(100*$cnt/$total_record, 2);
+				$percent_width = 199*$percent/100;
+
+
+
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='33'>";
+			$excel = $excel."	<table width='600' border='0' cellpadding='0' cellspacing='0' class='text-2'>";
+			$excel = $excel."	  <tr>";
+			$excel = $excel."		<td width='10' class='count_01'></td>";
+			$excel = $excel."		<td width='*' class='count_01'><b>".$choice_text."</b></td>";
+			$excel = $excel."		<td width='100' class='count_01' align='right'><b>".$cnt."</b>명</td>";
+			$excel = $excel."		<td width='10'></td>";			
+			$excel = $excel."		<td width='15' class='count_01'>&nbsp;</td>";
+			$excel = $excel."		<td width='70' class='count_01'><b>".$percent."</b>%</td>";
+			$excel = $excel."	  </tr>";
+			$excel = $excel."	</table>";
+			$excel = $excel."  </td>";
+			$excel = $excel."</tr>";
+			$excel = $excel."<tr>";
+			$excel = $excel."  <td height='1' bgcolor='cdcdcd'></td>";
+			$excel = $excel."</tr>";
+
+		
+
+		}
+		$excel = $excel."</table>";
+		echo $excel;
+
+}
+
+include  "logoff.inc";
+?>

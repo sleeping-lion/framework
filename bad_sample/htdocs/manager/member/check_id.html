@@ -1,0 +1,114 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	if($fr_cm_id)
+	{
+		# 아이디 존재유무 체크
+		$query = "SELECT COUNT(CM_ID) FROM ". $cf_table_mem_nm .  " WHERE CM_ID = '$fr_cm_id'";
+		$my_cnt = $DB->Value($query);
+	}
+	else
+	{
+		$fr_cm_id = "deltasand";
+		$my_cnt = "1";
+	}
+
+	# DB 접속종료
+	include "logoff.inc";
+?>
+
+<html>
+<head>
+<title>ID중복확인</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+	a:link,a:visited,a:active { text-decoration : none }
+	a:hover {  text-decoration : underline;  color : red }
+	TABLE, TD, TR, TH { font-size : 9pt }
+//-->
+</style>
+   
+<script language="javascript">
+<!--
+	function replace_id()
+	{
+		opener.document.signform.fr_cm_id.value = "";
+		opener.document.signform.fr_cm_id.focus();
+		self.close();
+	}
+
+	function use_id()
+	{
+		opener.document.signform.fr_cm_passwd.focus();
+		opener.document.signform.fr_id_check.value = "Y";
+		self.close();
+	}
+//-->
+</script>
+</head>
+   
+<body bgcolor="white"  marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="overflow:auto">
+<form method="get">
+<?
+	if($my_cnt > 0)
+	{
+?> 
+
+<table border="0" cellpadding="0" width="100%" height='130' cellspacing="0" align='center'>	
+	<tr>
+	<td><img src="images/id_ch_t.gif"></td>
+	</tr>
+  <tr>
+    <td align="center"><br>
+        신청하신 아이디 [<font color="#567FDD"><B>
+        <?="$fr_cm_id"?>
+        </B></font>]는 <BR>
+		<font color="009900">이미 등록</font>되어있습니다!<BR>
+		<BR>
+		<b>다른 아이디로 신청</b>하여 주십시오.<br>
+	<tr>
+		<td align="center" style=cursor:hand; onclick="replace_id()"><img src="images/id_ch_b2.gif" vspace="2"></td>
+	</tr>
+	<tr>
+	  <td>&nbsp;</td>
+  </tr>
+</table>
+</form>
+
+<?
+	}
+	else
+	{
+?>
+
+<table border="0" cellpadding="0" width="100%" height='130' cellspacing="0" align='center'>
+	<tr>
+	<td><img src="images/id_ch_t.gif"></td>
+	</tr>
+	 <tr>
+    <td align="center">
+		<br>신청하신 아이디 [<font color="#567FDD"><B><?="$fr_cm_id"?></B></font>]는<br>
+      등록되어 있지 않으므로 <br>
+		<font color="009900"><b>사용가능</b></font>합니다.<BR>
+      <br>
+  <tr>
+	<td align="center" style=cursor:hand; onclick="javascript:use_id()"> <img src="images/id_ch_b1.gif" vspace="2"></td>
+	</tr>
+	<tr>
+	<td>&nbsp;</td>
+  </tr>
+</table>
+<?
+	}
+?>
+</form>
+
+</body>
+</html>

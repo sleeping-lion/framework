@@ -1,0 +1,56 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	$query = "SELECT * FROM CM_BOARD_T WHERE IT_NO = '$po_no'";
+    $arr = $DB->Pipe_Row($query);
+
+    // 정보가 있는경우
+    if(is_array($arr))
+    {
+        foreach($arr as $k => $v)
+            ${"my_" . strtolower($k)} = $v;
+        unset($arr);
+    }
+
+	$tm_null_img = "/files/none.gif";
+	if($my_real_path) {$tm_real_path=$cf_savedir."/" . $my_real_path; }else{$tm_real_path = $tm_null_img;}
+	$img_src = $cf_doc_root.$po_img;
+
+if(file_exists($img_src)) {
+	$size_ = @GetImageSize($img_src);
+//	print_r($size_);
+	$width = $size_[0];
+	$height = $size_[1];
+	$win_width = $size_[0]+50;
+	$win_height = $size_[1]+100;
+} else {
+	$whdth="";
+	$height="";
+	$win_width = "";
+	$win_height = "";
+}
+?>
+<body topmargin="0" leftmargin="0" onclick="self.close()" style="cursor:hand;" onload="javascript:resizeTo('<?=$win_width?>','<?=$win_height?>');">
+
+<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td align="center" valign="middle" colspan="4">
+		<img src="<?=$po_img?>" width = "<?=$width?>" height = "<?=$height?>" name="img1"></td>
+</tr>
+</table>
+   
+
+<?
+include "logoff.inc";
+?>

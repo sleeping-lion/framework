@@ -1,0 +1,457 @@
+<?php
+        include "Root_Path.inc";
+        include_once $cf_doc_root.'/phpThumb/phpThumb.config.php';        
+        include "variable_config.inc";
+
+        include "user_function.inc";
+        include "logon.inc";
+
+        include "site_config.inc";
+        
+        unset($arr1);
+        $url_10 = "GB='board' AND CD='2' AND ITEM=0";
+        $url_20 = "a_gb=board&a_cd=2&a_item=0&sm=3_1";
+        $query = "SELECT NO, SUBJECT, INPUT_YMDHMS FROM CM_BOARD_T WHERE ".$url_10." AND SERVICE_YN='Y' ORDER BY NO DESC LIMIT 4";
+        $arr1 = $DB->Pipe_Arr($query);
+        $count1 = count($arr1);
+        for($i=0; $i<count($arr1); $i++){
+                $arr1[$i][YMD] = "[".substr($arr1[$i][INPUT_YMDHMS],0,4)."/".substr($arr1[$i][INPUT_YMDHMS],4,2)."/".substr($arr1[$i][INPUT_YMDHMS],6,2)."]";
+                $arr1[$i][TITLE] = "<a href='/common/board/listbody.html?".$url_20."&po_no=".$arr1[$i][NO]."'>".substr_byte($arr1[$i][SUBJECT],34)."</a>";
+
+                $arr1[$i][ICON] = "<img src='/images/board_icon.gif'>";
+        }
+        if(count($arr1)<4){
+                for($i<count($arr1); $i<4; $i++){
+                        $arr1[$i][ICON]="&nbsp;";
+                        $arr1[$i][YMD]="&nbsp;";
+                        $arr1[$i][TITLE] = "&nbsp;";
+                }
+        }
+        
+        
+        $url_30 = "CM_BOARD_T.GB='board' AND CM_BOARD_T.CD='1' AND CM_BOARD_T.ITEM=0";
+        $url_40 = "a_gb=board&a_cd=1&a_item=0&sm=3_2";
+        $query = "SELECT NO, SUBJECT, INPUT_YMDHMS FROM CM_BOARD_T WHERE ".$url_30." AND SERVICE_YN='Y' ORDER BY NO DESC LIMIT 4";
+        $arr2 = $DB->Pipe_Arr($query);
+        $count2 = count($arr2);
+        for($i=0; $i<count($arr2); $i++){
+                $arr2[$i][YMD] = "[".substr($arr2[$i][INPUT_YMDHMS],0,4)."/".substr($arr2[$i][INPUT_YMDHMS],4,2)."/".substr($arr2[$i][INPUT_YMDHMS],6,2)."]";
+                $arr2[$i][TITLE] = "<a href='/common/board/listbody.html?".$url_40."&po_no=".$arr2[$i][NO]."'>".substr_byte($arr2[$i][SUBJECT],34)."</a>";
+
+                $arr2[$i][ICON] = "<img src='/images/board_icon.gif'>";
+        }
+        if(count($arr2)<4){
+                for($i<count($arr2); $i<4; $i++){
+                        $arr2[$i][ICON]="&nbsp;";
+                        $arr2[$i][YMD]="&nbsp;";
+                        $arr2[$i][TITLE] = "&nbsp;";
+                }
+        }
+        
+        
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>종로세종당구아카데미 국일관당구클럽</title>
+<meta charset="utf-8">    
+<meta name="description" content="종로세종당구아카데미 국일관당구클럽">
+<meta name="keywords" content="종로세종당구아카데미 국일관당구클럽">
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/javascript.js"></script>
+<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+<script type="text/javascript" src="/js/ui.js"></script>
+<script type="text/javascript" src="/js/handong_util.js"></script>
+<script id="js" type="text/javascript">
+//<![CDATA[
+jQuery.fn.flickingList = function(){
+    var $layerWrap = $(".layerWrap", this);
+    var $layer = $(".layer", this);
+    var $tabWrap = $(".tabWrap", this);
+    var $tabs = $(".tab", this);
+    var $prev = $(".prev", this);
+    var $next = $(".next", this);
+
+    var startX, startLeft;
+    var doing = false; // 모션중인지
+    var draging = false; // 드래그중인지
+    var oldActive = 1; // oldActive는 4개의 리스트라면 1~4까지 반복해서 값이 나온다.
+    var gap;
+    var limitPlus, limitMinus; // 드래그 작동범위
+    var rolling_speed = 9000; // 롤링 스피드
+    var timer = null;
+
+    init();
+
+    function init(){
+        $layerWrap.append( $layer.eq(0).clone(true) );
+        $layerWrap.prepend( $layer.eq($layer.length-1).clone(true) );
+
+        $layer = $(".layer", $layerWrap);
+        $layer.css({ width : $layerWrap.parent().width() });
+        
+        $layerWrap.css({ position : "relative", left : oldActive * -$layer.eq(0).innerWidth() + "px" });
+        currentTab( oldActive );
+
+        $layerWrap.bind("mousedown touchstart", onStart );
+        $tabs.bind("click", onTabClick );
+        $prev.bind("click", onPrev );
+        $next.bind("click", onNext );
+        
+        $(window).bind("resize", onResize);
+    }
+    
+    function onTabClick(){
+        oldActive = $tabs.index( this ) + 1;
+        goTo( oldActive );
+        return false;
+    }
+    
+    function onPrev(){ 
+        if(!doing){
+            goTo( --oldActive );
+        }
+        return false; 
+    }
+    function onNext(){
+        if(!doing){
+            goTo( ++oldActive );
+        }
+        return false; 
+    }
+    
+    function onResize(){
+        $layer.css({ width : $layerWrap.parent().width() });
+        $layerWrap.css({ left : oldActive * -$layer.eq(0).innerWidth() + "px" });
+    }
+    
+    function onStart(e){
+        if( !doing ){
+            if( e.type == "mousedown" ) e.preventDefault();
+            if( e.originalEvent.touches && e.originalEvent.touches.length > 1 ){
+                goTo( oldActive );
+                $(document).unbind("mousemove touchmove", onMove ).unbind("mouseup touchend", onEnd );
+            }
+
+            startX = (e.originalEvent.touches) ? e.originalEvent.touches[0].pageX : e.pageX;
+            startLeft = parseFloat( $layerWrap.css("left") );
+
+            var limit = 40;
+            limitPlus = +limit;
+            limitMinus = -limit;
+
+            $(document).bind("mousemove touchmove", onMove ).bind("mouseup touchend", onEnd );
+        }
+    }
+    
+    function onMove(e){
+        if( e.type == "mousemove" ) e.preventDefault();
+
+        var pageX = (e.originalEvent.touches) ? e.originalEvent.touches[0].pageX : e.pageX;
+        gap = pageX - startX;
+        
+        if( Math.abs(gap) > 14 ) draging = true;
+        if( draging ){
+            $layerWrap.css({ left : startLeft + gap + "px" });
+            e.preventDefault();
+        }
+    }
+    
+    function onEnd(e){
+        if( draging ){
+            $(e.target).bind("click.dragingSkip", function(e){ 
+                 return false;
+            });
+        }
+        
+        draging = false;
+        
+        if( gap < limitMinus ) goTo( ++oldActive );
+        else if( gap > limitPlus ) goTo( --oldActive );
+        else goTo( oldActive );
+
+        $(document).unbind("mousemove touchmove", onMove ).unbind("mouseup touchend", onEnd );
+        $(this).unbind(".dragingSkip");
+    }
+    
+    function goTo(n){
+        doing = true;
+        
+        $layerWrap.animate({ left : n * -$layer.eq(0).innerWidth() }, "slow", function(){
+            if( oldActive == 0 ) {
+                oldActive = $layer.length-2;
+                $layerWrap.css({ left : oldActive * -$layer.eq(0).innerWidth() });
+    
+            }else if( oldActive == $layer.length -1 ){
+                oldActive = 1;
+                $layerWrap.css({ left : oldActive * -$layer.eq(0).innerWidth() });
+            }
+            startX = startLeft = gap = false;
+            limitPlus = limitMinus = false;
+            
+            doing = false;
+            draging = false;
+            
+        });
+        currentTab( oldActive );
+    }
+
+    function currentTab(index){
+        // 넘어오는 index는 oldActive는 4개의 리스트라면 1~4까지 반복해서 값이 나온다.
+        var n;
+        if( index == 0 ){
+            n = $layer.length - 4;
+        }else if( index == $layer.length - 1 ){
+            n = 0;
+        }else{
+            n = index - 1;
+        }
+        var oldNum = $tabWrap.data( "current" );
+        if( oldNum !== undefined ) $tabs.eq( oldNum ).removeClass("current");   
+
+        $tabs.eq( n ).addClass("current");
+        $tabWrap.data( "current", n );
+    }
+
+    function timerStart(){
+        clearInterval( timer );
+        timer = setInterval(function(){
+            onNext();
+        }, rolling_speed);
+    }
+    timerStart();
+};
+
+$(document).ready(function(){
+    $("#flickingList").flickingList();
+});
+//]]>
+</script>
+</head>
+ 
+
+
+
+<body>
+<!--accessibility start-->
+<div id="accessibility">
+    <ul>
+        <li><a href="#gnb">주메뉴바로가기</a></li>
+        <li><a href="#main_wrap">컨텐츠바로가기</a></li>
+    </ul>
+</div>
+<hr />
+
+
+
+<div id="wrapper" class="main_bg"><!-- wrapper start -->        
+        <div id="header"><!-- header start --> 
+        
+        <!-- gnb start -->
+            <h1><a href="/"><img src="/images/logo.gif" alt="종로세종당구아카데미 국일관당구클럽" /></a></h1>
+
+
+                <div id="gnb">
+
+                    <div class="topMenu">
+                        <span><a href="/">HOME</a></span>
+                        <!-- <span><a href="" title="join">JOIN</a></span> -->
+                        <span><a href="/sitemap.html?sm=5_1">SITEMAP</a></span>
+                        <?php if(isset($_SESSION['USER_ID'])): ?>
+                        <span><?php echo $_SESSION['USER_NAME'] ?>님 환영합니다.<a href="/manager/login/logoff.html">로그아웃</a></span>
+						<?php else: ?>
+                        <span><a href="/manager">ADMIN</a></span>
+						   <?php endif ?>
+                    </div>
+
+
+                    <ul id="gnbmenu">
+
+                        <li class="menus"><a class="menus-title" href="/greeting.html?sm=1_1" onfocus="sildeDown('sm1');sildeUp('sm2');" onmouseover="sildeDown('sm1');" onmouseout="sildeUp('sm1');"><img src="/images/menu1.jpg" alt="인사말" /></a>
+                            <div class="layer0 pos1" id="sm1" onmouseover="sildeDown('sm1');" onmouseout="sildeUp('sm1');">
+                                <ul>
+                                    <li style="margin-left:20px;"><a class="smenu1" href="/greeting.html?sm=1_1">인사말</a></li>
+                                    <li><a class="smenu2" href="/company.html?sm=1_2">시설소개</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="menus"><a class="menus-title" href="/course.html?sm=2_1" onfocus="sildeDown('sm2');sildeUp('sm1');sildeUp('sm3');" onmouseover="sildeDown('sm2');" onmouseout="sildeUp('sm2');"><img src="/images/menu2.jpg" alt="강의안내" /></a>
+                            <div class="layer0 pos2" id="sm2" onmouseover="sildeDown('sm2');" onmouseout="sildeUp('sm2');">
+                                <ul>
+                                    <li style="margin-left:20px;"><a class="smenu2" href="/course.html?sm=2_1">수강안내및 수강료</a></li>
+                                    <li><a class="smenu2" href="/lecturer.html?sm=2_2">강사소개</a></li>
+                                </ul>
+                            </div>          
+                        </li>
+
+                        <li class="menus"><a class="menus-title" href="/common/board/list.html?a_gb=board&a_cd=2&a_item=0&sm=3_1" onfocus="sildeDown('sm3');sildeUp('sm2');sildeUp('sm4');" onmouseover="sildeDown('sm3');" onmouseout="sildeUp('sm3');"><img src="/images/menu3.jpg" alt="커뮤니티" /></a>
+                            <div class="layer0 pos3" id="sm3" onmouseover="sildeDown('sm3');" onmouseout="sildeUp('sm3');">
+                                <ul>
+                                    <li style="margin-left:30px;"><a class="smenu1" href="/common/board/list.html?a_gb=board&a_cd=2&a_item=0&sm=3_1">아카데미소식</a></li>
+                                    <li><a class="smenu2" href="/common/board/list.html?a_gb=board&a_cd=1&a_item=0&sm=3_2">동호회소식</a></li>
+                                    <li><a class="smenu3" href="/common/board/list.html?a_gb=board&a_cd=3&a_item=0&sm=3_3">자유게시판</a></li>                                    
+                                </ul>
+                            </div>          
+                        </li>
+
+                        <li class="menus"><a class="menus-title" href="/common/board/list.html?a_gb=board&a_cd=4&a_item=0&sm=6_1" onfocus="sildeDown('sm5');sildeUp('sm4');sildeUp('sm6');" onmouseover="sildeDown('sm5');" onmouseout="sildeUp('sm5');"><img src="/images/menu6.jpg" alt="공지사항" /></a>
+                            <div class="layer0 pos5" id="sm5" onmouseover="sildeDown('sm5');" onmouseout="sildeUp('sm5');">
+                                <ul>
+                                    <li style="margin-left:20px;"><a class="smenu1" href="/common/board/list.html?a_gb=board&a_cd=4&a_item=0&sm=6_1">공지사항</a></li>
+                                </ul>
+                            </div>          
+                        </li>
+
+						<li class="menus"><a class="menus-title" href="/location.html" onfocus="sildeDown('sm4');sildeUp('sm3');sildeUp('sm5');" onmouseover="sildeDown('sm4');" onmouseout="sildeUp('sm4');"><img src="/images/menu4.jpg" alt="찾아오시는길" /></a>
+                            <div class="layer0 pos4" id="sm4" onmouseover="sildeDown('sm4');" onmouseout="sildeUp('sm4');">
+                                <ul>
+                                    <li style="margin-left:20px;"><a class="smenu1" href="/location.html?sm=4_1">찾아오시는길</a></li>
+                                </ul>
+                            </div>          
+                        </li>
+
+                        
+                    </ul>
+                    
+                </div>
+            <!-- gnb end      -->
+ 
+        </div><!-- header end -->
+
+
+    <div id="main_visual"><!-- main_visual start -->
+
+            <!-- flickingList -->
+            <div id="flickingList">
+
+                <!-- cont -->
+                <div class="cont">
+                    <div class="layerWrap">
+
+                        <div id="mnAutoLife_layer1" class="layer bg1"><p><img src="/images/main_img1.jpg" alt=""  /></p></div>
+
+                        <div id="mnAutoLife_layer2" class="layer bg2"><p><img src="/images/main_img2.jpg" alt=""  /></p></div>
+
+                        <div id="mnAutoLife_layer3" class="layer bg3"><p><img src="/images/main_img3.jpg" alt=""  /></p></div>
+
+                        <div id="mnAutoLife_layer4" class="layer bg4"><p><img src="/images/main_img4.jpg" alt=""  /></p></div>
+
+                        <div id="mnAutoLife_layer5" class="layer bg5"><p><img src="/images/main_img5.jpg" alt=""  /></p></div>
+
+                    </div>
+                </div>
+                <!-- //conf -->
+                
+                <p class="prevNext">
+                    <button class="prev"></button>
+                    <button class="next"></button>
+                </p>    
+
+            </div>
+            <!-- //flickingList -->
+
+
+
+        </div><!--// main_visual end -->    
+
+
+ 
+
+        <div id="main_wrap"><!-- main_wrap start -->        
+        
+            <div id="main_container"><!-- main_container start -->
+
+                <!-- BOARD -->
+
+                <div class="board">                     
+                    <ul>
+                        <li><a href="/common/board/list.html?<?php echo $url_20 ?>"><img src="/images/news_title.gif" alt="아카데미 소식" /></a>
+                            <div>
+                                    <ul class="list">
+                                        <?php if(count($arr1)): ?>
+                                        <?php foreach($arr1 as $value): ?>
+                                        <li><span class="title"><?php echo $value['TITLE'] ?></span>
+                                        <span class="day"><?php echo $value['YMD'] ?></span> </li>
+                                        <?php endforeach ?>                                        
+                                        <?php endif ?>
+                                    </ul>
+                            </div>
+                        </li>
+                    </ul>                       
+                </div>
+                <!-- //board -->
+                
+                <!-- phhoto -->
+
+                <div class="board">                     
+                    <ul>
+                        <li><a href="/common/board/list.html?<?php echo $url_40 ?>"><img src="/images/photo_title.gif" alt="동호회 소식" /></a>
+                            <div>
+                                    <ul class="list">
+                                        <?php if(count($arr2)): ?>
+                                        <?php foreach($arr2 as $value): ?>
+                                        <li><span class="title"><?php echo $value['TITLE'] ?></span>
+                                        <span class="day"><?php echo $value['YMD'] ?></span> </li>
+                                        <?php endforeach ?>                                        
+                                        <?php endif ?>
+                                    </ul>
+                            </div>
+                        </li>
+                    </ul>                       
+                </div>
+                <!-- //phhoto -->
+
+                <!-- popup -->
+                <div class="center"><img src="/images/center.gif" alt=""/></div>
+
+
+        </div><!--// main_container end -->
+
+        
+    </div><!--// main_wrap end -->  
+
+
+
+<!-- footer start -->
+
+    <div id="footer">   
+        <div class="foot">          
+            <p class="logo"><img src="/images/f_logo.gif" alt="종로세종당구아카데미 국일관당구클럽" /></p>               
+            <div class="footmenu">
+                <a href="/greeting.html?sm=1_1">시설소개</a>&nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="/course.html?sm=2_1">수강안내 및 수강료</a>    &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="/common/board/list.html?a_gb=board&a_cd=2&a_item=0&sm=3_1">아카데미 소식</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="/location.html?sm=4_1">찾아오시는 길</a>        
+            </div>
+            <div class="address">           
+                <address>
+                 주소 : 서울 종로구 관수동 20번지 국일관드림펠리스 6F&nbsp;&nbsp;  전화 : 02-2279-0074 / 070-8883-1273&nbsp;&nbsp;  팩스 : 02-2277-1273&nbsp;&nbsp;  사업자등록번호 215-87-84938<br />
+                </address>                  
+                <p>Copyright © 2014 종로세종당구아카데미. All rights reserved. </p>       
+            </div>  
+            
+        </div>  
+    </div>
+
+
+<!--// footer end -->
+
+ 
+ 
+</div><!--// wrapper end -->
+
+
+</body>
+</html>
+ 
+        
+    
+ 
+
+
+

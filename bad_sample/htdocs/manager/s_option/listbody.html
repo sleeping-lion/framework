@@ -1,0 +1,26 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	include "manager/manager_top.inc";
+
+	# 게시판 본문
+	include "listbody.inc";
+
+	# 하단 HTML
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

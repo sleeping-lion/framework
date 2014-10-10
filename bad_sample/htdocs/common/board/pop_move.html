@@ -1,0 +1,140 @@
+<?
+		# 패스 및 클래스
+		include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+		include "variable_config.inc";
+
+		# DB 접속 및 함수
+		include "logon.inc";
+		include "user_function.inc";
+
+		# 변수 및 설정
+		include "config.inc";
+		include "t_config.inc";
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko-KR">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>한국자원봉사협의회입니다.</title>
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
+<script type="text/javascript" src="/js/default.js"></script>
+<script type="text/javascript" src="/js/javascript.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/ui.js"></script>
+<script type="text/javascript" src="/js/tab.js"></script>
+<script type="text/javascript" src="/js/top_menu.js"></script>
+<link rel='stylesheet' href='/css/sblue.css' type='text/css'><script language="javascript" src="t.js"></script>
+<script type="text/javascript">
+	function moveOk(){
+		var form = document.signform;
+
+		if(form.fr_target_board.value==""){
+			alert("이동할 게시판을 선택하세요.!!");
+			return;
+		}
+
+		var str = opener.document.getElementsByName("fr_check_no");
+		var check_cnt = 0 ;
+		var tm_chk_no = "";
+		for(i=0 ; i < str.length ; i++){
+			if (str[i].checked) {
+				check_cnt++;
+				tm_chk_no = tm_chk_no + str[i].value + ",";
+			}
+		}
+
+		if (!check_cnt) {
+			alert ("이동할 게시물을 선택해주세요.");
+			return;
+		}
+		else{
+			if(confirm('총 '+check_cnt+"건의 게시물을 이동하시겠습니까??")){
+				form.fr_chk_no.value = tm_chk_no;
+				form.submit();
+			}
+			
+		}
+
+
+	}
+</script>
+
+<body>
+<div class="board_lst">
+<form name="signform" method="post" action="pop_move_ok.html?<?=$po_basic_query;?>">
+<input type="hidden" name="fr_chk_no" value="" />
+<table cellspacing="0" border="0" summary="공지사항 리스트입니다">
+		<caption>공지사항 리스트</caption>
+		<colgroup>
+		<col style="width:50%" />
+		<col style="width:50%;" />
+
+		</colgroup>
+		<thead>
+	<tr>
+		<td height="30" colspan="2" style="padding-left:5px; background-color:#eeeeee; font-weight:bold"> ○ 선택할 게시물 이동</td>
+	</tr>
+	
+	<tr>
+		<th width="50%">선택한 게시판</th>
+		<th width="50%">이동할 게시판</th>
+	</tr>
+
+	<tr>
+		<td align="center"><?=$cf_title_nm;?></td>
+		<td>
+			
+		<select name="fr_target_board" size="20">
+			<?
+				$query = "SELECT * FROM $cf_table_pgm_nm WHERE GB='".$cf_gb."' AND  TABLE_NM ='".$cf_table_nm."' ";
+				$arr = $DB->Pipe_Arr($query);
+				
+				for($i=0;$i<count($arr);$i++){
+					if($arr[$i]["GB"]=="board" && ($arr[$i]["CD"]=="1" || $arr[$i]["CD"]=="3" || $arr[$i]["CD"]=="7")){
+						if($arr[$i]["CD"]=="1"){
+							$query = "SELECT CD,NM FROM $cf_table_cod_nm WHERE GB = 'notice_cate' ORDER BY CD ASC";
+							$ctg_arr = $DB->Pipe_Arr($query);
+						}
+						else if($arr[$i]["CD"]=="3"){
+							$query = "SELECT CD,NM FROM $cf_table_cod_nm WHERE GB = 'news_cate' ORDER BY CD ASC";
+							$ctg_arr = $DB->Pipe_Arr($query);
+						}
+						else if($arr[$i]["CD"]=="7"){
+							$query = "SELECT CD,NM FROM $cf_table_cod_nm WHERE GB = 'data_cate' ORDER BY CD ASC";
+							$ctg_arr = $DB->Pipe_Arr($query);
+						}
+
+						for($y=0;$y<count($ctg_arr);$y++){
+						?>
+						<option value="<?=$arr[$i]["CD"];?>||<?=$ctg_arr[$y]["CD"];?>"><?=$arr[$i]["TITLE_NM"];?> [<?=$ctg_arr[$y]["NM"];?>]</option>
+						<?
+						}
+						
+					}
+					else{
+	
+			?>
+						<option value="<?=$arr[$i]["CD"];?>"><?=$arr[$i]["TITLE_NM"];?></option>
+			<?
+					}	
+			} ?>
+		</select>
+		
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center" height="50"><a href="javascript:moveOk();" class='btn_type'><span>이동</span></a> <a href="javascript:self.close();" class='btn_type'><span>취소</span></a></td>
+	</tr>
+	
+</table>
+</div>
+</body>
+</html>
+<?
+	# DB 접속종료
+	include "logoff.inc";
+?>

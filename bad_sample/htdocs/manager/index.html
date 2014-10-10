@@ -1,0 +1,17 @@
+<?php
+include $_SERVER['DOCUMENT_ROOT']."/Root_Path.inc";
+include "variable_config.inc";
+
+include "user_function.inc";
+include "logon.inc";
+
+include "manager/manager_config.inc";
+include "manager/manager_top.inc";
+#include "counter/counter_update.inc";
+?>
+
+<div class="main_img"><img src="/manager/images/main_img.png" alt="관리자페이지에 오신것을 환영합니다." /></div>
+
+
+<?include "manager/manager_footer.inc";?>
+<?include "logoff.inc";?>

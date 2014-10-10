@@ -1,0 +1,54 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	include "manager/manager_top.inc";
+	include "t_top.inc";
+
+	# 선택한 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 구분코드명을 구한다.
+	$query = "SELECT NM FROM $cf_table_cod_nm WHERE CD = '$my_gb'";
+	$my_gb_nm = $DB->Value($query);
+
+	// 글쓴날 처리
+	$tm_input_ymdhms = substr($my_input_ymdhms, 0, 4) . "/" .
+						substr($my_input_ymdhms, 4, 2) . "/" .
+						substr($my_input_ymdhms, 6, 2) . " " .
+						substr($my_input_ymdhms, 8, 2) . ":" .
+						substr($my_input_ymdhms, 10, 2) . ":" .
+						substr($my_input_ymdhms, 12, 2);
+
+	// 수정날 처리
+	$tm_sign_ymdhms = substr($my_sign_ymdhms, 0, 4) . "/" .
+						substr($my_sign_ymdhms, 4, 2) . "/" .
+						substr($my_sign_ymdhms, 6, 2) . " " .
+						substr($my_sign_ymdhms, 8, 2) . ":" .
+						substr($my_sign_ymdhms, 10, 2) . ":" .
+						substr($my_sign_ymdhms, 12, 2);
+?>
+<form name="signform" method="post" action="delete.html?<?=$po_adv_query?>&po_gb=<?=$po_gb?>&po_cd=<?=$po_cd?>&page=<?=$page?>">
+<?
+	# 삭제폼 출력화일
+	include "html/deleteform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "t_footer.inc";
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

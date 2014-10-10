@@ -1,0 +1,21 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	include "t_checkvalid.inc";
+
+	// 게시물 입력
+	include "t_bind_commit.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

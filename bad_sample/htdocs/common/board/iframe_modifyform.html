@@ -1,0 +1,197 @@
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<link rel='stylesheet' href='/css/gray.css' type='text/css' />
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/javascript.js"></script>
+<script language="javascript" src="t.js"></script>
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$ONLOAD = "focusSubject();";
+
+	$po_adv_query = $po_adv_query."&shop_no=".$shop_no;
+
+	// 선택한 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 비공개글인경우
+	if($my_public_yn == "N" && $cf_top_level_yn != "Y" && (!$cf_cook_id || $cf_cook_id != $my_input_id))
+	{
+		error_msg("수정할 수 있는 권한이 없습니다.", "back");
+		exit;
+	}
+
+	// 수정폼 초기값
+	if($my_service_yn == "Y")
+		$tm_service_check = "checked";	// 서비스가능여부 Y 체크값
+	else
+		$tm_service_check = "";
+#######################################################################
+	// 첨부화일 최대용량
+	$sys_attach_size = getMaxUploadSize();
+	$tm_attach_size = $cf_attach_size * 1000;
+	if($sys_attach_size < $tm_attach_size)
+	{
+		$tm_attach_size = $sys_attach_size;
+	}
+	$tm_attach_size = (int)($tm_attach_size / 104857.6) / 10;
+
+	//-- 첨부화일 처리 시작1
+	$FILE = "";
+	if($cf_attach_size > 0 || $my_attach_path)
+	{
+		$tm_attach_name = $my_no . "_" . $my_attach_path;
+		$tm_attach_path = $cf_savedir . "/" . $tm_attach_name;
+		$tm_attach_path_physical = $cf_savedir_physical . "/" . $tm_attach_name;
+
+		if($cf_attach_size > 0 || $my_attach_path)
+		{
+			if($my_attach_path){
+				$tm_attach_file_tmp = "<a href='/files/download.html?file=" . urlencode($tm_attach_path_physical) . "'>$my_attach_path</a>";
+			}else{	$tm_attach_file_tmp = "첨부된 화일이 없습니다.";	}
+		}
+	}
+		//-- 첨부화일 처리 시작2
+	$FILE = "";
+	if($cf_attach_size > 0 || $my_attach_path1)
+	{
+		$tm_attach_name1 = $my_no . "_1_" . $my_attach_path1;
+		$tm_attach_path1 = $cf_savedir . "/" . $tm_attach_name1;
+		$tm_attach_path_physical1 = $cf_savedir_physical . "/" . $tm_attach_name1;
+
+		if($cf_attach_size > 0 || $my_attach_path1)
+		{
+			if($my_attach_path1){
+				$tm_attach_file_tmp1 = "<a href='/files/download.html?file=" . urlencode($tm_attach_path_physical1) . "'>$my_attach_path1</a>";
+			}else{	$tm_attach_file_tmp1 = "첨부된 화일이 없습니다.";	}
+		}
+	}
+		//-- 첨부화일 처리 시작3
+	$FILE = "";
+	if($cf_attach_size > 0 || $my_attach_path2)
+	{
+		$tm_attach_name2 = $my_no . "_2_" . $my_attach_path2;
+		$tm_attach_path2 = $cf_savedir . "/" . $tm_attach_name2;
+		$tm_attach_path_physical2 = $cf_savedir_physical . "/" . $tm_attach_name2;
+
+		if($cf_attach_size > 0 || $my_attach_path2)
+		{
+			if($my_attach_path2){
+				$tm_attach_file_tmp2 = "<a href='/files/download.html?file=" . urlencode($tm_attach_path_physical2) . "'>$my_attach_path2</a>";
+			}else{	$tm_attach_file_tmp2 = "첨부된 화일이 없습니다.";	}
+		}
+	}
+	//-- 첨부화일 처리 시작4
+	$FILE = "";
+	if($cf_attach_size > 0 || $my_attach_path3)
+	{
+		$tm_attach_name3 = $my_no . "_3_" . $my_attach_path3;
+		$tm_attach_path3 = $cf_savedir . "/" . $tm_attach_name3;
+		$tm_attach_path_physical3 = $cf_savedir_physical . "/" . $tm_attach_name3;
+
+		if($cf_attach_size > 0 || $my_attach_path3)
+		{
+			if($my_attach_path3){
+				$tm_attach_file_tmp3 = "<a href='/files/download.html?file=" . urlencode($tm_attach_path_physical3) . "'>$my_attach_path3</a>";
+			}else{	$tm_attach_file_tmp3 = "첨부된 화일이 없습니다.";	}
+		}
+	}
+	//-- 첨부화일 처리 끝
+#######################################################################
+	# ------------------------------------------------------------------- #
+	#	옵션
+	# ------------------------------------------------------------------- #
+	// TEXT / HTML 사용여부
+	if($my_html_yn == "Y")
+	{
+		$tm_html_y_checked = "checked";
+		$tm_html_n_checked = "";
+	}
+	else
+	{
+		$tm_html_y_checked = "";
+		$tm_html_n_checked = "checked";
+	}
+
+	// 비밀글 여부
+	$tm_public_yn_checked = ($my_public_yn == "N") ? "checked" : "";
+
+	// 서비스가능여부
+	$tm_service_yn_checked = ($my_service_yn == "Y") ? "checked" : "";
+
+	// 공지글 여부
+	$tm_notice_yn_checked = ($my_notice_yn == "Y") ? "checked" : "";
+
+	// 버튼관련변수 정의 - 글올리기 버튼
+	$LIST = "<a href='iframe_list.html?$po_adv_query'><img src='$cf_images_dir/list.gif'></a>";
+
+	# 수정 버튼
+	$MODIFY = "";
+	$MODIFY_YN = "N";			// Y 면 비밀번호 없이 수정가능
+	if($my_notice_yn == "Y" && $cf_top_level_yn == "Y")
+	{
+		$MODIFY = "<input type='image' src='$cf_images_dir/ok.gif'>";
+		$MODIFY_YN = "Y";
+	}
+	else if($cf_modify_level_yn == "Y")
+	{
+		if($cf_top_level_yn == "Y" || ($cf_cook_id && $my_input_id == $cf_cook_id))
+		{
+			$MODIFY = "<input type='image' src='$cf_images_dir/ok.gif'>";
+			$MODIFY_YN = "Y";
+		}
+		else if(!$my_input_id)
+		{
+			$MODIFY = "<input type='image' src='$cf_images_dir/ok.gif'>";
+		}
+	}
+
+	$CANCEL = "<img src='$cf_images_dir/cancel.gif' onClick='history.back()' style='cursor:hand'>";
+
+	
+	if($cf_attach_size > 0){
+		unset($f_arr);
+		$tm_attach_file_tmp = "";
+		$f_sql = "SELECT * FROM CM_FILE_T WHERE GB = '".$a_gb."' AND CD = '".$a_cd."' AND ITEM = '".$a_item."' AND P_NO ='".$po_no."' AND FILE_TYPE='normal' ORDER BY NO ASC";
+		$f_arr = $DB->Pipe_Arr($f_sql);
+
+		
+	}
+	$f_sql2 = "SELECT * FROM CM_FILE_T WHERE GB = '".$a_gb."' AND CD = '".$a_cd."' AND ITEM = '".$a_item."' AND P_NO ='".$po_no."' AND FILE_TYPE='editor' ORDER BY NO ASC";
+	$f_arr2 = $DB->Pipe_Arr($f_sql2);
+
+	# 카테고리를 가져온다.
+
+
+	if($a_gb=="board" && $a_cd=="7"){
+		$query = "SELECT CD,NM FROM $cf_table_cod_nm WHERE GB = 'faq_cate' ORDER BY CD ASC";
+		$ctg_arr = $DB->Pipe_Arr($query);
+		
+	}
+	if($my_email){
+		$tm_email = explode("@",$my_email);
+		$tm_email1 = $tm_email[0];
+		$tm_email2 = $tm_email[1];
+	}
+
+?>
+
+<form name="signform" enctype="multipart/form-data" method="post" action="iframe_modify.html?<?=$po_adv_query?>&page=<?=$page?>&po_no=<?=$po_no?>">
+<INPUT type="hidden" name="fr_email" value="<?=$my_email?>">
+
+
+<?
+	# 입력폼
+	include $cf_skin_nm . "/iframe_modifyform.inc";
+?>
+</form>

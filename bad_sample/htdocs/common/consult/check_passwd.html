@@ -1,0 +1,49 @@
+<?
+		# 패스 및 클래스
+		include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+		include "variable_config.inc";
+
+		# DB 접속 및 함수
+		include "logon.inc";
+		include "user_function.inc";
+
+		# 변수 및 설정
+		include "config.inc";
+		include "t_config.inc";
+
+		# 상단 HTML
+		$JS = "<script language=\"javascript\" src=\"t.js\"></script>\n";
+	
+		include "top.inc";
+		include "t_top.inc";
+?>
+<style type="text/css">
+<!--
+.regist {font-family : "나눔고딕";	  font-size:10pt;	color : #245caf; text-align:left; padding-left:10px;border-bottom:1px solid #cfcfcf;}
+-->
+</style>
+<table width="<?=$cf_table_wd_large?>" border="0" cellspacing="0" cellpadding="3" frame='hsides' bordercolorlight='#a1a1a1' bordercolordark='#FFFFFF' align="center">
+<form name="signform" action="chk_ok.html?<?=$po_adv_query;?>" method="post">
+<input type="hidden" name="po_no" value="<?=$po_no;?>">
+  <tr>
+		 <td  colspan="2" class="regist">※ 비밀글 입니다. 비밀번호를 입력해주세요!!</td>
+         
+  </tr>
+  <tr>
+		 <th width="400"  class="regist">비밀번호: &nbsp;&nbsp;<input type="password" name="fr_passwd" size="10" maxlength="10" value="" class='box'> <input type="submit" value="인증" style="padding:2px;"></th>
+         <td  width="*" style="padding-left:3px; height:35px;border-bottom:1px solid #cfcfcf;" align="left"></td>
+  </tr>
+  </form>
+</table>
+<?
+
+	
+
+		# 하단 HTML
+		include "t_footer.inc";
+
+		include "footer.inc";
+
+		# DB 접속종료
+		include "logoff.inc";
+?>

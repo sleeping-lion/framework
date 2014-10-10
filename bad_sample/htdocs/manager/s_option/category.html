@@ -1,0 +1,82 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 카테고리를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'i_class' ORDER BY CD ASC";
+	$ctg_l_arr = $DB->Arr($query);
+
+	if($it_lclass)
+	{
+		$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = '$it_lclass' ORDER BY CD ASC";
+		$ctg_m_arr = $DB->Arr($query);
+	}
+
+	if($it_mclass)
+	{
+		$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = '$it_mclass' ORDER BY CD ASC";
+		$ctg_s_arr = $DB->Arr($query);
+	}
+
+	# DB 접속종료
+	include "logoff.inc";
+?>
+<html>
+<head>
+<link rel="stylesheet" href="/css/text.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<script language="javascript">
+<!--
+	function SelectCtg(mode)
+	{
+		var form = document.ctg;
+		var submit = false;
+
+		if(mode == "1")
+		{
+			parent.signform.fr_it_lclass.value = form.it_lclass.value;
+			parent.signform.fr_it_mclass.value = "";
+			parent.signform.fr_it_sclass.value = "";
+			submit = true;
+		}
+		else if(mode == "2")
+		{
+			parent.signform.fr_it_lclass.value = form.it_lclass.value;
+			parent.signform.fr_it_mclass.value = form.it_mclass.value;
+			parent.signform.fr_it_sclass.value = "";
+			submit = true;
+		}
+		else if(mode == "3")
+		{
+			parent.signform.fr_it_lclass.value = form.it_lclass.value;
+			parent.signform.fr_it_mclass.value = form.it_mclass.value;
+			parent.signform.fr_it_sclass.value = form.it_sclass.value;
+			submit = true;
+		}
+		if(submit)
+		{
+			form.submit();
+		}
+	}
+//-->
+</script>
+</head>
+<body topmargin="0" leftmargin="0">
+<form name="ctg" method="post" action="category.html">
+<table width="100%">
+  <tr>
+    <td>
+	  <?=ArrToSelect("it_lclass", "onChange='SelectCtg(1)' class='select'", "-대분류-", $ctg_l_arr, $it_lclass)?> &nbsp;
+	  <?=ArrToSelect("it_mclass", "onChange='SelectCtg(2)' class='select'", "-중분류-", $ctg_m_arr, $it_mclass)?> &nbsp;
+	  <?=ArrToSelect("it_sclass", "onChange='SelectCtg(3)' class='select'", "-소분류-", $ctg_s_arr, $it_sclass)?> &nbsp;
+	</td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

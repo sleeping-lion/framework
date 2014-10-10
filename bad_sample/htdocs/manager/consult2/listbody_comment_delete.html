@@ -1,0 +1,63 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 삭제권한 체크
+	# 최고관리자 : 쿠키아이디와 입력아이디가 같은경우
+//	if(!$cf_cook_id)
+//	{
+//		error_msg("회원이 아니신경우 코멘트를 삭제하실 수 없습니다.", "back");
+//		exit;
+//	}
+
+	if($cf_cook_id)
+	{
+		$query = "SELECT COUNT(*) FROM CM_BOARD_COMM_T WHERE P_NO = '$po_no' AND C_NO = '$po_c_no' AND INPUT_ID = '$cf_cook_id'";
+	}
+	else
+	{
+		$query = "SELECT COUNT(*) FROM CM_BOARD_COMM_T WHERE P_NO = '$po_no' AND C_NO = '$po_c_no' AND PASSWD = '$fr_del_passwd'";
+	}
+
+//	$query = "SELECT COUNT(*) FROM CM_BOARD_COMM_T WHERE P_NO = '$po_no' AND C_NO = '$po_c_no' AND INPUT_ID = '$cf_cook_id'";
+	$my_comm_delete_yn = $DB->Value($query);
+
+	if($cf_top_level_yn == "Y" || $my_comm_delete_yn == 1 || $cf_cook_level == "aa")
+	{
+		$query = "DELETE FROM CM_BOARD_COMM_T WHERE P_NO = '$po_no' AND C_NO = '$po_c_no'";
+		$DB->Delete_Query($query);
+
+		# 게시글에 대한 코멘트 등록수 수정
+		$query = "UPDATE $cf_table_col_nm SET COMM_CNT = COMM_CNT - 1 WHERE NO = '$po_no'";
+		$DB->Update_Query($query);
+
+		# 코멘트 등록수 수정
+		if($cf_cook_id && $cf_top_level_yn != "Y")
+		{
+			// 코멘트 등록갯수 업데이트.
+			$query = "UPDATE $cf_table_mem_nm SET CM_CMT_CNT = CM_CMT_CNT - 1 WHERE CM_ID = '$cf_cook_id'";
+			$DB->Update_Query($query);
+		}
+
+		# 페이지 이동
+		error_msg("", $po_uri);
+
+		# DB 접속해제
+		include "logoff.inc";
+	}
+	else
+	{
+		include "logoff.inc";
+		error_msg("코멘트 삭제 권한이 없습니다.", "back");
+		exit;
+	}
+?>

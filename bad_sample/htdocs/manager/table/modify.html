@@ -1,0 +1,139 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	include "t.inc";
+
+	# 권한체크
+	if($my_gb == "admin" && $cf_cook_level != "aa")
+	{
+		error_msg("존재하지 않는 페이지입니다. 주소를 정확히 체크해주세요.!", "back");
+	}
+
+	# 입력값에 대한 타당성 검사
+//	include "t_checkvalid.inc";
+
+	# ------------------------------------------------------- #
+	#	입력값 정리 시작
+	# ------------------------------------------------------- #
+	// 아이템
+	$tm_item = $fr_item ? $fr_item : 0;
+
+	// 답변여부
+	$fr_reply_yn = ($fr_reply_yn == "Y") ? "Y" : "N";
+
+	// 이메일 전송여부
+	$fr_notify_email_yn = ($fr_notify_email_yn == "Y") ? "Y" : "N";
+
+	// HTML 허용여부
+	$fr_allow_html_yn = ($fr_allow_html_yn == "Y") ? "Y" : "N";
+
+	// 비밀글 허용여부
+	$fr_secret_yn = ($fr_secret_yn == "Y") ? "Y" : "N";
+
+	// 여러글 읽기 여부
+	$fr_multy_read_yn = ($fr_multy_read_yn == "Y") ? "Y" : "N";
+
+	// 답변글 삭제가능 여부
+	$fr_allow_delete_thread_yn = ($fr_allow_delete_thread_yn == "Y") ? "Y" : "N";
+
+	// 수정화면 미리보기 여부
+	$fr_modify_review_yn = ($fr_modify_review_yn == "Y") ? "Y" : "N";
+
+	// 공지글 사용여부
+	$fr_annou_yn = ($fr_annou_yn == "Y") ? "Y" : "N";
+
+	// 코멘트글 사용여부
+	$fr_comment_yn = ($fr_comment_yn == "Y") ? "Y" : "N";
+
+	// 추천 가능여부
+	$fr_recomm_yn = ($fr_recomm_yn == "Y") ? "Y" : "N";
+
+	// 팝업창 가능여부
+	$fr_popup_yn = ($fr_popup_yn == "Y") ? "Y" : "N";
+
+    // 작성자관련정보 설정
+    $signdate = time();
+    $tm_sign_id = $cf_cook_id ? $cf_cook_id : "";
+    $tm_sign_nm = $cf_cook_nm ? $cf_cook_nm : $cf_cook_nm;
+    $tm_sign_ip = $_SERVER[REMOTE_ADDR];
+    $tm_sign_ymdhms = date("YmdHis", $signdate);
+	# ------------------------------------------------------- #
+	#	입력값 정리 끝
+	# ------------------------------------------------------- #
+
+
+	# 여러글 읽기 여부
+	# 업데이트 쿼리
+    $query = "UPDATE $cf_table_pgm_nm SET " . 
+						"GB = '$fr_gb', " .
+						"ITEM = '$fr_item', " .
+						"ITEM_NM = '$fr_item_nm', " .
+						"TITLE_NM = '$fr_title_nm', " .
+						"TABLE_NM = '$fr_table_nm', " .
+						"CO_TABLE_NM = '$fr_co_table_nm', " .
+						"PATH_URL = '$fr_path_url', " .
+						"POST_LEVEL = '$fr_post_level', " .
+						"READ_LEVEL = '$fr_read_level', " .
+						"BODY_LEVEL = '$fr_body_level', " .
+						"REPLY_LEVEL = '$fr_reply_level', " .
+						"MODIFY_LEVEL = '$fr_modify_level', " .
+						"DELETE_LEVEL = '$fr_delete_level', " .
+						"REPLY_YN = '$fr_reply_yn', " .
+						"REPLY_INDENT = '$fr_reply_indent', " .
+						"ADMIN_ID = '$fr_admin_id', " .
+						"ADMIN_EMAIL = '$fr_admin_email', " .
+						"TEL_NO = '$fr_tel_no', " .
+						"NOTIFY_EMAIL_YN = '$fr_notify_email_yn', " .
+						"EMAIL_ID1 = '$fr_email_id1', " .
+						"EMAIL_ID2 = '$fr_email_id2', " .
+						"EMAIL_ID3 = '$fr_email_id3', " .
+						"NUM_PER_PAGE = '$fr_num_per_page', " .
+						"PAGE_PER_BLOCK = '$fr_page_per_block', " .
+						"ALLOW_HTML_YN = '$fr_allow_html_yn', " .
+						"SECRET_YN = '$fr_secret_yn', " .
+						"ALLOW_DELETE_THREAD_YN = '$fr_allow_delete_thread_yn', " .
+						"NOTIFY_NEW_ARTICLE = '$fr_notify_new_article', " .
+						"MULTY_READ_YN = '$fr_multy_read_yn', " .
+						"SAVEDIR = '$fr_savedir', " .
+						"ATTACH_SIZE = '$fr_attach_size', " .
+						"TABLE_WD_LARGE = '$fr_table_wd_large', " .
+						"TABLE_WD_SMALL = '$fr_table_wd_small', " .
+						"TABLE_WD_SPACE = '$fr_table_wd_space', " .
+						"MODIFY_REVIEW_YN = '$fr_modify_review_yn', " .
+						"IMAGES_DIR = '$fr_images_dir', " .
+						"CSS_DIR = '$fr_css_dir', " .
+						"TITLE_IMAGES = '$fr_title_images', " .
+						"TITLE_ANNOU = '$fr_title_annou', " .
+						"META_TITLE = '$fr_meta_title', " .
+						"META_KEYWD = '$fr_meta_keywd', " .
+						"META_DESC = '$fr_meta_desc', " .
+						"ANNOU_YN = '$fr_annou_yn', " .
+						"COMMENT_YN = '$fr_comment_yn', " .
+						"RECOMM_YN = '$fr_recomm_yn', " .
+						"POPUP_YN = '$fr_popup_yn', " .
+						"SKIN_NM = '$fr_skin_nm', " .
+						"BOARD_CD = '$fr_board_cd', " .
+						"SEARCH_CD = '$fr_search_cd', " .
+						"TITLE_DESC = '$fr_title_desc', " .
+						"SIGN_ID = '$tm_sign_id', " .
+						"SIGN_NM = '$tm_sign_nm', " .
+						"SIGN_IP = '$tm_sign_ip', " .
+						"SIGN_YMDHMS = '$tm_sign_ymdhms' " .
+					"WHERE GB = '$gb' AND CD = '$cd' AND ITEM = '$item'";
+	$DB->Update_Query($query);
+
+	error_msg("", "listbody.html?$po_adv_query&gb=$gb&cd=$cd&item=$item&page=$page&po_no=$po_no");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

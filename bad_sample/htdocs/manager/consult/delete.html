@@ -1,0 +1,41 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	
+
+	// 삭제 후 메일발송을 위해 게시물의 입력값을 뽑아낸다.
+	include "t.inc";
+
+	// 로그인한경우 (최고관리자가 아니고 내글이 아닌경우)
+	if($cf_top_level_yn != "Y" && $cf_cook_id && $cf_cook_id != $my_input_id)
+	{
+		error_msg("삭제하실 수 없습니다.", "back");
+		exit;
+	}
+
+	
+
+	
+		
+	// 레코드 삭제
+	$query = "DELETE FROM $cf_table_col_nm WHERE NO = '" . $po_no . "'";
+	$DB->Delete_Query($query);
+		
+
+
+	// 삭제 후 list 페이지로 이동
+	error_msg("", "list.html?$po_adv_query&page=$page");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

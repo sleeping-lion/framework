@@ -1,0 +1,58 @@
+
+body {  font-family: "µ¸¿ò", "±¼¸²" , " Times New Roman" ; font-size:9pt; text-decoration:none ;
+			scrollbar-face-color: #F6F6F6; scrollbar-shadow-color: #C5C5C5; scrollbar-highlight-color: white; 
+			scrollbar-3dlight-color: #DBDBDB; scrollbar-darkshadow-color: white; scrollbar-track-color: white;	scrollbar-arrow-color: #8A8A8A} 
+
+table, tr, td {  font-family: "µ¸¿ò", "±¼¸²", "Arial" , "Helvetica" ; font-size:9pt; text-decoration:none ; line-height: 140%	} 
+img {border: none;} 
+
+a:link {font-family: "µ¸¿ò", "±¼¸²Ã¼";font-size: 9pt;color: #666666;text-decoration: none;}
+a:visited {font-family: "µ¸¿ò", "±¼¸²Ã¼";font-size: 9pt;color: #666666;text-decoration: none;}
+a:hover {font-family: "µ¸¿ò", "±¼¸²Ã¼";font-size: 9pt;color: #40B6D8;text-decoration: underline;}
+a:active {font-family: "µ¸¿ò", "±¼¸²Ã¼";font-size: 9pt;color: #666666;text-decoration: none;}
+
+.th0 { font-size:9pt;  background-color : navy ; color:#FFFFFF;	text-align:center}
+.th1 { font-size:9pt;  background-color : #00557D ; color:#FFFFFF;	text-align:center}
+.td0 {  font-size:9pt; background-color: #F0F8FF; text-align:center}
+.td0x1 {  font-size:9pt; background-color: #F0F8FF}
+.td1 {  font-size:9pt; background-color: #F7F7F7; text-align:center}
+.td1x1 {  font-size:9pt; background-color: #F7F7F7}
+.td2 {  font-size:9pt; background-color: #FFFFFF; text-align:center}
+.td2x1 {  font-size:9pt; background-color: #FFFFFF}
+
+.bbsxtitle{  font-size: 10pt; font-weight: bold; color: #000000}
+.tdxback {  font-size:9pt; background-color:#AAD0FF}
+.tdxback2 {  font-size:9pt; background-color:#999999}
+.readback {  font-size: 9pt; line-height: normal; color: #666666; background-color: #F7F7F7; text-indent: 20pt}
+
+.tbox {Background-color:#FFFFFF; Border:1x SOLID #006699}
+.tbox2 {Background-color:#FFFFFF; Border:1x SOLID #999999 }
+.boxselect {Background-color:aliceblue; Border:1x SOLID #D1B55F}
+
+
+.imp {  font-size:10pt; font-weight : bold; color: #003366}
+.line {  font-size:9pt; line-height: 140% }
+.news {width:100%; height: 20; font-size: 10pt; color: navy; font-weight: bold}
+.submenu {  font-size: 10pt; font-weight: bold}
+.s  {font-family : "µ¸¿ò";	  font-size:8pt;	color : #4F4F4F}
+
+
+.m_warp {width:100%;}
+
+.m_menu {background:url(/manager/images/menu_bar.gif) repeat-x left top;text-align:right;padding-right:16%;}
+.m_menu ul li {display:inline;border:1x solid red;}
+.m_menu ul li a:link,
+.m_menu ul li a:hover,.m_menu ul li a:visited {padding: 15px 30px;display:inline-block;font-weight:bold;color:#4b4b4b;text-decoration:none; }
+.m_menu ul li a:hover, .m_menu ul li a:active, .m_menu ul li a:focus {padding: 15px 30px;display:inline-block;font-weight:bold;color:#346FB6;text-decoration:none; }
+
+.main_img {margin-top:-16px;}
+.left_top {background:#3e454d;font-weight:bold;font-size:20px; color:#ffffff;padding:20px 0;text-align:center;margin-bottom:10px;font-family:"¹ÙÅÁÃ¼"}
+.left_menu table td {padding:5px 0;}
+
+
+.admin_title {font-size:24px;font-weight:bold;}
+.cf_title_div_top { border-top:3px solid black;}
+.cf_title_div { background-color : #837b74; height:52px;line-height:52px;text-align:center;vertical-align:middle;}
+.cf_title {font-size:16pt; color:#FFFFFF;font-weight : bold;}
+
+.test{border:1x solid red;}

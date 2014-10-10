@@ -1,0 +1,56 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	if(!$po_no)
+	{
+		error_msg("삭제할 수 없습니다.", "back");
+		exit;
+	}
+
+	// 해당 레코드셋을 구한다.
+	include "t.inc";
+
+	# --------------------------------------------------------------- #
+	#	화일 삭제
+	# --------------------------------------------------------------- #
+
+	foreach ($cf_upload_nm as $uk=>$uv) {
+		
+		$tm_real_path = "";
+		$tm_real_path = "/files/shop.6/" . $my_no.$cf_upload_nm[$uk].".".$img_arr[$uk];
+		$tm_real_path_physical = $cf_doc_root.$tm_real_path;
+		
+		if(is_file($tm_real_path_physical) && !Delete_File($tm_real_path_physical)) {
+			error_msg("$cf_upload_column_nm[$uk] 기존 첨부화일을 삭제하는데 실패했습니다.", "back");
+			exit;
+		}
+	}
+
+	# --------------------------------------------------------------- #
+	#	상품정보삭제
+	# --------------------------------------------------------------- #
+	$query = "DELETE FROM OPTION_IMG WHERE IT_NO = '$my_it_no'";
+	$DB->Delete_Query($query);
+
+	#$query = "DELETE FROM $cf_co_table_col_nm WHERE P_NO = '" . $my_it_no . "'";
+	#$DB->Delete_Query($query);
+
+	$query = "DELETE FROM $cf_table_col_nm WHERE NO = '$po_no'";
+	$DB->Delete_Query($query);
+
+	# 페이지 이동
+	error_msg("", "list.html?$po_adv_query&page=$page");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

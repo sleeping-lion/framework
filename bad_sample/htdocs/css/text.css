@@ -1,0 +1,74 @@
+
+
+body {font-family:"tahoma","µ¸¿ò","Arial","serif";font-size:9pt;text-decoration:none;color:#3C3C3C;} 
+table {font-family:"tahoma","µ¸¿ò","Arial","serif";font-size:9pt;text-decoration:none;color:#3C3C3C;} 
+tr {font-family:"tahoma","µ¸¿ò","Arial","serif";color:#3C3C3C;}
+td {font-family:"tahoma","µ¸¿ò","Arial","serif";line-height:140%;color:#3C3C3C;} 
+div {font-family:"tahoma";font-size:9pt;}
+img {border:none} 
+
+a:link {font-family:"tahoma","Arial","serif";font-size:9pt;color:#4F4F4F;text-decoration:none}
+a:active {font-family:"tahoma","Arial","serif";font-size:9pt;color:#4B2C08;text-decoration:none}
+a:visited {font-family:"tahoma","Arial","serif";font-size:9pt;color:#3D3D3D;text-decoration:none}
+a:hover {font-family:"tahoma","Arial","serif";font-size:9pt;color:#CF0E13;text-decoration:none}
+
+h1,h2,h3,h4,h5,h6,strong,th{font-size:9pt;}
+
+
+.news  {font-size:8pt;color:#777777;}
+
+.aliontxt  {font-family :"µ¸¿ò","tahoma"; font-size:10pt;color:green; font-weight:bold;}
+.newtxt  {font-family :"µ¸¿ò","tahoma"; font-size:10pt;color:#3366CC; font-weight:bold;}
+
+.raw1  {font-family :"µ¸¿ò","tahoma"; font-size:10pt;color:green; font-weight:bold;background:#EFEFEF;padding-left:10pt; width:730px; height:25px;}
+.raw2  {font-family :"µ¸¿ò","tahoma"; font-size:9pt;color:#2e4b5a; font-weight:bold;}
+
+.year  {font-family:"tahoma";font-size:12pt;color:#595757;font-weight:bold;padding-left:10pt ;}
+.date  {font-family:"tahoma";font-size:8pt;color:#BB7171;font-weight:bold;background:#FAF5F5;padding-left:10pt;width:15%;}
+
+
+/*company*/
+
+.com_th  {font-size:8pt;color:#5C83AD;font-weight:bold;background:#F7F7F7;padding-left:10pt;border-top:1px solid #D2D2D2;}
+.com_td  {color:#555555;background:#FFFFFF;padding-left:10pt;border-top:1px solid #D2D2D2;}
+
+
+
+.th_style  {font-family :"µ¸¿ò","tahoma"; font-size:8pt;color:#FFFFFF; font-weight:bold; background:#828282; padding-left:10pt}
+.th_style2  {font-family :"µ¸¿ò","tahoma"; font-size:8pt;color:#505050; font-weight:bold; background:#FFFFFF; padding-left:10pt}
+.title  {font-family:"tahoma"; font-size:8pt;color:#6E6E6E; font-weight:bold; background:#F0F0F0; padding-left:10pt}
+.con  {font-family:"tahoma"; font-size:8pt;color:#4C4C4C; padding-left:10pt}
+.title2 {font-family:"tahoma"; font-size:8pt;color:#757575; font-weight:bold; background:#F7F7F7; padding-left:10pt}
+.con2  {font-family:"tahoma";font-size:8pt;color:#757575;  padding-left:10pt}
+
+
+/*product*/
+.ks {font-family:"tahoma"; font-size:12pt;color:#FFFFFF; font-weight:bold; background:#5E5E5E;padding-left:10pt; width:100px; height:30px;}
+.p_title {font-size:12pt; font-family:"tahoma","Arial","serif";color:#FFFFFF; font-weight:bold;background:#C70400;padding-left:10pt; width:300px;}
+.p_num {background:#F5F5F5;padding-left:10pt; }
+.spec1 {font-family:"tahoma"; font-size:9pt;color:#FFFFFF; font-weight:bold; background:#5171A2;text-align:center; }
+.spec2  {font-family:"tahoma"; font-size:8pt;color:#757575; background:#FFFFFF;text-align:center;}
+
+
+.locat_1  {font-size:9pt;color:#6987AB;line-height:130%;font-weight:bold;height:30px;}
+.locat_2  {font-size:9pt;color:#5E5E5E;line-height:130%;font-weight:bold;height:30px;}
+.locat_3  {font-size:8pt;color:#4F4F4F;line-height:150%;padding-left:18pt;}
+
+.130 { line-height: 130% }
+.140 { line-height: 140% }
+.150 { line-height: 150% }
+
+.s  {font-family : "tahoma";	  font-size:8pt}
+
+.font_s  {font-family : "tahoma";	  font-size:8pt;	color : #4F4F4F; line-height: 140%;}
+
+.locat  { font-size:8pt;	color : #4F4F4F}
+
+.subtitle  {font-family : "tahoma";	  font-size:10pt;	color : #663300; font-weight:bold; }
+
+.box {Background-color:#F9F9F9; Border:1px SOLID #939393; height:18px; font-size:9pt; color : #616161;}
+
+
+.tab_on {height:22px;color:#FFFFFF; font-weight:bold; background:#FA827F; text-align:center;cursor:hand;}
+.tab_off {height:22px;color:#505050; font-weight:bold; background:#F3F3F3;border-bottom:1px solid #868686;border-left:1px solid #C6C6C6; text-align:center;cursor:hand;}
+

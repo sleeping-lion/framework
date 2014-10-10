@@ -1,0 +1,77 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+
+	// 해당 레코드셋을 구한다.
+	include "t.inc";
+
+	# 코드 중복여부 체크
+	if($po_cd != $fr_cd)
+	{
+		$query = "SELECT COUNT(*) FROM $cf_table_cod_nm WHERE CD = '$fr_cd'";
+		if($DB->Value($query))
+		{
+			error_msg("입력하신 코드는 이미 존재 합니다.\\n\\n 다시 입력하여 주십시오.", "back");
+			exit;
+		}
+
+		# 현재코드의 하위코드가 존재하는지 체크
+		$query = "SELECT COUNT(*) FROM $cf_table_cod_nm WHERE GB = '$po_cd'";
+		if($DB->Value($query))
+		{
+			error_msg("하위코드가 존재하기 때문에 코드를 수정하실 수 없습니다.", "back");
+			exit;
+		}
+	}
+
+		# --------------------------------------------------------------- #
+	#	입력값 설정
+	# --------------------------------------------------------------- #
+	# 공개여부
+	//$tm_it_service_yn = $fr_it_service_yn ? "Y" : "N";
+
+	// 작성자관련정보 설정
+	$signdate = time();
+	$tm_input_id = $cf_cook_id ? $cf_cook_id : "";
+	$tm_input_nm = $cf_cook_nick_nm ? $cf_cook_nick_nm : $cf_cook_nm;
+	$tm_input_ip = $_SERVER[REMOTE_ADDR];
+	$tm_input_ymdhms = date("YmdHis", $signdate);
+	$tm_sign_id = $tm_input_id;
+	$tm_sign_nm = $tm_input_nm;
+	$tm_sign_ip = $tm_input_ip;
+	$tm_sign_ymdhms = $tm_input_ymdhms;
+
+	# --------------------------------------------------------------- #
+	#	상품정보 업데이트
+	# --------------------------------------------------------------- #
+	$query = "UPDATE $cf_table_cod_nm " .
+				"SET " .
+					"GB = '$po_gb', " .
+					"CD = '$fr_cd', " .
+					"NM = '$fr_nm', " .
+					"NM_DESC = '$fr_nm_desc', " .
+					"ENM = '$fr_enm', " .
+					"SIGN_ID = '$tm_sign_id', " .
+					"SIGN_NM = '$tm_sign_nm', " .
+					"SIGN_IP = '$tm_sign_ip', " .
+					"SIGN_YMDHMS = '$tm_sign_ymdhms' " .
+				"WHERE GB = '$po_gb' AND CD = '$po_cd'";
+
+	$DB->Update_Query($query);
+
+	// 상세보기 폼으로 이동
+	error_msg("", "listbody.html?$po_adv_query&po_gb=$po_gb&po_cd=$fr_cd&page=$page");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

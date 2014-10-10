@@ -1,0 +1,211 @@
+<?
+
+	# 패스 및 클래스
+
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+
+	include "variable_config.inc";
+
+
+
+	# DB 접속 및 함수
+
+	include "logon.inc";
+
+	include "user_function.inc";
+
+
+
+	# 변수 및 설정
+
+	include "config.inc";
+
+	include "t_config.inc";
+
+
+
+	# 입력값에 대한 타당성 검사
+
+	include "t_checkvalid.inc";
+
+
+
+	// 문자열에 포함된 특수문자를 escape시킨다.
+
+	$fr_cm_etc = escape_string($fr_cm_etc);
+
+
+
+	# ---------------------------------------- #
+
+	#	패스워드 관련처리
+
+	# ---------------------------------------- #
+
+	if($fr_cm_passwd)
+
+		$tm_crypt_passwd = $DB->Value("SELECT md5('$fr_cm_passwd')");
+
+	else
+
+		$tm_crypt_passwd = $fr_cm_crypt_passwd;
+
+
+
+	# ---------------------------------------- #
+
+	#	레벨관련처리
+
+	# ---------------------------------------- #
+
+	if($fr_cm_new_level)
+
+	{
+
+		$tm_cm_level = $fr_cm_new_level;
+
+		$fr_cm_req_level = "";
+
+	}
+
+	else
+
+	{
+
+		$tm_cm_level = $fr_cm_level;
+
+	}
+
+
+
+	if($tm_cm_level == "ee") {
+
+		$tm_cm_mem_cd = $fr_cm_mem_cd;
+
+	} else {
+
+		$tm_cm_mem_cd = "";
+
+	}
+
+	
+
+	// 핸드폰 번호만들기
+
+	$tm_cm_hp_tel = $fr_cm_hp_tel1."-".$fr_cm_hp_tel2."-".$fr_cm_hp_tel3;
+
+	// 전화 번호만들기
+
+	$tm_cm_tel = $fr_cm_tel1."-".$fr_cm_tel2."-".$fr_cm_tel3;
+
+	// 팩스번호만들기
+
+	$tm_cm_fax = $fr_cm_fax1."-".$fr_cm_fax2."-".$fr_cm_fax3;
+
+	// 아이피 만들기
+
+	$tm_cm_ip = $fr_cm_ip1."-".$fr_cm_ip2."-".$fr_cm_ip3;
+
+	//주민등록번호 만들기
+	$my_cm_jumin = $fr_cm_jumin1. "-" . $fr_cm_jumin2;
+
+
+	
+
+
+
+	// 작성자관련정보 설정
+
+	$signdate = time();
+
+	$tm_sign_id = $cf_cook_id;
+
+	$tm_sign_nm = $cf_cook_nm;
+
+	$tm_sign_ip = $_SERVER[REMOTE_ADDR];
+
+	$tm_sign_ymdhms = date("YmdHis", $signdate);
+
+	$tm_del_ymdhms = "";
+	if($fr_cm_del_yn == "Y"){
+		$tm_del_ymdhms = $tm_sign_ymdhms;
+	}
+
+
+	// ------------------------------------------------------------- //
+
+	//	업데이트	쿼리
+
+	// ------------------------------------------------------------- //
+
+	$query = "UPDATE $cf_table_mem_nm SET " . 
+
+					"CM_PASSWD = '$tm_crypt_passwd', " .
+
+					"CM_PASSWD_Q = '$fr_cm_passwd_q', " .
+
+					"CM_PASSWD_A = '$fr_cm_passwd_a', " .
+
+					#"CM_COM_NM = '$fr_cm_com_nm', " .
+
+					#"CM_COM_NUM = '$fr_cm_com_num', " .
+
+					"CM_EMAIL = '$fr_cm_email', " .
+
+					"CM_TEL = '$tm_cm_tel', " .
+
+					#"CM_FAX = '$tm_cm_fax', " .
+
+					"CM_HP_TEL = '$tm_cm_hp_tel', " .
+
+					"CM_ZIP_CD = '$fr_zip_cd', " .
+
+					"CM_ADDR = '$fr_addr', " .
+
+					"CM_ADDR2 = '$fr_addr2', " .
+
+					"CM_ETC = '$fr_cm_etc', " .
+
+					#"CM_MEM_CD = '$tm_cm_mem_cd', " .
+
+					"CM_LEVEL = '$tm_cm_level', " .
+					
+					"CM_REQ_LEVEL = '$fr_cm_req_level', " .
+					
+					"CM_DEL_YN = '$fr_cm_del_yn', " .
+					"CM_DEL_YMDHMS = '$tm_del_ymdhms', " .
+
+					"SIGN_IP = '$tm_sign_ip', " .
+
+					"SIGN_ID = '$tm_sign_id', " .
+
+					"SIGN_NM = '$tm_sign_nm', " .
+
+					"SIGN_YMDHMS = '$tm_sign_ymdhms', " .
+
+					"SERIAL_NO = '$fr_serial_no' " .
+
+				"WHERE CM_ID = '$po_cm_id'";
+
+
+
+
+
+	$DB->Update_Query($query);
+
+
+
+
+
+	# 페이지이동
+
+	error_msg("", "listbody.html?$po_adv_query&page=$page&po_cm_id=$po_cm_id");
+
+
+
+	# DB 접속종료
+
+	include "logoff.inc";
+
+?>
+

@@ -1,0 +1,80 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 입력값에 대한 타당성 검사
+	include "t_checkvalid.inc";
+
+	include "t.inc";
+
+	// 비공개글인경우
+	if($my_public_yn == "N")
+	{
+		if($my_depth == 0)
+		{
+			$tm_original_id = $my_input_id;
+		}
+		else
+		{
+			// 원글의 입력아이디를 가져온다.
+			$query = "SELECT INPUT_ID FROM $cf_table_col_nm WHERE FID = $my_fid AND DEPTH = 0";
+			$tm_original_id = $DB->Value($query);
+		}
+
+		if($cf_top_level_yn != "Y" && (!$cf_cook_id || ($cf_cook_id != $my_input_id && $cf_cook_id != $tm_original_id)))
+		{
+			error_msg("답변 권한이 없습니다.", "back");
+			exit;
+		}
+	}
+
+	# 공지글에는 답변을 달 수 없다.
+	if($my_notice_yn == "Y")
+	{
+		error_msg("공지글에는 답변을 달 수 없습니다.", "back");
+		exit;
+	}
+	$fr_notice_yn = "N";
+
+	// 해당글과 같은레벨 이하의 SORT 를 구한다.
+	unset($arr);
+	$query = "SELECT SORT FROM $cf_table_col_nm WHERE FID = $my_fid AND SORT > $my_sort AND DEPTH <= $my_depth ORDER BY SORT ASC LIMIT 0, 1";
+	$my_next_sort = $DB->Value($query);
+
+	if(is_numeric($my_next_sort))
+	{
+		$my_sort = $my_next_sort;
+	}
+	else
+	{
+		$query = "SELECT MAX(SORT) FROM $cf_table_col_nm WHERE FID = $my_fid";
+		$my_sort = $DB->Value($query) + 1;
+	}
+
+	// UPDATE SORT
+	$query = "UPDATE $cf_table_col_nm SET SORT = SORT + 1 WHERE FID = $my_fid AND SORT >= $my_sort";
+	$DB->Update_Query($query);
+
+	$my_depth = $my_depth + 1;
+
+	// -------------------------------------------------------------- //
+	//  게시판 번호를 구한다.(Max값)
+	// -------------------------------------------------------------- //
+	$query = "SELECT MAX(NO) FROM $cf_table_col_nm";
+	$my_no = $DB->Value($query) + 1;
+
+	// 게시물 입력
+	include "t_query_insert_iframe.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

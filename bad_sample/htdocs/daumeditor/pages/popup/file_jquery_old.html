@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<title>Daum에디터 - 파일 첨부</title> 
+
+<script src="../../js/popup.js" type="text/javascript" charset="utf8"></script>
+<link href="/jquery/uploadify-v2.1.1/uploadify.css" rel="stylesheet" type="text/css" />
+<script src="/jquery/jquery-1.4.3.min.js" type="text/javascript"></script>
+<script src="/jquery/uploadify-v2.1.1/jquery.uploadify.v2.1.1.js" type="text/javascript"></script>
+<script src="/jquery/uploadify-v2.1.1/swfobject.js" type="text/javascript"></script>
+<link rel="stylesheet" href="../../css/popup.css" type="text/css"  charset="utf8"/>
+<script type="text/javascript">
+	$(document).ready(function() {
+		//Uploadify 파일 업로드 컨트롤 : Flash가 설치가 되어있어야 함
+		$('#fileInput').uploadify({
+			'uploader': '/jquery/uploadify-v2.1.1/uploadify.swf', //Uploadify 컨트롤 지정
+			'script': '/jquery/uploadify-v2.1.1/uploadify.php', //서버측 스크립트, ASP.NET, PHP, JSP
+			'cancelImg': '/jquery/uploadify-v2.1.1/cancel.png', //취소이미지
+			'auto': true, //true면 파일선택시 바로 자동으로 업로드됨
+			'multi': true, //true면 파일선택시 바로 자동으로 업로드됨
+			//'displayData':'speed',
+			'folder': '/upfiles/editor_data', //업로드할 폴더 : 가상디렉터리 + 업로드 폴더 - 쓰기권한 이상 주자
+			//업로드 완료시 처리:
+			//주요 속성은  http"//www.uploadify.com/documentation/ 참고
+			
+			'onComplete': function(event, queueID, fileObj, response, data) {
+				var files = eval(response);
+				var images = files["filemime"].indexOf("image/");
+				_opener = PopupUtil.getOpener(); //오픈된 창의 객체 얻기
+				
+				//file/image 토글
+				if (images == 0) {
+					_attacher = getAttacher('image', _opener); //이미지형으로 팝업창 재설정
+					registerAction(_attacher); //팝업장 재등록
+					execAttach(files); //업로드후 넘어온 file/image 형의 객체 본문에 삽입
+				}
+				else {
+					_attacher = getAttacher('file', _opener); //파일형으로 파업창 재설정
+					registerAction(_attacher); //팝업창 재등록
+					execAttach(files); //업로드후 넘어온 file/image 형의 객체 본문에 삽입
+				}
+				
+			}
+		});
+
+		$('#btnlink').click(function(){
+			var _mockdata = {
+				'attachurl': 'http://cfile297.uf.daum.net/attach/207C8C1B4AA4F5DC01A644',
+				'filemime': 'image/gif',
+				'filename': 'editor_bi.gif',
+				'filesize': 640
+			};
+			execAttach(_mockdata);
+			closeWindow();
+		});
+	});
+	
+	function initUploader(){
+	    var _opener = PopupUtil.getOpener();
+	    if (!_opener) {
+	        alert('잘못된 경로로 접근하셨습니다.');
+	        return;
+	    }
+	    
+	    var _attacher = getAttacher('file', _opener);
+	    registerAction(_attacher);
+	}
+	
+</script>
+</head>
+<body onload="initUploader();">
+<div class="wrapper">
+	<div class="header">
+		<h1>파일 첨부</h1>
+	</div>
+	<div class="body" style="padding:10px;">
+		<input id="fileInput" name="fileInput" type="file" width="450"/>
+		<div id="lblFile"></div>
+	</div>
+	<div class="footer">
+		<p><a href="#" onclick="closeWindow();" title="닫기" class="close">닫기</a></p>
+		<ul>
+			<li class="submit"><a href="#" title="등록" id="btnlink">등록</a> </li>
+			<li class="cancel"><a href="#" onclick="closeWindow();" title="취소" class="btnlink">취소</a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>
+
+

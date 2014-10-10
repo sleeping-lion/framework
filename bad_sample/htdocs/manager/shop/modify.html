@@ -1,0 +1,201 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	if(!$po_no)
+	{
+		error_msg("수정할 수 없습니다.", "back");
+		exit;
+	}
+
+	// 해당 레코드셋을 구한다.
+	include "t.inc";
+
+	for($i=0; $i < count($img_arr); $i++) {
+		$tm_file_ext[$i] = $img_arr[$i];
+	}
+
+	# --------------------------------------------------------------- #
+	#	화일 업로드 처리 시작
+	# --------------------------------------------------------------- #
+	foreach ($cf_upload_nm as $uk=>$uv) {
+		if(is_uploaded_file($_FILES[userfile][tmp_name][$uk]) || $fr_file_del[$uk] == "Y") {
+	
+			$tm_real_path = "";
+			$tm_real_path = $cf_savedir . "/" . $my_no.$cf_upload_nm[$uk].".".$img_arr[$uk];;
+			$tm_real_path_physical = $cf_doc_root.$tm_real_path;
+			
+			if(is_file($tm_real_path_physical) && !Delete_File($tm_real_path_physical)) {
+				error_msg("$cf_upload_column_nm[$uk] 기존 첨부화일을 삭제하는데 실패했습니다.", "back");
+				exit;
+			}
+			if($fr_file_del[$uk] != "Y") {
+
+				$tm_file_ext[$uk] = substr($_FILES[userfile][name][$uk],strrpos($_FILES[userfile][name][$uk],".")+1);	// 파일 확장자 구하기
+				$tm_upload_name = $my_no.$cf_upload_nm[$uk].".".$tm_file_ext[$uk];	// 저장 파일명 만들기
+
+				if(!Upload_Files($_FILES[userfile],$uk,$cf_savedir_physical,$cf_attach_size,$tm_upload_name,1)) {
+					error_msg("$cf_upload_column_nm[$fk] 업로드 실패 다시 시도해 주세요.","back");
+					exit;
+				}
+			}
+		}		
+	}
+
+
+
+	$file_name3 = "";
+	$org_name3 = "";
+
+	############## 업로드 유형 설정 ############### 
+	$ableExt = array('jpg','jpeg','gif','png','bmp');
+
+	$upload_folder = $_SERVER[DOCUMENT_ROOT].'/files/shop.1/';
+	##################### 다중 파일 업로드 ###################
+	for($i = 0;$i < count($_FILES[upload][name]);$i++){
+
+		$img = $_FILES['upload']['name'][$i];		
+	
+		if($img && $img!=""){//업로드 파일이 있다면
+			$mend = explode(" ", microtime());//마이크로타임 뒷자리를 구한다.중복방지로 붙이려고..
+			
+			//파일 확장자 가져오고 파일명 변경;
+			$path = pathinfo($_FILES['upload']['name'][$i]);
+			$ext = strtolower($path['extension']);
+			
+			//jpg,jpeg,gif,png,bmp 이미지 파일 확인
+			if(!in_array($ext, $ableExt)) {
+				echo "<script>alert('지정된 이미지 파일이 아닙니다.');</script>";
+			}else{
+				$img_name = $mend[1]."$i.".strtoupper($ext);
+				$toName = $upload_folder.$img_name;
+				$fromName = $_FILES['upload']['tmp_name'][$i];//업로드된 임시파일이름		
+				
+				if(move_uploaded_file($fromName, $toName)){
+					if(empty($file_name3) && empty($org_name3)){
+						$org_name3 .= $_FILES['upload']['name'][$i];//원본파일명이 넘어온값이 없다면 원본파일명 셋팅
+						$file_name3 .= $img_name;
+					}else{
+						$org_name3 .= ",".$_FILES['upload']['name'][$i];//원본파일명이 넘어온값이 없다면 원본파일명 셋팅
+						$file_name3 .= ",".$img_name;
+					}
+
+				}else{
+					echo "파일업로드 실패";
+				}
+			}		
+		}
+	}
+
+	if($gallery_old && $file_name3){ //기존 gallery항목이 있을경우 ,뒤에 붙인다
+		$file_name3 = $gallery_old.",".$file_name3;
+		$org_name3 = $gallery_org_old.",".$org_name3;
+	}elseif($gallery_old && !$file_name3){
+		$file_name3 = $gallery_old;
+		$org_name3 = $gallery_org_old;
+	}elseif(!$gallery_old && $file_name3){
+		$file_name3 = $file_name3;
+		$org_name3 = $org_name3;
+	}
+
+
+	// 이스케이프
+	$fr_it_name = escape_string($fr_it_name);
+	$fr_it_company = escape_string($fr_it_company);
+	$fr_it_memo = escape_string($fr_it_memo);
+
+	# --------------------------------------------------------------- #
+	#	입력값 설정
+	# --------------------------------------------------------------- #
+
+	// 작성자관련정보 설정
+	$signdate = time();
+	$tm_input_id = $cf_cook_id ? $cf_cook_id : "";
+	$tm_input_nm = $cf_cook_nick_nm ? $cf_cook_nick_nm : $cf_cook_nm;
+	$tm_input_ip = $_SERVER[REMOTE_ADDR];
+	$tm_input_ymdhms = date("YmdHis", $signdate);
+	$tm_sign_id = $tm_input_id;
+	$tm_sign_nm = $tm_input_nm;
+	$tm_sign_ip = $tm_input_ip;
+	$tm_sign_ymdhms = $tm_input_ymdhms;
+
+	# --------------------------------------------------------------- #
+	#	상품정보 업데이트
+	# --------------------------------------------------------------- #
+	$query = "UPDATE $cf_table_col_nm SET " . 
+						"IT_LCLASS = '$fr_it_lclass', " .
+						"IT_MCLASS = '$fr_it_mclass', " .
+						"IT_SCLASS = '$fr_it_sclass', " .
+						"IT_MODEL_NO = '$fr_it_model_no', " .
+						"IT_NAME = '$fr_it_name', " .
+						"IT_FEATURE = '$fr_it_feature', " .
+						"IT_EVENT_CD = '$fr_it_event_cd', " .
+						"IT_BRAND_CD = '$fr_it_brand_cd', " .
+						"IT_ORIGIN = '$fr_it_origin', " .
+						"IT_BRAND = '$fr_it_brand', " .
+						"IT_COMPANY = '$fr_it_company', " .
+						"IT_STANDARD = '$fr_it_standard', " .
+						"IT_CNT = '$fr_it_cnt', " .
+						"IT_PRICE = '$fr_it_price', " .
+						"IT_SALE_PRICE = '$fr_it_sale_price', " .
+						"IT_SAVE_PRICE = '$fr_it_save_price', " .
+						"IT_PRICE_UNIT = '$fr_it_price_unit', " .
+						"IT_POS = '$fr_it_pos', " .
+      //      "IT_BESTPOS = '$fr_it_bestpos', " .
+         //   "IT_MPOS = '$fr_it_mpos', " .
+          //  "IT_BPOS = '$fr_it_bpos', " .
+						"IT_ETC = '$fr_it_etc', " .
+						"IT_OPTION = '$fr_it_option', " .
+						"IT_MEMO = '$fr_it_memo', " .
+						"IT_SELL_YN = '$fr_it_sell_yn', " .
+						"IT_SERVICE_YN = '$fr_it_service_yn', " .
+						"IT_GALLERY = '$file_name3', " .
+						"IT_GALLERY_ORG = '$org_name3', " .
+						"BASONG_YN = '$fr_basong_yn', " .
+						"SIGN_ID = '$tm_sign_id', " .
+						"SIGN_NM = '$tm_sign_nm', " .
+						"SIGN_IP = '$tm_sign_ip', " .
+						"SIGN_YMDHMS = '$tm_sign_ymdhms' " .
+					"WHERE NO = '$po_no'";
+
+	$DB->Update_Query($query);
+
+
+	# --------------------------------------------------------------- #
+	#	상품이미지정보 업데이트
+	# --------------------------------------------------------------- #
+	$query = "UPDATE $cf_table_img_nm SET " . 
+						"EXT1 = '".$tm_file_ext[0]."', " .
+						"EXT2 = '".$tm_file_ext[1]."', " .
+						"EXT3 = '".$tm_file_ext[2]."', " .
+						"EXT4 = '".$tm_file_ext[3]."', " .
+						"EXT5 = '".$tm_file_ext[4]."', " .
+						"EXT6 = '".$tm_file_ext[5]."', " .
+						"EXT7 = '".$tm_file_ext[6]."', " .
+						"EXT8 = '".$tm_file_ext[7]."', " .
+						"EXT9 = '".$tm_file_ext[8]."', " .
+						"EXT10 = '".$tm_file_ext[9]."', " .
+						"SIGN_ID = '$tm_sign_id', " .
+						"SIGN_NM = '$tm_sign_nm', " .
+						"SIGN_IP = '$tm_sign_ip', " .
+						"SIGN_YMDHMS = '$tm_sign_ymdhms' " .
+					"WHERE IT_NO = '$my_it_no'";
+
+	$DB->Update_Query($query);
+
+	
+	// 페이지 이동
+	error_msg("", "listbody.html?$po_adv_query&page=$page&po_no=$po_no");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

@@ -1,0 +1,91 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+
+	// 해당 레코드셋을 구한다.
+	include "t.inc";
+
+	
+	if(is_uploaded_file($_FILES[userfile1][tmp_name])){
+		// 기존화일이 있는경우 삭제한다.
+		$tm_real_path = $cf_savedir . "/" . $my_attach_path;
+		$tm_real_path_physical = $cf_doc_root . "/" . $tm_real_path;
+		if($my_attach_path && is_file($tm_real_path_physical) && !Delete_File($tm_real_path_physical)){
+			error_msg("기존 첨부화일을 삭제하는데 실패했습니다.", "back");
+			exit;
+		}
+
+			// 첨부화일 업로드 (화일이 여러개일경우 각각의 사이즈를 구하지 못한다.)
+			if(is_uploaded_file($_FILES[userfile1][tmp_name])){
+				$tm_upload_path =  $_FILES[userfile1][name];
+				if(Upload_File($_FILES[userfile1], $cf_savedir_physical, $cf_attach_size, $tm_upload_path, 1)){
+					$tm_attach_path1 = $_FILES[userfile1][name];
+
+				}
+			}
+
+	}else{
+		// 기존화일의 파일관련변수
+		$tm_attach_path1 = $my_attach_path1;
+	}
+
+	
+	if(is_uploaded_file($_FILES[userfile2][tmp_name])){
+		// 기존화일이 있는경우 삭제한다.
+		$tm_real_path = $cf_savedir . "/" . $my_attach_path;
+		$tm_real_path_physical = $cf_doc_root . "/" . $tm_real_path;
+		if($my_attach_path && is_file($tm_real_path_physical) && !Delete_File($tm_real_path_physical)){
+			error_msg("기존 첨부화일을 삭제하는데 실패했습니다.", "back");
+			exit;
+		}
+
+			// 첨부화일 업로드 (화일이 여러개일경우 각각의 사이즈를 구하지 못한다.)
+			if(is_uploaded_file($_FILES[userfile2][tmp_name])){
+				$tm_upload_path =  $_FILES[userfile2][name];
+				if(Upload_File($_FILES[userfile2], $cf_savedir_physical, $cf_attach_size, $tm_upload_path, 1)){
+					$tm_attach_path2 = $_FILES[userfile2][name];
+
+				}
+			}
+
+	}else{
+		// 기존화일의 파일관련변수
+		$tm_attach_path2 = $my_attach_path2;
+	}
+
+	# --------------------------------------------------------------- #
+	#	입력값 설정
+	# --------------------------------------------------------------- #
+	
+	// 작성자관련정보 설정
+	$signdate = Date("Y-m-d H:i:s");
+	$tm_sign_id = $cf_cook_id ? $cf_cook_id : "";
+	$tm_sign_nm = $cf_cook_nm;
+	$tm_sign_ip = $_SERVER[REMOTE_ADDR];
+
+	# --------------------------------------------------------------- #
+	#	상품정보 업데이트
+	# --------------------------------------------------------------- #
+	$query = "UPDATE $cf_table_col_nm " .
+				"SET " .
+					"IT_NM='$fr_it_nm',IT_NO='$fr_it_no', ATTACH_PATH1 ='$tm_attach_path1' , ATTACH_PATH2 ='$tm_attach_path2' ,SIGN_ID='$tm_sign_id', SIGN_NM='$tm_sign_nm',SIGN_IP='$tm_sign_ip', SIGN_YMDHMS='$signdate' " .
+				"WHERE GB = '$a_gb' AND CD='$a_cd' ";
+ 
+	$DB->Update_Query($query);
+
+	// 상세보기 폼으로 이동
+	error_msg("", "modifyform.html?$po_adv_query");	
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

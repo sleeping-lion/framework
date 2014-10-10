@@ -1,0 +1,95 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	# 상단 HTML
+	$JS = "<script language='javascript' src='t.js'></script>";
+	include "manager/manager_top.inc";
+	include "t_top.inc";
+?>
+<form name="signform" method="post" action="modify.html?<?=$po_basic_query?>&page=<?=$page?>&po_cm_id=<?=$po_cm_id?>">
+<?
+	include "t.inc";
+
+	$tm_addr_check = $my_cm_zip_cd ? "Y" : "N";
+
+	// 이메일 수신여부
+	if($my_cm_email_yn == "Y")
+	{
+		$my_email_y_checked = "checked";
+		$my_email_n_checked = "";
+	}
+	else
+	{
+		$my_email_y_checked = "";
+		$my_email_n_checked = "checked";
+	}
+	// sms 수신여부
+	if($my_cm_sms_yn == "Y")
+	{
+		$my_sms_y_checked = "checked";
+		$my_sms_n_checked = "";
+	}
+	else
+	{
+		$my_sms_y_checked = "";
+		$my_sms_n_checked = "checked";
+	}
+
+	// 비밀번호 질문을 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'passwd_q' ORDER BY CD ASC";
+	$passwd_q_arr = $DB->Pipe_Arr($query);
+
+	// 전화번호 종류를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'tel_local' AND CON_CD = 'T' ORDER BY CD ASC";
+	$tel_arr = $DB->Pipe_Arr($query);
+
+	// 핸드폰번호 종류를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'tel_local' AND CON_CD = 'H' ORDER BY CD ASC";
+	$hp_tel_arr = $DB->Pipe_Arr($query);
+
+	// fax번호 종류를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'tel_local' AND CON_CD = 'T' ORDER BY CD ASC";
+	$fax_arr = $DB->Pipe_Arr($query);
+
+	// 현재레벨 이름을 구한다.
+	$query = "SELECT NM FROM $cf_table_cod_nm WHERE CD = '$my_cm_level'";
+	$my_cm_level_nm = $DB->Value($query);
+
+	// 요청레벨 이름을 구한다.
+	$query = "SELECT NM FROM $cf_table_cod_nm WHERE CD = '$my_cm_req_level'";
+	$my_cm_req_level_nm = $DB->Value($query);
+
+	// 신청가능 회원레벨 종류를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'level' AND CD >= '$cf_cook_level' ORDER BY CD DESC";
+	$level_arr = $DB->Pipe_Arr($query);
+
+	// 신청가능 회원레벨 종류를 가져온다.
+	$query = "SELECT CD, NM FROM $cf_table_cod_nm WHERE GB = 'mem_cd' ORDER BY CD ASC";
+	$mem_cd_arr = $DB->Pipe_Arr($query);
+
+
+	// 신청가능 회원레벨 종류의 수
+	$new_level_count = $DB->count;
+
+	// 쓰기폼
+	include $cf_skin_nm . "/modifyform.inc";
+?>
+</form>
+<?
+	# 하단 HTML
+	include "t_footer.inc";
+	include "manager/manager_footer.inc";
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

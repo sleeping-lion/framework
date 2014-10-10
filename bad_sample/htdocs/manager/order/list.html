@@ -1,0 +1,24 @@
+<?php
+include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+include "variable_config.inc";
+
+include  "logon.inc";
+include  "user_function.inc";
+//erp 동기화
+erp_synchro();
+
+include "config.inc";
+include "t_config.inc";
+
+$JS = "<script language='javascript' src='t.js'></script>";
+include  "manager/manager_top.inc";
+include "t_top.inc";
+
+include "listview.inc";
+
+
+include "t_footer.inc";
+include  "manager/manager_footer.inc";
+include  "logoff.inc";
+?>
+

@@ -1,0 +1,43 @@
+<?
+	# 패스 및 클래스
+	include "Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+	include "t_config.inc";
+
+	// 작성자관련정보 설정
+	$signdate = time();
+	$tm_input_id = $cf_cook_id ? $cf_cook_id : "";
+	$tm_input_nm = $cf_cook_nick_nm ? $cf_cook_nick_nm : $cf_cook_nm;
+	$tm_input_ip = $_SERVER[REMOTE_ADDR];
+	$tm_input_ymdhms = date("YmdHis", $signdate);
+	$tm_sign_id = $tm_input_id;
+	$tm_sign_nm = $tm_input_nm;
+	$tm_sign_ip = $tm_input_ip;
+	$tm_sign_ymdhms = $tm_input_ymdhms;
+
+	# --------------------------------------------------------------- #
+	#	상품정보 업데이트
+	# --------------------------------------------------------------- #
+	$query = "UPDATE $cf_table_cod_nm " .
+				"SET " .
+					"CON_CD = '$fr_con_cd', " .
+					"SIGN_ID = '$tm_sign_id', " .
+					"SIGN_NM = '$tm_sign_nm', " .
+					"SIGN_IP = '$tm_sign_ip', " .
+					"SIGN_YMDHMS = '$tm_sign_ymdhms' " .
+				"WHERE CD = 'choo_point'";
+	$DB->Update_Query($query);
+
+	// 상세보기 폼으로 이동
+	error_msg("", "list.html?$po_adv_query");
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

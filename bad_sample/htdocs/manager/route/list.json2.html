@@ -1,0 +1,228 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+	
+	$po_st_year		= $_POST["po_st_year"];
+	$po_st_month	= $_POST["po_st_month"];
+	$fr_it_no		= $_POST["fr_it_no"];
+	$fr_op_name		= $_POST["fr_op_name"];
+	$fr_progress	= $_POST["fr_progress"];
+
+	#년도 월 그룹
+
+	if($po_st_month < 10){
+		$po_st_month = "0".$po_st_month;
+	}
+
+	$search_con1	= "";
+	$search_con2	= "";
+
+	if($fr_it_no !=""){
+		$search_con1 .= " AND B.IT_NO = '$fr_it_no'";
+	}
+
+	if($fr_op_name !=""){
+		$search_con1 .= " AND B.OP_NAME = '$fr_op_name'";
+	}
+
+	if($fr_progress !="" && $fr_progress !="03"){
+		$search_con1 .= " AND A.PROGRESS = '$fr_progress'";
+	}
+
+	if($fr_progress !="" && $fr_progress =="03"){
+		$search_con1 .= " AND (A.PROGRESS = '03' or A.PROGRESS = '04' or A.PROGRESS = '05' ) ";
+	}
+
+
+	if($po_st_year != ""){
+		$po_st_year = $po_st_year;
+	}else{
+		$po_st_year = date("Y");
+	}
+
+	if($po_st_month != ""){
+		$po_st_month = $po_st_month;
+	}else{
+		$po_st_month = date("m");
+	}
+
+	$search_con2 .= " AND R.INPUT_YM LIKE  '$po_st_year%'";
+
+	$json = "{\"item\":[";
+
+	$query ="	SELECT 
+					R.INPUT_YM
+					,R1.QAT R1_QAT
+					,R1.CART_TOT R1_CART_TOT		
+					,R2.QAT R2_QAT
+					,R2.CART_TOT R2_CART_TOT
+					,R3.QAT R3_QAT
+					,R3.CART_TOT R3_CART_TOT
+				FROM 
+				(
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO					-- 주문번호
+							,B.OP_NAME					-- 옵션명
+							,B.IT_NO					-- 상품 코드
+							,B.QAT						-- 수량		
+							,B.IT_SALE_PRICE				-- 할인금액	
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT		-- 카트별 총금액
+							,A.PROGRESS					-- 주문상태
+							,A.INPUT_YMDHMS					-- 주문일자
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD	-- 주문일자(일까지)
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM		-- 주문일자(월까지)
+							,C.SETTLEMENT_CD				-- 결제 방법			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+					)T1 
+					GROUP BY INPUT_YM 
+				) R 
+				LEFT JOIN(
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO					-- 주문번호
+							,B.OP_NAME					-- 옵션명
+							,B.IT_NO					-- 상품 코드
+							,B.QAT						-- 수량		
+							,B.IT_SALE_PRICE				-- 할인금액	
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT		-- 카트별 총금액
+							,A.PROGRESS					-- 주문상태
+							,A.INPUT_YMDHMS					-- 주문일자
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD	-- 주문일자(일까지)
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM		-- 주문일자(월까지)
+							,C.SETTLEMENT_CD				-- 결제 방법			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '20'
+						$search_con1		
+					)T1 
+					GROUP BY INPUT_YM 
+				) R1 
+				ON R.INPUT_YM = R1.INPUT_YM
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO					-- 주문번호
+							,B.OP_NAME					-- 옵션명
+							,B.IT_NO					-- 상품 코드
+							,B.QAT						-- 수량		
+							,B.IT_SALE_PRICE				-- 할인금액	
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT		-- 카트별 총금액
+							,A.PROGRESS					-- 주문상태
+							,A.INPUT_YMDHMS					-- 주문일자
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD	-- 주문일자(일까지)
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM		-- 주문일자(월까지)
+							,C.SETTLEMENT_CD				-- 결제 방법			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '10'
+						$search_con1
+						
+					)T1 
+					GROUP BY INPUT_YM 
+				) R2
+				ON R.INPUT_YM = R2.INPUT_YM
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO					-- 주문번호
+							,B.OP_NAME					-- 옵션명
+							,B.IT_NO					-- 상품 코드
+							,B.QAT						-- 수량		
+							,B.IT_SALE_PRICE				-- 할인금액	
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT		-- 카트별 총금액
+							,A.PROGRESS					-- 주문상태
+							,A.INPUT_YMDHMS					-- 주문일자
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD	-- 주문일자(일까지)
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM		-- 주문일자(월까지)
+							,C.SETTLEMENT_CD				-- 결제 방법			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '30'
+						$search_con1
+					)T1 
+					GROUP BY INPUT_YM 
+				) R3 
+				ON R.INPUT_YM = R3.INPUT_YM
+				WHERE 1=1
+				$search_con2
+				ORDER BY R.INPUT_YM ASC";
+	
+	$result = mysql_query($query);
+	//echo "<pre>";
+	//echo $query;
+	
+	$i = 0;
+
+	while($row = mysql_fetch_array($result)){
+		$INPUT_YM			=	$row["INPUT_YM"];
+		$R1_QAT				=	$row["R1_QAT"];
+		$R1_CART_TOT		=	$row["R1_CART_TOT"];
+		$R2_QAT				=	$row["R2_QAT"];
+		$R2_CART_TOT		=	$row["R2_CART_TOT"];
+		$R3_QAT				=	$row["R3_QAT"];
+		$R3_CART_TOT		=	$row["R3_CART_TOT"];
+		
+		if($i != 0) $json .= ",";
+		$json	.= "{";
+		$json	.= "\"INPUT\":\"$INPUT_YM\"";
+		$json	.= ",\"R1_QAT\":\"$R1_QAT\"";
+		$json	.= ",\"R1_CART_TOT\":\"$R1_CART_TOT\"";
+		$json	.= ",\"R2_QAT\":\"$R2_QAT\"";
+		$json	.= ",\"R2_CART_TOT\":\"$R2_CART_TOT\"";
+		$json	.= ",\"R3_QAT\":\"$R3_QAT\"";
+		$json	.= ",\"R3_CART_TOT\":\"$R3_CART_TOT\"";
+		$json	.= "}";
+		$i++;
+
+	}
+	
+	$json .= "]}";
+
+	echo $json;
+
+	# DB 접속종료
+	include "logoff.inc";
+?>

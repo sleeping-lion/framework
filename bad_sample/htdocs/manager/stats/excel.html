@@ -1,0 +1,565 @@
+<?
+include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+include "variable_config.inc";
+include  "logon.inc";
+include  "user_function.inc";
+
+include "t_config.inc";
+
+$stats_type = $_POST[stats_type];
+$month_type = $_POST[month_type];
+//echo $stats_type;exit;
+
+
+$po_adv_query = $po_adv_query;
+$po_st_year = $po_st_year_;
+$po_st_month = $po_st_month_;
+$fr_it_no = $fr_it_no_;
+$fr_op_name = $fr_op_name_;
+$fr_progress = $fr_progress_;
+
+
+	if($po_st_month == "01"){
+		$po_st_month = 1;
+	}
+
+	if($po_st_month < 10){
+		$po_st_month = "0".$po_st_month;
+	}
+
+	$search_con1	= "";
+	$search_con2	= "";
+
+	if($fr_it_no !=""){
+		$search_con1 .= " AND B.IT_NO = '$fr_it_no'";
+	}
+
+	if($fr_op_name !=""){
+		$search_con1 .= " AND B.OP_NAME = '$fr_op_name'";
+	}
+
+	if($fr_progress !="" && $fr_progress !="03"){
+		$search_con1 .= " AND A.PROGRESS = '$fr_progress'";
+	}
+
+	if($fr_progress !="" && $fr_progress =="03"){
+		$search_con1 .= " AND (A.PROGRESS = '03' or A.PROGRESS = '04' or A.PROGRESS = '05' ) ";
+	}
+
+
+	if($po_st_year != ""){
+		$po_st_year = $po_st_year;
+	}else{
+		$po_st_year = date("Y");
+	}
+
+	if($po_st_month != ""){
+		$po_st_month = $po_st_month;
+	}else{
+		$po_st_month = date("m");
+	}
+
+	if($po_st_month=="13"){
+		$search_con2 .= " AND R.INPUT_YM LIKE  '$po_st_year%'";
+	}else{
+		$search_con2 .= " AND R.INPUT_YMD LIKE  '$po_st_year$po_st_month%'";
+	}
+	
+	
+	$cf_maxday = get_totalday($po_st_year,$po_st_month);
+
+if($stats_type=="1" && $month_type=="1"){
+
+		$day=date("Y-m-d");		
+		$b_name = "stats";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+
+		$query ="	SELECT 
+					R.INPUT_YMD
+					,R.INPUT_YM 
+					,R.QAT R_QAT
+					,R.CART_TOT R_CART_TOT
+					,R1.QAT R1_QAT
+					,R1.CART_TOT R1_CART_TOT		
+					,R2.QAT R2_QAT
+					,R2.CART_TOT R2_CART_TOT
+					,R3.QAT R3_QAT
+					,R3.CART_TOT R3_CART_TOT
+				FROM 
+				(
+					SELECT 	
+						INPUT_YMD
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+						,MAX(INPUT_YM) INPUT_YM
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+					)T1 
+					GROUP BY INPUT_YMD 
+				) R 
+				LEFT JOIN(
+					SELECT 	
+						INPUT_YMD
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+						,MAX(INPUT_YM) INPUT_YM
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT	
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD		
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '20'
+						$search_con1		
+					)T1 
+					GROUP BY INPUT_YMD 
+				) R1 
+				ON R.INPUT_YMD = R1.INPUT_YMD
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YMD
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+						,MAX(INPUT_YM) INPUT_YM
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '10'
+						$search_con1
+						
+					)T1 
+					GROUP BY INPUT_YMD 
+				) R2
+				ON R.INPUT_YMD = R2.INPUT_YMD
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YMD
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+						,MAX(INPUT_YM) INPUT_YM
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '30'
+						$search_con1
+					)T1 
+					GROUP BY INPUT_YMD 
+				) R3 
+				ON R.INPUT_YMD = R3.INPUT_YMD
+				WHERE 1=1
+				$search_con2
+				ORDER BY R.INPUT_YMD ASC";
+	
+	$result = mysql_query($query);
+	//echo "<pre>";
+	//echo $query;exit;
+	
+	$i = 1;
+	$excel = "<table id='table_list' border='1' width='900'  cellspacing='0' cellpadding='0'>";
+	$excel = $excel."<thead>";
+	$excel = $excel."<tr>";
+	$excel = $excel."<td width='100px' height='30' class='st_basic'>날짜/구분</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>통장입금</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>신용카드</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>계좌이체</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>합계금액</td>";
+	$excel = $excel."</tr>";
+	$excel = $excel."</thead>";
+	$excel = $excel."<tbody>";
+	while($row = mysql_fetch_array($result)){
+
+		$INPUT_YMD			=	$row["INPUT_YMD"];
+		$INPUT_YM			=	$row["INPUT_YM"];
+		$R1_QAT				=	$row["R1_QAT"];
+		$R1_CART_TOT		=	$row["R1_CART_TOT"];
+		$R2_QAT				=	$row["R2_QAT"];
+		$R2_CART_TOT		=	$row["R2_CART_TOT"];
+		$R3_QAT				=	$row["R3_QAT"];
+		$R3_CART_TOT		=	$row["R3_CART_TOT"];
+
+		$line_cnt = $R1_QAT+$R2_QAT+$R3_QAT;
+		$line_sum = $R1_CART_TOT+$R2_CART_TOT+$R3_CART_TOT;
+
+		$R_QAT_SUM_1		= $R_QAT_SUM_1+$R1_QAT;
+		$R_CART_TOT_SUM_1	= $R_CART_TOT_SUM_1+$R1_CART_TOT;
+
+		$R_QAT_SUM_2		= $R_QAT_SUM_2+$R2_QAT;
+		$R_CART_TOT_SUM_2	= $R_CART_TOT_SUM_2+$R2_CART_TOT;
+
+		$R_QAT_SUM_3		= $R_QAT_SUM_3+$R3_QAT;
+		$R_CART_TOT_SUM_3	= $R_CART_TOT_SUM_3+$R3_CART_TOT;
+
+		$R_QAT_SUM		= $R_QAT_SUM+$line_cnt;
+		$R_CART_TOT_SUM	= $R_CART_TOT_SUM+$line_sum;
+
+		if($po_st_month >= "1" && $po_st_month < "13"){
+
+
+			if($i==1){
+				$po_st_month_text = $po_st_month."월";
+			}else{
+				$po_st_month_text = "";
+			}
+
+			
+
+				$excel = $excel."<tr>";
+				$excel = $excel."<td width='100px' height='25' st_basic'>".$po_st_month_text." ".substr($INPUT_YMD,6,2)."일</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R1_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R1_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R2_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R2_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R3_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R3_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$line_cnt."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($line_sum)."</td>";
+				$excel = $excel."</tr>";
+
+			
+		}
+
+		if($po_st_month == "13"){
+
+			
+
+				$excel = $excel."<tr>";
+				$excel = $excel."<td width='100px' height='25' st_basic'>".$i."월</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R1_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R1_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R2_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R2_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R3_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R3_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$line_cnt."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($line_sum)."</td>";
+				$excel = $excel."</tr>";
+
+			
+		}
+				
+
+	$i++;}
+				$excel = $excel."<tr>";
+				$excel = $excel."<td width='100px' height='25' class='tdsum st_basic'>합계</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_1."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_1)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_2."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_2)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_3."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_3)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM)."</td>";
+				$excel = $excel."</tr>";
+
+		$excel = $excel."</tbody>";
+		$excel = $excel."</table>";
+		echo $excel;
+
+}elseif($stats_type=="1" && $month_type=="2"){
+
+	$day=date("Y-m-d");		
+		$b_name = "stats";		
+		
+		Header("Content-type: application/vnd.ms-excel");
+		Header("Content-type: charset=utf-8");
+		header("Content-Disposition: attachment; filename=".$b_name."_".$day.".xls");
+		Header("Content-Description: PHP4 Generated Data");
+		Header("Pragma: no-cache");
+		Header("Expires: 0");		
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?
+
+		$query ="	SELECT 
+					R.INPUT_YM
+					,R1.QAT R1_QAT
+					,R1.CART_TOT R1_CART_TOT		
+					,R2.QAT R2_QAT
+					,R2.CART_TOT R2_CART_TOT
+					,R3.QAT R3_QAT
+					,R3.CART_TOT R3_CART_TOT
+				FROM 
+				(
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT	
+							,A.PROGRESS	
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM	
+							,C.SETTLEMENT_CD		
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+					)T1 
+					GROUP BY INPUT_YM 
+				) R 
+				LEFT JOIN(
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT		
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '20'
+						$search_con1		
+					)T1 
+					GROUP BY INPUT_YM 
+				) R1 
+				ON R.INPUT_YM = R1.INPUT_YM
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT	
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT	
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD			
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '10'
+						$search_con1
+						
+					)T1 
+					GROUP BY INPUT_YM 
+				) R2
+				ON R.INPUT_YM = R2.INPUT_YM
+				LEFT JOIN (
+					SELECT 	
+						INPUT_YM
+						,SUM(T1.QAT) QAT
+						,SUM(T1.CART_TOT) CART_TOT
+					FROM (
+						SELECT 
+							B.ORDER_NO
+							,B.OP_NAME
+							,B.IT_NO
+							,B.QAT	
+							,B.IT_SALE_PRICE
+							,(B.QAT * B.IT_SALE_PRICE) CART_TOT	
+							,A.PROGRESS
+							,A.INPUT_YMDHMS
+							,SUBSTRING(A.INPUT_YMDHMS,1,8) INPUT_YMD
+							,SUBSTRING(A.INPUT_YMDHMS,1,6) INPUT_YM
+							,C.SETTLEMENT_CD		
+						FROM MT_ORDER_T A
+						LEFT JOIN MT_CART_T B
+						ON A.ORDER_NO = B.ORDER_NO
+						INNER JOIN  MT_CREDIT_T C
+						ON A.ORDER_NO = C.ORDER_NO 
+						WHERE 1=1
+						AND B.ORDER_NO != ''
+						AND C.SETTLEMENT_CD = '30'
+						$search_con1
+					)T1 
+					GROUP BY INPUT_YM 
+				) R3 
+				ON R.INPUT_YM = R3.INPUT_YM
+				WHERE 1=1
+				$search_con2
+				ORDER BY R.INPUT_YM ASC";
+	
+	$result = mysql_query($query);
+	//echo "<pre>";
+	//echo $query;exit;
+	
+	$i = 1;
+	$excel = "<table id='table_list' border='1' width='900'  cellspacing='0' cellpadding='0'>";
+	$excel = $excel."<thead>";
+	$excel = $excel."<tr>";
+	$excel = $excel."<td width='100px' height='30' class='st_basic'>날짜/구분</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>통장입금</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>신용카드</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>계좌이체</td>";
+	$excel = $excel."<td width='200px' class='st_basic' colspan='2'>합계금액</td>";
+	$excel = $excel."</tr>";
+	$excel = $excel."</thead>";
+	$excel = $excel."<tbody>";
+	while($row = mysql_fetch_array($result)){
+
+		$INPUT_YM			=	$row["INPUT_YM"];
+		$R1_QAT				=	$row["R1_QAT"];
+		$R1_CART_TOT		=	$row["R1_CART_TOT"];
+		$R2_QAT				=	$row["R2_QAT"];		
+		$R2_CART_TOT		=	$row["R2_CART_TOT"];
+		$R3_QAT				=	$row["R3_QAT"];
+		$R3_CART_TOT		=	$row["R3_CART_TOT"];
+
+		$line_cnt = $R1_QAT+$R2_QAT+$R3_QAT;
+		$line_sum = $R1_CART_TOT+$R2_CART_TOT+$R3_CART_TOT;
+
+		$R_QAT_SUM_1		= $R_QAT_SUM_1+$R1_QAT;
+		$R_CART_TOT_SUM_1	= $R_CART_TOT_SUM_1+$R1_CART_TOT;
+
+		$R_QAT_SUM_2		= $R_QAT_SUM_2+$R2_QAT;
+		$R_CART_TOT_SUM_2	= $R_CART_TOT_SUM_2+$R2_CART_TOT;
+
+		$R_QAT_SUM_3		= $R_QAT_SUM_3+$R3_QAT;
+		$R_CART_TOT_SUM_3	= $R_CART_TOT_SUM_3+$R3_CART_TOT;
+
+		$R_QAT_SUM		= $R_QAT_SUM+$line_cnt;
+		$R_CART_TOT_SUM	= $R_CART_TOT_SUM+$line_sum;
+		
+
+		if($po_st_month == "13"){
+
+			
+
+				$excel = $excel."<tr>";
+				$excel = $excel."<td width='100px' height='25' st_basic'>".$i."월</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R1_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R1_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R2_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R2_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R3_QAT."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R3_CART_TOT)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$line_cnt."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($line_sum)."</td>";
+				$excel = $excel."</tr>";
+
+			
+		}
+				
+
+	$i++;}
+				$excel = $excel."<tr>";
+				$excel = $excel."<td width='100px' height='25' class='tdsum st_basic'>합계</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_1."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_1)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_2."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_2)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM_3."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM_3)."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".$R_QAT_SUM."</td>";
+				$excel = $excel."<td width='100px' class='st_basic'>".number_format($R_CART_TOT_SUM)."</td>";
+				$excel = $excel."</tr>";
+
+		$excel = $excel."</tbody>";
+		$excel = $excel."</table>";
+		echo $excel;
+
+}
+
+include  "logoff.inc";
+?>

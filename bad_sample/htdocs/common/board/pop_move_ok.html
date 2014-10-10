@@ -1,0 +1,51 @@
+<?
+	# 패스 및 클래스
+	include $_SERVER[DOCUMENT_ROOT]."/Root_Path.inc";
+	include "variable_config.inc";
+
+	# DB 접속 및 함수
+	include "logon.inc";
+	include "user_function.inc";
+
+	# 변수 및 설정
+	include "config.inc";
+
+
+	$tm_chk_no = explode(",",$fr_chk_no);
+	$tm_target_board = explode("||",$fr_target_board);
+	
+
+	for($i=0;$i<count($tm_chk_no);$i++){
+		if($tm_chk_no[$i]!=""){
+			$query = "UPDATE ".$cf_table_col_nm." SET GB='".$cf_gb."' ,CD='".$tm_target_board[0]."',CATEGORY='".$tm_target_board[1]."' WHERE NO ='".$tm_chk_no[$i]."'";
+			$DB->Update_Query($query);
+
+			$query = "SELECT * FROM CM_FILE_T WHERE GB='".$a_gb."' AND CD='".$a_cd."' AND P_NO = '".$tm_chk_no[$i]."'  ";
+			$arr = $DB->Pipe_Arr($query);
+
+			for($y=0;$y<count($arr);$y++){
+				$old_path = $_SERVER["DOCUMENT_ROOT"]."/files/".$a_gb.".".$a_cd."/".$arr[$y]["REAL_PATH"];
+				$new_path = $_SERVER["DOCUMENT_ROOT"]."/files/".$a_gb.".".$tm_target_board[0]."/".$arr[$y]["REAL_PATH"];
+				Upload_Mkdir($_SERVER["DOCUMENT_ROOT"]."/files/".$a_gb.".".$tm_target_board[0]);
+				rename($old_path, $new_path);
+			}
+
+			$query = "UPDATE CM_FILE_T SET GB='".$cf_gb."' ,CD='".$tm_target_board[0]."' WHERE P_NO ='".$tm_chk_no[$i]."'";
+			$DB->Update_Query($query);
+
+
+
+		}
+
+	}
+
+	
+	//print_r($_POST);	
+
+	# DB 접속종료
+	include "logoff.inc";
+?>
+<script>
+	opener.location.reload();
+	self.close();
+</script>
