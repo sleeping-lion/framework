@@ -1,10 +1,10 @@
 <?php
 
-function getPDO($configDb) {
+function getPDO($config_db) {
 	if (MODE == 'production') {
-		$pdo = new PDO($configDb['dbdriver'] . ':host=' . $configDb['host'] . ';dbname=' . $configDb['database'], $configDb['user'], $configDb['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+		$pdo = new PDO($config_db['dbdriver'] . ':host=' . $config_db['hostname'] . ';dbname=' . $config_db['database'], $config_db['username'], $config_db['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 	} else {
-		$pdo = new PDO($configDb['dbdriver'] . ':host=' . $configDb['host'] . ';dbname=' . $configDb['database'], $configDb['user'], $configDb['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+		$pdo = new PDO($config_db['dbdriver'] . ':host=' . $config_db['hostname'] . ';dbname=' . $config_db['database'], $config_db['username'], $config_db['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 	}
 
 	$pdo -> setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_TO_STRING);
@@ -13,6 +13,23 @@ function getPDO($configDb) {
 	return $pdo;
 }
 
+function sl_style($sl_style) {
+	if(!count($sl_style))
+	return false;
+			
+	foreach($sl_style as $index=>$value) {
+		echo '<link type="text/css" rel="stylesheet" href="/stylesheets/'.$value.'" />'."\n";
+	}
+}
+
+function sl_js($sl_js) {
+	if(!count($sl_js))
+	return false;
+			
+	foreach($sl_js as $index=>$value) {
+		echo '<script type="text/javascript" src="/javascripts/'.$value.'"></script>'."\n";
+	}
+}
 
 function sl_debug($data) {
 	echo '<pre>';

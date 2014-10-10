@@ -4,7 +4,11 @@
 	<title>SL BOARD</title>
 	<meta charset="utf-8">
 	<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />
+	<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />	
+	<?php sl_style($sl_style); ?>
 	<script type="text/javascript" src="/javascripts/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/javascripts/bootstrap.min.js" />
+	<?php sl_js($sl_js); ?>	
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta name="author" content="Sleeping-Lion" />
 	<!--[if IE]>

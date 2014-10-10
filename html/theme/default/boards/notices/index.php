@@ -34,6 +34,10 @@ require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
 			<?php endif ?>
 	</tbody>
 </table>
+
+<div id="sl_index_bottom_buttons">
+	<a href="new.php">새글 쓰기</a>
+</div>
 </section>
 <?php
 require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'footer.php';

@@ -2,7 +2,7 @@
 require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
  ?>
 <section>
-<form action="insert.php" role="form" method="post">
+<form action="update.php" role="form" method="post">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
@@ -15,6 +15,11 @@ require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
     <label for="exampleInputFile">File input</label>
     <input type="file" id="exampleInputFile">
     <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Check me out
+    </label>
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>

@@ -6,7 +6,7 @@ try {
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT));
 
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($db_config);
+	$con = getPDO($config_db);
 
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM notices ' . $query_where);
 	$stmt_count -> execute();

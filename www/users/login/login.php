@@ -2,13 +2,7 @@
 
 try {
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'setting.php';
-
-	require_once $getDbConnectionClassPath;
-	$con=GetDbConnection::getConnection($configDb);
-
-	require_once $getContentLoginClassPath;
-	$getContent=new GetAccountByUserId($con);
-	$content=$getContent->getContent(new GetAccountByUserIdRequestType($_POST));
+	
 
 	unset($_SESSION['LOGIN_TOKEN']);
 	// $_SESSION['ACCOUNT_USERID']=$content['user_id'];
@@ -35,14 +29,8 @@ try {
 		$template='/index.php';
 	}
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
-	/*
-	require_once $setContentFailLogClassPath;
-	$setAccountLoginFailLog=new SetAccountLoginFailLog($con);
-	$setAccountLoginFailLog->insert(new SetAccountLoginFailLogRequestType($_POST));	 
-	 */
-
 	$con=null;
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';

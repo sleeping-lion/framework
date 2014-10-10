@@ -5,7 +5,7 @@ try {
 
 	// 입력 필터
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING));
-
+	
 	// 커넥터(PDO) 가져오기
 	$con = getPDO($config_db);
 
@@ -25,7 +25,7 @@ try {
 	}
 
 	$con = null;
-
+	
 	require_once BOARD_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'notices' . DIRECTORY_SEPARATOR . 'index.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
