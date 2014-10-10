@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Lion\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-27 10:51+0900\n"
+"PO-Revision-Date: 2013-09-27 18:14+0900\n"
+"Last-Translator: sleeping-lion <toughjjh@gmail.com>\n"
+"Language-Team: sleeping-lion <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"Language: zh\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: devices/insert.php:8 requests/insert.php:9 requests/index.php:8
+#: name_cards/insert.php:9 name_cards/index.php:8 default_images/show.php:8
+msgid "no_insert_user_id"
+msgstr ""
+
+#: devices/insert.php:11
+msgid "no_insert_device_id"
+msgstr "장치 아이디(device_id)가 입력되지 않았습니다."
+
+#: devices/insert.php:14
+msgid "no_insert_registration_id"
+msgstr "등록 아이디(registration_id)가 입력되지 않았습니다."
+
+#: devices/insert.php:20 requests/insert.php:35 requests/index.php:14
+#: name_cards/insert.php:44 name_cards/index.php:14 default_images/show.php:14
+msgid "invalid_user_id"
+msgstr "不正确"
+
+#: devices/insert.php:23
+msgid "invalid_device_id"
+msgstr "不正确"
+
+#: devices/insert.php:26
+msgid "invalid_registration_id"
+msgstr "不正确"
+
+#: devices/insert.php:36 devices/insert.php:52 name_card_rels/new.php:22
+#: name_card_rels/new.php:33 name_card_rels/new.php:42
+#: name_card_rels/new.php:53 name_card_rels/insert.php:25
+#: name_card_rels/insert.php:37 name_card_rels/insert.php:49
+#: name_card_rels/insert.php:60 name_card_rels/insert.php:73
+#: name_card_rels/insert.php:82 name_card_rels/insert.php:91
+#: name_card_rels/insert.php:132 name_card_rels/insert.php:141
+#: name_card_rels/insert.php:149 name_card_rels/index.php:22
+#: name_card_rels/index.php:33 name_card_rels/test.php:25
+#: name_card_rels/delete.php:22 name_card_rels/delete.php:37
+#: request_rels/insert.php:24 request_rels/insert.php:39
+#: request_rels/insert.php:56 request_rels/insert.php:66
+#: request_rels/delete.php:22 request_rels/delete.php:37 faqs/show.php:29
+#: faqs/show.php:38 faqs/index.php:14 faqs/index.php:31 requests/edit.php:21
+#: requests/edit.php:31 requests/edit.php:40 requests/edit.php:51
+#: requests/show.php:22 requests/show.php:33 requests/new.php:11
+#: requests/new.php:21 requests/insert.php:59 requests/insert.php:71
+#: requests/index.php:22 requests/index.php:32 requests/delete.php:22
+#: requests/delete.php:37 requests/update.php:24 requests/update.php:41
+#: name_cards/edit.php:22 name_cards/edit.php:33 name_cards/show.php:22
+#: name_cards/show.php:33 name_cards/new.php:11 name_cards/new.php:21
+#: name_cards/insert.php:78 name_cards/insert.php:90 name_cards/index.php:22
+#: name_cards/index.php:32 name_cards/delete.php:22 name_cards/delete.php:37
+#: name_cards/update.php:25 name_cards/update.php:45 name_cards/update.php:56
+#: name_cards/update.php:66 name_cards/update.php:75 name_cards/update.php:84
+#: notices/show.php:29 notices/show.php:37 notices/index.php:14
+#: notices/index.php:31 default_images/show.php:21 default_images/show.php:30
+#: user_types/show.php:22 user_types/show.php:33 user_types/index.php:11
+#: request_templates/show.php:22 request_templates/show.php:33
+#: request_templates/index.php:11 request_templates/index.php:20
+#: user_rels/insert.php:24 user_rels/insert.php:39 user_rels/insert.php:56
+#: user_rels/insert.php:66 user_rels/insert.php:73 user_rels/insert.php:81
+#: user_rels/insert.php:92 user_rels/index.php:22 user_rels/index.php:33
+#: user_rels/delete.php:22 user_rels/delete.php:37
+#: name_card_templates/show.php:22 name_card_templates/show.php:33
+#: name_card_templates/index.php:11 name_card_templates/index.php:20
+#: users/edit.php:22 users/edit.php:33 users/show.php:22 users/show.php:33
+#: users/insert.php:31 users/insert.php:43 users/index.php:30
+#: users/index.php:42 users/index.php:52 users/index.php:68
+#: users/index.php:109 users/index.php:122 users/login.php:21
+#: users/login.php:33 users/delete.php:22 users/delete.php:37
+#: users/update.php:22 users/update.php:42 users/update.php:51
+#: users/update.php:60 users/update.php:69
+msgid "query_exec_error"
+msgstr "쿼리 실행 애러"
+
+#: devices/insert.php:41 name_card_rels/delete.php:27
+#: request_rels/delete.php:27 requests/edit.php:26 requests/edit.php:45
+#: requests/new.php:16 requests/delete.php:27 name_cards/edit.php:27
+#: name_cards/new.php:16 name_cards/delete.php:27 user_types/show.php:27
+#: user_rels/insert.php:29 user_rels/index.php:27 user_rels/delete.php:27
+#: users/edit.php:27 users/show.php:27 users/index.php:35 users/login.php:26
+#: users/delete.php:27 users/update.php:27
+msgid "no_exist_user"
+msgstr "用户名或密码不正确"
+
+#: name_card_rels/new.php:8 name_card_rels/insert.php:9
+#: name_card_rels/test.php:9 name_card_rels/delete.php:8
+#: request_rels/insert.php:8 request_rels/delete.php:8 faqs/show.php:8
+#: requests/edit.php:8 requests/show.php:8 requests/delete.php:8
+#: requests/update.php:9 name_cards/edit.php:8 name_cards/show.php:8
+#: name_cards/delete.php:8 name_cards/update.php:10 notices/show.php:8
+#: user_types/show.php:8 request_templates/show.php:8 user_rels/insert.php:8
+#: user_rels/index.php:8 user_rels/delete.php:8 name_card_templates/show.php:8
+#: users/edit.php:8 users/show.php:8 users/delete.php:8 users/update.php:10
+msgid "no_insert_id"
+msgstr "bu saip id"
+
+#: name_card_rels/new.php:14 name_card_rels/insert.php:15
+#: name_card_rels/index.php:14 name_card_rels/test.php:15
+#: name_card_rels/delete.php:14 request_rels/insert.php:14
+#: request_rels/delete.php:14 faqs/show.php:21 requests/edit.php:14
+#: requests/show.php:14 requests/delete.php:14 requests/update.php:15
+#: name_cards/edit.php:14 name_cards/show.php:14 name_cards/delete.php:14
+#: name_cards/update.php:16 notices/show.php:21 user_types/show.php:14
+#: request_templates/show.php:14 user_rels/insert.php:14
+#: user_rels/index.php:14 user_rels/delete.php:14
+#: name_card_templates/show.php:14 users/edit.php:14 users/show.php:14
+#: users/index.php:14 users/delete.php:14
+msgid "invalid_id"
+msgstr "用户名或密码不正确"
+
+#: name_card_rels/new.php:27
+msgid "no_exist_name_card"
+msgstr "不存在的名牌"
+
+#: name_card_rels/new.php:47
+msgid "no_exist_user_rel"
+msgstr "不存在的名用戶"
+
+#: name_card_rels/insert.php:30 request_rels/insert.php:29
+#: requests/show.php:27 requests/update.php:29 name_cards/show.php:27
+#: name_cards/update.php:30 request_templates/show.php:27
+#: name_card_templates/show.php:27
+msgid "no_exist_content"
+msgstr "不存在的內容"
+
+#: name_card_rels/index.php:8 users/index.php:8
+msgid "no_inserted_id"
+msgstr "아이디(id)가 입력되지 않았습니다."
+
+#: faqs/index.php:20 notices/index.php:20
+msgid "EMPTY LIST"
+msgstr "빈 목록입니다."
+
+#: requests/insert.php:12 requests/insert.php:38
+msgid "no_insert_reference_id"
+msgstr "참조 아이디(reference_id)가 입력되지 않았습니다."
+
+#: requests/insert.php:15 name_cards/insert.php:12
+msgid "no_insert_title"
+msgstr "제목(title)이 입력되지 않았습니다."
+
+#: requests/insert.php:18
+msgid "no_insert_email"
+msgstr "이메일(email)이 입력되지 않았습니다."
+
+#: requests/insert.php:41 name_cards/insert.php:47
+msgid "invalid_title"
+msgstr "标题不正确"
+
+#: requests/insert.php:44
+msgid "invalid_email"
+msgstr "不正确"
+
+#: users/insert.php:9 users/login.php:7
+msgid "no_insert_mobile_num"
+msgstr "手机号码不正确"
+
+#: users/insert.php:17 users/login.php:13
+msgid "invalid_mobile_num"
+msgstr "手机号码不正确"
+
+#: users/update.php:30
+msgid "no_photo"
+msgstr "사진이 입력되지 않았습니다."
