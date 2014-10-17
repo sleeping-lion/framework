@@ -1,20 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>SL BOARD</title>
-	<meta charset="utf-8">
-	<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />
-	<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />	
-	<?php sl_style($sl_style); ?>
-	<script type="text/javascript" src="/javascripts/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="/javascripts/bootstrap.min.js" />
-	<?php sl_js($sl_js); ?>	
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta name="author" content="Sleeping-Lion" />
-	<!--[if IE]>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <![endif]-->	
-</head>
-<body id="sl_main_page">
-	<section id="sl_main">
+<header>
+	<h1><a href="/">Framework Test</a></h1>
+	<nav>
+		<ul>
+			<li><a href="/boards/histories">연혁</a></li>			
+			<li><a href="/boards/contacts/new.php">문의</a></li>
+			<li><a href="/blogs">블로그</a></li>
+			<li><a href="/boards/galleries">갤러리</a></li>
+			<li><a href="/boards/questions">질문,답변</a></li>
+			<li><a href="/boards/notices">공지사항</a></li>
+			<li><a href="/boards/guest_books">방명록</a></li>
+			<li><a href="/users/agree.php">회원가입</a></li>
+			<?php if($_SESSION['user_id']): ?>
+			<li><a href="/users/login/logout.php">로그아웃</a></li>
+			<?php else: ?>
+			<li><a href="/users/login/index.php">로그인</a></li>
+			<?php endif ?>
+		</ul>
+	</nav>
+</header>
 	

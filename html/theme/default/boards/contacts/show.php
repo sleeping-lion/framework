@@ -1,7 +1,4 @@
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
- ?>
-<section>
+<section id="sl_board_contract_show" class="sub_main">
 	<form action="insert.php" method="post">
 	<table id="sl_main_show" border="0" cellpadding="0" cellspacing="0">
 		<colgroup>
@@ -31,6 +28,3 @@ require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
 	</table>
 	</form>
 </section>
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'footer.php';
-?>

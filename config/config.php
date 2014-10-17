@@ -40,6 +40,12 @@ $locale = 'ko_KR';
 putenv("LC_ALL=" . $locale);
 setlocale(LC_ALL, $locale);
 
+
+$config['template']['layout']='index.php';
+$config['template']['header']='header.php';
+$config['template']['footer']='footer.php';
+
+
 $domain = 'messages';
 bindtextdomain($domain, realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'locale'));
 textdomain($domain);

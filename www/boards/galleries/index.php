@@ -6,7 +6,7 @@ try {
 	$clean = filter_input_array(INPUT_GET, array());
 	
 	// 커넥터(PDO) 가져오기
-	$con=getPDO($db_config);
+	$con = getPDO($config_db);
 	
 	$stmt_count=$con->prepare('SELECT COUNT(*) FROM notices '.$query_where);
 	$stmt_count->execute();
@@ -21,8 +21,7 @@ try {
 	}
 	
 	$con=null;
-		
-	require_once HTML_DIRECTORY . DIRECTORY_SEPARATOR .'main.php';
+	
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	$con=null;

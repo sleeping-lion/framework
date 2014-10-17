@@ -4,7 +4,7 @@ try {
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'setting.php';
 
 	// 커넥터(PDO) 가져오기
-	$con=getPDO($db_config);
+	$con = getPDO($config_db);
 	
 
 

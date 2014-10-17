@@ -1,7 +1,4 @@
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
- ?>
-<section>
+<section id="sl_board_question_show" class="sub_main">
 	<table id="sl_main_show" border="0" cellpadding="0" cellspacing="0">
 		<colgroup>
 			<col />
@@ -21,6 +18,3 @@ require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
 		</tbody>
 	</table>
 </section>
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'footer.php';
-?>

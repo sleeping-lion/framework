@@ -6,14 +6,12 @@ try {
 	$clean = filter_input_array(INPUT_POST, array('id'=>FILTER_VALIDATE_INT));		
 
 	// 커넥터(PDO) 가져오기
-	$con=getPDO($db_config);
+	$con = getPDO($config_db);
 
 	/******** 트랙잭션 시작 **********/
 	$con->beginTransaction();
-
-	require_once $setContentClassPath;
-	$setContent=new SetBlog($con);
-	$setContent->delete(new SetBlogRequestType(array('id'=>$_POST['id'])));
+	
+	
 
 	/******** 커밋 **********/
 	$con->commit();
