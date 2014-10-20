@@ -5,11 +5,11 @@ if (isset($_REQUEST['json'])) {
 	$data['result'] = 'success';
 	echo json_encode($data);
 } else {
-	if(isset($sl_redirect)) {
-		header('Location:'.$sl_redirect);
-		exit;
+	if (isset($sl_redirect)) {
+		header('Location:' . $sl_redirect);
+		exit ;
 	}
-	
+
 	//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR. $config['theme'].DIRECTORY_SEPARATOR. $value;
 	foreach ($config['template'] as $index => $value) {
 		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value)) {
@@ -22,14 +22,30 @@ if (isset($_REQUEST['json'])) {
 	if (empty($config['template']['layout']))
 		throw new Exception('레이아웃이 설정되지 않았습니다.$template[\'layout\']을 설정해 주세요');
 
-	// stylesheet 로드
-	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'stylesheets')) {
-		
+	// theme stylesheet 로드
+	$theme_style_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'stylesheets';
+	if (file_exists($theme_style_dir)) {
+		if ($handle = opendir($theme_style_dir)) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry != "." && $entry != "..") {
+					$config['template']['theme_style'][$index]='/html/theme/'.$config['theme'].'/stylesheets/'.$entry;
+				}
+			}
+			closedir($handle);
+		}
 	}
 
-	// javascript 로드
+	// theme javascript 로드
+	$theme_script_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'javascripts';
 	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'javascripts')) {
-
+		if ($handle = opendir($theme_script_dir)) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry != "." && $entry != "..") {
+					$config['template']['theme_script'][$index]='/html/theme/'.$config['theme'].'/javascripts/'.$entry;
+				}
+			}
+			closedir($handle);
+		}
 	}
 
 	// main템플릿이 따로 입력되 않았으면

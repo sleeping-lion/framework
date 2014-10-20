@@ -14,20 +14,30 @@ function getPDO($config_db) {
 }
 
 function sl_style($sl_style) {
-	if(!count($sl_style))
+	$count=count($sl_style);
+	
+	if(!$count)
 	return false;
 			
 	foreach($sl_style as $index=>$value) {
-		echo '<link type="text/css" rel="stylesheet" href="/stylesheets/'.$value.'" />'."\n";
+		echo '<link type="text/css" rel="stylesheet" href="'.$value.'" />';
+		
+		if($count<$index+1)
+		echo "\n";
 	}
 }
 
 function sl_js($sl_js) {
-	if(!count($sl_js))
+	$count=count($sl_js);	
+	
+	if(!$count)
 	return false;
 			
 	foreach($sl_js as $index=>$value) {
-		echo '<script type="text/javascript" src="/javascripts/'.$value.'"></script>'."\n";
+		echo '<script type="text/javascript" src="'.$value.'"></script>';
+		
+		if($count<$index+1)
+		echo "\n";		
 	}
 }
 
