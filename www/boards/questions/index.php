@@ -3,23 +3,27 @@
 try {
 	require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'setting.php';
 
-	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT));
+	// 입력 필터
+	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING));
 
 	// 커넥터(PDO) 가져오기
 	$con = getPDO($config_db);
 
+	$query_where = 'WHERE 1=1';
+
 	// 전체 카운터 뽑기
-	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM notices ' . $query_where);
+	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM questions ' . $query_where);
 	$stmt_count -> execute();
 	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
-	$total = $total_a[0];
+	$data['total'] = $total_a[0];
 
 	// 게시물이 있으면
-	if ($total) {
+	if ($data['total']) {
 		$query_order = 'ORDER BY ID DESC';
 
-		$stmt = $con -> prepare('SELECT * FROM notices ' . $query_where . ' ' . $query_order);
+		$stmt = $con -> prepare('SELECT * FROM questions ' . $query_where . ' ' . $query_order);
 		$stmt -> execute();
+		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	$con = null;

@@ -3,7 +3,7 @@
 try {
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'setting.php';
 
-	if($_SESSION['ACCOUNT_ID']) {
+	if(isset($_SESSION['USER_ID'])) {
 		$template['main']='account/login/already_login.html';
 	} else {
 		if ($_SESSION['ERROR_MESSAGE']) {

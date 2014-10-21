@@ -25,10 +25,10 @@ $config['theme'] = 'default';
 /* path */
 require_once 'path.php';
 
-/* include function */
+/* include default function */
 require_once LIB_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php';
 
-/* include function */
+/* include custom function */
 require_once FUNCTION_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php';
 
 /* site config */

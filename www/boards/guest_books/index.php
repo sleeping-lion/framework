@@ -9,17 +9,18 @@ try {
 	$con = getPDO($config_db);
 	
 	// 전체 카운터 뽑기
-	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM notices ' . $query_where);
+	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM guest_books ' . $query_where);
 	$stmt_count -> execute();
 	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
-	$total = $total_a[0];
+	$data['total'] = $total_a[0];
 	
 	// 게시물이 있으면 
-	if ($total) {
+	if ($data['total']) {
 		$query_order = 'ORDER BY ID DESC';
 
-		$stmt = $con -> prepare('SELECT * FROM notices ' . $query_where . ' ' . $query_order);
+		$stmt = $con -> prepare('SELECT * FROM guest_books ' . $query_where . ' ' . $query_order);
 		$stmt -> execute();
+		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	$con = null;

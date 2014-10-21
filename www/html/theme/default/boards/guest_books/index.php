@@ -18,7 +18,7 @@
 			<tbody>
 				<?php if($data['total']): ?>
 				<?php foreach($data['list'] as $index=>$value): ?>
-				<tr <?php if($tBook_SQ == $booksq): ?>class="selected"<?php endif ?>>
+					<tr>
 					<td><?php echo $value['id'] ?></td>
 					<td><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['title'] ?></a></td>
 					<td><?php echo $value['count'] ?></td>

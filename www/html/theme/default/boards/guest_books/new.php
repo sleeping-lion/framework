@@ -8,15 +8,15 @@
 	<?php else: ?>		
   <div class="form-group">
     <label for="sl_name"><?php echo _('label_name') ?></label>
-    <input type="text" class="form-control" id="sl_name" name="title" required="required" />
+    <input type="text" class="form-control" id="sl_name" name="name" required="required" />
   </div>	
   <div class="form-group">
     <label for="sl_password"><?php echo _('label_password') ?></label>
-    <input type="password" class="form-control" id="sl_password" name="title" required="required" />
+    <input type="password" class="form-control" id="sl_password" name="password" required="required" />
   </div>
   <div class="form-group">
     <label for="sl_password_confirm"><?php echo _('label_password_confirm') ?></label>
-    <input type="password" class="form-control" id="sl_password_confirm" name="title" required="required" />
+    <input type="password" class="form-control" id="sl_password_confirm" name="password_confirm" required="required" />
   </div>  
   <?php endif ?>
   <div class="form-group">
