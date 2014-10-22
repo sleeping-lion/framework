@@ -23,6 +23,7 @@
 						<li itemtype="http://data-vocabulary.org/Breadcrumb" itemscope="itemscope" class="active"><span itemprop="title">사진첩</span></li>						
 					</ol>
 			</div>
+		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>			
 		<?php require_once $config['template']['main'] ?>
 		</div>		
 	</div>

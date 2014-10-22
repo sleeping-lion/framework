@@ -33,6 +33,8 @@ try {
 	/******** 커밋 **********/
 	$con -> commit();
 	$data['inserted_id'] = $clean['id'];
+	
+	$_SESSION['MESSAGE']='성공적으로 글 써졌음';
 
 	$sl_redirect = 'index.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

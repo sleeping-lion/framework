@@ -118,6 +118,16 @@ function orderLink($order,$link='index.php',$length=2) {
 }
 */
 
+function get_limit_query($pageID,$pageSize=10) {
+	if(empty($pageID)) {
+		$pageID=0;
+	} else {
+		$pageID=$pageID-1;
+	}
+	
+	return 'LIMIT '.$pageID*$pageSize.','.$pageSize;
+}
+
 function get_where_query(Array $where_array) {
 	if(!count($where_array)) {
 		return '';
@@ -129,7 +139,7 @@ function get_where_query(Array $where_array) {
 }
 
 
-function get_order_query($array, $key, $desc = false, $alias = false) {
+function get_order_query(Array $array, $key, $desc = false, $alias = false) {
 	if (!array_key_exists($key, $array))
 		throw new Exception("Error Processing Request", 1);
 
@@ -224,12 +234,12 @@ function pagination($allCount,$perPage=10,$prevNext=true,$linkPage='index.php') 
 		'nextImg' => '▶',
 		'firstPageText' => '맨처음',
 		'lastPageText' => '마지막',
-		'curPageLinkClassName' => 'current'	
+		'curPageLinkClassName' => 'active'	
 	);
 	$pager = SLPager::factory($params);
 	$link=$pager->getLinks();
 
-	return $link['all'];
+	return '<ul class="pagination">'.$link['all'].'</ul>';
 }
 
 /*  오늘은 시간 표시, 그밖에는 날짜만 표시 */ 

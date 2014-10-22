@@ -5,24 +5,24 @@
 				<col />
 				<col />
 				<col />
-				<col />
+				<col class="sl_created_at" />
 			</colgroup>
 			<thead>
 				<tr>
 					<th><?php echo get_order_link('아이디','id',$clean['desc']) ?></th>
 					<th><?php echo get_order_link('제목','title',$clean['desc']) ?></th>
 					<th><?php echo get_order_link('조회','count',$clean['desc']) ?></th>
-					<th><?php echo get_order_link('입력일','created',$clean['desc']) ?></th>
+					<th class="sl_created_at"><?php echo get_order_link('입력일','created',$clean['desc']) ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if($data['total']): ?>
 				<?php foreach($data['list'] as $index=>$value): ?>
-				<tr <?php if($tBook_SQ == $booksq): ?>class="selected"<?php endif ?>>
+				<tr <?php if($clean['id'] == $value['id']): ?>class="selected"<?php endif ?>>
 					<td><?php echo $value['id'] ?></td>
 					<td><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['title'] ?></a></td>
 					<td><?php echo $value['count'] ?></td>
-					<td><?php echo $value['created_at'] ?></td>
+					<td class="sl_created_at"><?php echo $value['created_at'] ?></td>
 				</tr>
 				<?php endforeach ?>
 				<?php else: ?>

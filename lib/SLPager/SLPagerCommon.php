@@ -837,7 +837,7 @@ class SLPagerCommon {
 			if (array_key_exists($this->_urlVar, $this->_linkData)) {
 				$onclick = str_replace('%d', $this->_linkData[$this->_urlVar], $this->_onclick);
 			}
-			return sprintf('<a href="%s"%s%s%s%s title="%s">%s</a>',
+			return sprintf('<li><a href="%s"%s%s%s%s title="%s">%s</a></li>',
 			htmlentities($this->_url . $href, ENT_COMPAT, 'UTF-8'),
 			empty($this->_classString) ? '' : ' '.$this->_classString,
 			empty($this->_attributes)  ? '' : ' '.$this->_attributes,
@@ -851,7 +851,7 @@ class SLPagerCommon {
 			if (!empty($_GET)) {
 				$href .= '?' . $this->_http_build_query_wrapper($_GET);
 			}
-			return sprintf("<a href='javascript:void(0)' onclick='%s'%s%s%s title='%s'>%s</a>",
+			return sprintf("<li><a href='javascript:void(0)' onclick='%s'%s%s%s title='%s'>%s</a></li>",
 			$this->_generateFormOnClick($href, $this->_linkData),
 			empty($this->_classString) ? '' : ' '.$this->_classString,
 			empty($this->_attributes)  ? '' : ' '.$this->_attributes,
@@ -1593,8 +1593,8 @@ class SLPagerCommon {
 		}
 
 		if (strlen($this->_curPageLinkClassName)) {
-			$this->_curPageSpanPre  .= '<span class="'.$this->_curPageLinkClassName.'">';
-			$this->_curPageSpanPost = '</span>' . $this->_curPageSpanPost;
+			$this->_curPageSpanPre  .= '<li class="'.$this->_curPageLinkClassName.'"><span>';
+			$this->_curPageSpanPost = '</span></li>' . $this->_curPageSpanPost;
 		}
 
 		$this->_perPage = max($this->_perPage, 1); //avoid possible user errors

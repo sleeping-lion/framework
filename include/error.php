@@ -3,6 +3,7 @@
   		echo json_encode(array('result'=>'error','code'=>$e->getCode(),'message'=>$e->getMessage()));
 	} else {
 ?>
+	<?php if(MODE==''): ?>
 <!DOCTYPE html>
 <html>
 <title>기본코드</title>
@@ -13,6 +14,12 @@
 <?php //print_r($e); ?>
 </body>
 </html>
+	<?php else: ?>
+	<?php
+		$_SESSION['ERROR_CODE']=$e->getCode();
+		$_SESSION['ERROR_MESSAGE']=$e->getMessage();		
+	?>
+	<?php endif ?>
 <?php 
 	}
 ?>
