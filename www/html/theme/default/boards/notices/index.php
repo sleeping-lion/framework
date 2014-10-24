@@ -32,10 +32,12 @@
 				<?php endif ?>
 		</tbody>
 	</table>
-</article>
-<?php if($_SESSION['admin']): ?>
-<div id="sl_index_bottom_buttons">
-	<a href="new.php">새글 쓰기</a>
-</div>
-<?php endif ?>
+	</article>
+	<?php echo pagination($data['total']) ?>
+	<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>
+	<?php if($_SESSION['admin']): ?>
+	<div id="sl_index_bottom_buttons">
+		<a href="new.php">새글 쓰기</a>
+	</div>
+	<?php endif ?>
 </section>

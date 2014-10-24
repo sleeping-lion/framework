@@ -118,6 +118,7 @@ function orderLink($order,$link='index.php',$length=2) {
 }
 */
 
+
 function get_limit_query($pageID,$pageSize=10) {
 	if(empty($pageID)) {
 		$pageID=0;
@@ -223,6 +224,9 @@ function get_order_link($title, $field, $start_order_desc = true) {
 }
 
 function pagination($allCount,$perPage=10,$prevNext=true,$linkPage='index.php') {
+	if($allCount<=$perPage)
+	return '';
+	
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'SLPager'.DIRECTORY_SEPARATOR.'SLPager.php';
 	
 	$params = array(
@@ -244,11 +248,11 @@ function pagination($allCount,$perPage=10,$prevNext=true,$linkPage='index.php') 
 
 /*  오늘은 시간 표시, 그밖에는 날짜만 표시 */ 
 
-function getFormatDate($date,$type=null,$noTodayTime=false) {
-	$date1=explode(' ',$date);
-	$date2=explode('-',$date1[0]);
+function get_format_date($date,$type=null,$noTodayTime=false) {
+	$date=date('Y-m-d',strtotime($date));
+	$date2=explode('-', $date);
 
-	switch(intval($type)) {
+	switch($type) {
 		case 1 :
 			return $date2[0].'년 '.$date2[1].'월';
 		case 2 :
@@ -288,12 +292,12 @@ function getFormatDate($date,$type=null,$noTodayTime=false) {
 				
 		default  :
 			if($noTodayTime)
-			return $date1[0];
+			return $date;
 
 			if(mktime(0, 0, 0, date("m")  , date("d"), date("Y"))==mktime(0, 0, 0, $date2[1]  , $date2[2], $date2[0])) {
-				return $date1[1];
+				return $date;
 			} else {
-				return $date1[0];
+				return $date;
 			}
 	}
 }

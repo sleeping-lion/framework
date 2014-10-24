@@ -4,7 +4,9 @@
 <title>SL BOARD</title>
 <meta charset="utf-8">
 <link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />
+<?php if($config['use_boostrap']): ?>
 <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+<?php endif ?>
 <?php sl_style($config['template']['theme_style']); ?>	
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta name="author" content="Sleeping-Lion" />
@@ -14,22 +16,20 @@
 </head>
 <body id="sl_main_page">
 	<?php require_once $config['template']['header'] ?>
-	<div id="mon">
+	<div id="mom">
 		<div id="main" class="container">
-			<div class="page-header">
-				<h1 itemtype="http://schema.org/WebPageElement" itemscope="" itemprop="mainContentOfPage"><span itemprop="headline">사진첩</span></h1>
-					<ol class="breadcrumb">
-						<li itemtype="http://data-vocabulary.org/Breadcrumb" itemscope="itemscope"><a itemprop="url" href="/"><span itemprop="title">홈</span></a></li>
-						<li itemtype="http://data-vocabulary.org/Breadcrumb" itemscope="itemscope" class="active"><span itemprop="title">사진첩</span></li>						
-					</ol>
-			</div>
+		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
 		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>			
 		<?php require_once $config['template']['main'] ?>
 		</div>		
 	</div>
 	<?php require_once $config['template']['footer'] ?>
+<?php if($config['use_boostrap'] OR $config['use_jquery']): ?>	
 <script type="text/javascript" src="/javascripts/jquery-2.1.1.min.js"></script>
+<?php endif ?>
+<?php if($config['use_boostrap']): ?>
 <script type="text/javascript" src="/javascripts/bootstrap.min.js" ></script>
+<?php endif ?>
 <?php sl_js($config['template']['theme_script']); ?>	
 </body>
 </html>

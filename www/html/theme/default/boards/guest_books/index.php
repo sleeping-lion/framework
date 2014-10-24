@@ -22,7 +22,7 @@
 					<td><?php echo $value['id'] ?></td>
 					<td><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['title'] ?></a></td>
 					<td><?php echo $value['count'] ?></td>
-					<td class="sl_created_at"><?php echo $value['created_at'] ?></td>
+					<td class="sl_created_at"><?php echo get_format_date($value['created_at']) ?></td>
 				</tr>
 				<?php endforeach ?>
 				<?php else: ?>
@@ -34,7 +34,7 @@
 		</table>
 	</article>
 	<?php echo pagination($data['total']) ?>
-	<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>	
+	<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>
 	<div id="sl_index_bottom_buttons">
 		<a href="new.php">새글 쓰기</a>
 	</div>

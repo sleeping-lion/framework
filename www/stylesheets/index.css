@@ -26,10 +26,10 @@ mark, rp, rt, ruby, summary, time {display:inline;}
 /* layout */
 footer {clear:both;float:left;width:80%;margin:0 10%;color:#666;text-align: center}
 footer div {margin:0.3em 0 0}
-#mom {clear:both;float:left;width:100%;padding:0}
-	.sub_main {clear:both;width:100%}
+#mom {float:left;width:100%;padding:0}
+.sub_main {float:left;width:100%}
 .page-header {float:left;width:100%}
-.page-header h1 {float:left;margin:0.7em 0 0;padding:0;font-weight:bold;color:#666}
+.page-header h1 {float:left;margin:0.3em 0 0;padding:0;font-weight:bold;color:#666}
 .page-header .breadcrumb  {float:right;margin:0}
 .alert-success {clear:both}
 #sl_ad {clear:both;margin-bottom:10px}
@@ -56,7 +56,7 @@ footer div {margin:0.3em 0 0}
 
 /* header */
 header {position:relative}
-header h1 {float:left;margin:1.2em 0 0;padding:0}
+header h1 {float:left;margin:0.5em 0 0 0.5em;padding:0}
 header h1 a:active {color:red}
 header nav { position: relative; z-index: 999; margin:0; padding:0}
 header nav ul { float: right; margin: 1.5em 0 0 0; padding: 0}
@@ -224,7 +224,7 @@ a.left:active {background-position: -60px 0}
 	.nav-pills > li + li {margin:0}
 	#mom {float:left;clear:both;width:100%;margin:0}
 	#main {float:left;margin:0;padding:0;width:100%;padding:3%;border-radius:5px;background:#fff;}
-
+	.sub_main {clear:both;width:100%}
 	#sl_main_blog li {margin-bottom:10px}
 	#main_main article ul {margin:0;padding:0;list-style:none}
 	#sl_intro_index #sl_intro_right {float:left;width:100%}  

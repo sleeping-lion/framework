@@ -21,6 +21,13 @@ if (isset($_REQUEST['json'])) {
 
 	if (empty($config['template']['layout']))
 		throw new Exception('레이아웃이 설정되지 않았습니다.$template[\'layout\']을 설정해 주세요');
+	
+	
+	// theme setting 로드
+	$theme_setting_file = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'setting.php';
+	if (file_exists($theme_setting_file)) {
+		require_once $theme_setting_file;
+	}	
 
 	// theme stylesheet 로드
 	$theme_style_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'stylesheets';

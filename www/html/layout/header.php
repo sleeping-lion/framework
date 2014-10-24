@@ -10,7 +10,7 @@
 			<li><a href="/boards/notices">공지사항</a></li>
 			<li><a href="/boards/guest_books">방명록</a></li>
 			<li><a href="/users/agree.php">회원가입</a></li>
-			<?php if($_SESSION['user_id']): ?>
+			<?php if($_SESSION['USER_ID']): ?>
 			<li><a href="/users/login/logout.php">로그아웃</a></li>
 			<?php else: ?>
 			<li><a href="/users/login/index.php">로그인</a></li>
