@@ -11,7 +11,7 @@ try {
 	}	
 	
 	// 커넥터(PDO) 가져오기
-	$con=get_PDO($db_config);
+	$con=get_PDO($config_db);
 	
 
 	$con=null;
@@ -20,7 +20,7 @@ try {
 } catch(Exception $e) {
 	$con=null;
 
-	require_once $foramtErrorData;
+	require_once  INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';;
 }
 
 ?>
