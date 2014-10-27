@@ -3,7 +3,7 @@
   		echo json_encode(array('result'=>'error','code'=>$e->getCode(),'message'=>$e->getMessage()));
 	} else {
 ?>
-	<?php if(MODE==''): ?>
+	<?php if(MODE=='development'): ?>
 <!DOCTYPE html>
 <html>
 <title>기본코드</title>

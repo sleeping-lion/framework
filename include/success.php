@@ -9,6 +9,24 @@ if (isset($_REQUEST['json'])) {
 		header('Location:' . $sl_redirect);
 		exit ;
 	}
+	
+	
+	if(empty($config['action'])) {
+		switch($_SERVER['PHP_SELF']) {
+			case 'index.php' :
+			$config['action']=_('index');
+				break;
+			case 'show.php':
+			$config['action']=_('show');
+				break;
+			case 'edit.php':
+			$config['action']=_('edit');
+				break;			
+			case 'new.php':
+			$config['action']=_('new');
+				break;
+		}
+	}
 
 	//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR. $config['theme'].DIRECTORY_SEPARATOR. $value;
 	foreach ($config['template'] as $index => $value) {

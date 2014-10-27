@@ -4,7 +4,16 @@ try {
 	require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'setting.php';
 
 	// 입력 필터
-	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING));
+	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING, 'pageID' => FILTER_VALIDATE_INT, 'desc' => FILTER_VALIDATE_INT, 'order' => FILTER_SANITIZE_STRING));
+
+	if (empty($clean['order'])) {
+		$clean['order'] = 'id';
+		$clean['desc'] = true;
+		$_GET['order'] = 'id';
+		$_GET['desc'] = true;
+	}
+
+	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
 	$con = getPDO($config_db);
@@ -19,7 +28,8 @@ try {
 
 	// 게시물이 있으면
 	if ($data['total']) {
-		$query_order = 'ORDER BY ID DESC';
+		$query_order = get_order_query($order_a, $clean['order'], $clean['desc']);
+		$query_limit = get_limit_query($clean['pageID']);
 
 		$stmt = $con -> prepare('SELECT * FROM questions ' . $query_where . ' ' . $query_order);
 		$stmt -> execute();
