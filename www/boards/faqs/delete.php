@@ -6,18 +6,7 @@ try {
 	require_once $adminOnly;
 
 	$con=getPDO($db_config);
-
-	/******** 트랙잭션 시작 **********/
-	$con->beginTransaction();
-
-	// 삭제
-	require_once $contentClassPath.DIRECTORY_SEPARATOR.'SetFaq.php';
-	$setContent=new SetFaq($con);
-	$setContent->delete(new SetFaqRequestType(array('id'=>$_POST['id'])));
-
-	/******** 커밋 **********/
-	$con->commit();
-	$con=null;
+	
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {

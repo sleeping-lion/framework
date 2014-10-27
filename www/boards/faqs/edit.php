@@ -5,12 +5,8 @@ try {
 
 	require_once $adminOnly;
 
-	$con=getPDO($db_config);
-
-	//본문 가져오기 
-	require_once $contentClassPath.DIRECTORY_SEPARATOR.'GetFaq.php';
-	$getContent=new GetFaq($con);
-	$data['content']=$getContent->getContent(new GetFaqRequestType(array('id'=>$_GET['id'])));
+	$con=get_PDO($db_config);
+	
 
 	$con=null;
 

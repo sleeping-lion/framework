@@ -6,7 +6,7 @@ try {
 	$clean = filter_input_array(INPUT_POST, array('id'=>FILTER_VALIDATE_INT));		
 
 	// 커넥터(PDO) 가져오기
-	$con=getPDO($db_config);
+	$con=get_PDO($db_config);
 
 	/******** 트랙잭션 시작 **********/
 	$con->beginTransaction();

@@ -7,7 +7,7 @@ try {
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING));
 	
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	$query_where = 'WHERE 1=1';
 

@@ -18,8 +18,8 @@
 	<?php require_once $config['template']['header'] ?>
 	<div id="mom">
 		<div id="main" class="container">
-		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
-		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>			
+		<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
+		<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>	
 		<?php require_once $config['template']['main'] ?>
 		</div>		
 	</div>

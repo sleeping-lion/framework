@@ -16,7 +16,7 @@ try {
 	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	// 전체 카운터 뽑기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM guest_books ' . $query_where);

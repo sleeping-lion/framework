@@ -10,7 +10,6 @@ if (isset($_REQUEST['json'])) {
 		exit ;
 	}
 	
-	
 	if(empty($config['action'])) {
 		switch($_SERVER['PHP_SELF']) {
 			case 'index.php' :
@@ -30,10 +29,10 @@ if (isset($_REQUEST['json'])) {
 
 	//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR. $config['theme'].DIRECTORY_SEPARATOR. $value;
 	foreach ($config['template'] as $index => $value) {
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value)) {
-			$config['template'][$index] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value;
+		if (file_exists(HTML_DIRECTORY.DIRECTORY_SEPARATOR. 'theme' . DIRECTORY_SEPARATOR  . $config['theme'] . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value)) {
+			$config['template'][$index] = HTML_DIRECTORY.DIRECTORY_SEPARATOR. 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value;
 		} else {
-			$config['template'][$index] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value;
+			$config['template'][$index] = HTML_DIRECTORY. DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . $value;
 		}
 	}
 
@@ -75,18 +74,17 @@ if (isset($_REQUEST['json'])) {
 
 	// main템플릿이 따로 입력되 않았으면
 	if (empty($template['main'])) {
-		$b = explode('.php', $_SERVER['SCRIPT_NAME']);
-		$tFilePath = $b[0] . '.php';
+		//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $tFilePath;
 
 		// html디렉토리에 같은 경로의 파일이 존재하나 확인하여서
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $tFilePath)) {
-			// 있어면 같은 경로의 파일을 이용하고
-			$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $tFilePath;
+		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'])) {
+			// 있으면 같은 경로의 파일을 이용하고
+			$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'];
 		} else {
 			// 없으면
-			if (HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . $tFilePath) {
+			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . $tFilePath)) {
 				// 기본 테마의 것을 이용하고
-				$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $tFilePath;
+				$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'];
 			} else {
 				//그도 없으면 예외 처리
 				throw new Exception('메인이 설정되지 않았습니다. $template[\'main\']을 설정해 주세요');
@@ -117,4 +115,4 @@ if (isset($_REQUEST['json'])) {
 		require_once $config['template']['layout'];
 	}
 }
-?>
+

@@ -16,7 +16,7 @@ try {
 	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	$query_where = 'WHERE 1=1';
 

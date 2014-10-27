@@ -1,6 +1,6 @@
 <?php
 
-function getPDO($config_db) {
+function get_PDO($config_db) {
 	if (MODE == 'production') {
 		$pdo = new PDO($config_db['dbdriver'] . ':host=' . $config_db['hostname'] . ';dbname=' . $config_db['database'], $config_db['username'], $config_db['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 	} else {
@@ -11,6 +11,18 @@ function getPDO($config_db) {
 	$pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$pdo -> setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
 	return $pdo;
+}
+
+function find_breadcrumbs($theme='default',$other_path=null) {
+	$html=false;
+	
+	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] .DIRECTORY_SEPARATOR. $_SERVER['SCRIPT_NAME'])) {
+		$html=HTML_DIRECTORY . DIRECTORY_SEPARATOR .'theme'. DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR ;
+	} else {
+	 	$html=HTML_DIRECTORY . DIRECTORY_SEPARATOR .'theme'. DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . 'breadcrumbs.php';
+	}
+	
+	return $html;
 }
 
 function sl_style($sl_style) {
@@ -55,7 +67,7 @@ function truncate($string,$length) {
 	}
 }
 
-function showLink($id,$pageId=null,$link='show.php') {
+function show_link($id,$pageId=null,$link='show.php') {
 	if(strstr($link,'?')) {
 		$link.='&id='.$id;
  	} else {
@@ -73,7 +85,7 @@ function showLink($id,$pageId=null,$link='show.php') {
 	return $link;
 }
 
-function indexLink($pageId=null,$link='index.php') {
+function index_link($pageId=null,$link='index.php') {
 	if($_GET['pageID']) {
 		if(strstr($link,'?')) {
 			$link.='&pageID='.$pageId;
@@ -84,40 +96,6 @@ function indexLink($pageId=null,$link='index.php') {
 	
 	return $link;
 }
-/*
-function orderLink($order,$link='index.php',$length=2) {
-	if($_GET['order']) {
-		if($_GET['order'][0][0]==$order) {
-			if($_GET['order'][0][1]==1) {
-				$link.='?order[0][0]='.$order.'&amp;order[0][1]=0';
-			} else {
-				$link.='?order[0][0]='.$order.'&amp;order[0][1]=1';
-			}
-			
-			foreach($_GET['order'] as $index=>$value) {
-				if($index>1) {
-				if($order!=$value[0]) { 
-				$link.='&order['.($index+1).'][0]='.$value[0];
-				$link.='&order['.($index+1).'][1]='.$value[1];
-				}
-				}
-			}
-		} else {
-			$link.='?order[0][0]='.$order.'&amp;order[0][1]=1';
-			foreach($_GET['order'] as $index=>$value) {
-				if($order!=$value[0]) {
-				$link.='&order['.($index+1).'][0]='.$value[0];
-				$link.='&order['.($index+1).'][1]='.$value[1];
-				}
-			}
-		}
-	} else {
-		$link.='?order[0][0]='.$order.'&amp;order[0][1]=1';
-	}
-	return $link;
-}
-*/
-
 
 function get_limit_query($pageID,$pageSize=10) {
 	if(empty($pageID)) {

@@ -5,8 +5,6 @@ try {
 
 	require_once $adminOnly;
 
-	$template['main']=$boardHtmlPath.DIRECTORY_SEPARATOR.'confirmDelete.html';
-
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	require_once $foramtErrorData;

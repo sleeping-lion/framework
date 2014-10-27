@@ -5,19 +5,8 @@ try {
 
 	require_once $adminOnly;
 
-	$con=getPDO($db_config);
-
-	/******** 트랙잭션 시작 **********/
-	$con->beginTransaction();
-
-	// 삽입
-	require_once $setContentClassPath;
-	$setContent=new SetFaq($con);
-	$data['inserted_id']=$setContent->insert(new SetFaqRequestType($_POST));
-
-	/******** 커밋 **********/
-	$con->commit();
-	$con=null;
+	$con=get_PDO($db_config);
+	
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {

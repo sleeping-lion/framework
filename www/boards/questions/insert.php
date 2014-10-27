@@ -11,7 +11,7 @@ try {
 	$clean['encrypted_password'] = '';
 
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();

@@ -6,7 +6,7 @@ try {
 	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'email' => FILTER_VALIDATE_EMAIL, 'title' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
 
 	// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();

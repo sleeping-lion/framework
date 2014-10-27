@@ -5,17 +5,8 @@ try {
 
 	require_once $adminOnly;
 
-	$con=getPDO($db_config);
-	
-	/******** 트랙잭션 시작 **********/
-	$con->beginTransaction();
+	$con=get_PDO($db_config);
 
-	$setFaq=new SetFaq($con);
-	$setFaq->update(new SetFaqRequestType($_POST));
-
-	/******** 커밋 **********/
-	$con->commit();
-	$con=null;
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
