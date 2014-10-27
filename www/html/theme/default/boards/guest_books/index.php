@@ -9,10 +9,10 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th><?php echo get_order_link('아이디','id',$clean['desc']) ?></th>
-					<th><?php echo get_order_link('제목','title',$clean['desc']) ?></th>
-					<th><?php echo get_order_link('조회','count',$clean['desc']) ?></th>
-					<th class="sl_created_at"><?php echo get_order_link('입력일','created',$clean['desc']) ?></th>
+					<th><?php echo get_order_link(_('label_id'),'id',$clean['order'],$clean['desc']) ?></th>
+					<th><?php echo get_order_link(_('label_title'),'title',$clean['order'],$clean['desc']) ?></th>
+					<th><?php echo get_order_link(_('label_count'),'count',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_created_at"><?php echo get_order_link(_('label_created_at'),'created',$clean['order'],$clean['desc']) ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,7 +27,7 @@
 				<?php endforeach ?>
 				<?php else: ?>
 				<tr>
-					<td colspan="4" class="no_data"> 등록된 데이터가 없습니다. </td>
+					<td colspan="4" class="no_data"><?php echo _('no_data') ?></td>
 				</tr>
 				<?php endif ?>
 			</tbody>
@@ -36,6 +36,6 @@
 	<?php echo pagination($data['total']) ?>
 	<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>
 	<div id="sl_index_bottom_buttons">
-		<a href="new.php">새글 쓰기</a>
+		<a href="new.php"><?php echo _('new_link') ?></a>
 	</div>
 </section>

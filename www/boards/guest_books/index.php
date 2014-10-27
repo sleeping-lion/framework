@@ -9,8 +9,6 @@ try {
 	if (empty($clean['order'])) {
 		$clean['order'] = 'id';
 		$clean['desc'] = true;
-		$_GET['order'] = 'id';
-		$_GET['desc'] = true;
 	}
 
 	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');

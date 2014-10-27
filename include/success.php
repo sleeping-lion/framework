@@ -73,23 +73,12 @@ if (isset($_REQUEST['json'])) {
 	}
 
 	// main템플릿이 따로 입력되 않았으면
-	if (empty($template['main'])) {
-		//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $tFilePath;
-
-		// html디렉토리에 같은 경로의 파일이 존재하나 확인하여서
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'])) {
-			// 있으면 같은 경로의 파일을 이용하고
-			$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'];
-		} else {
-			// 없으면
-			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . $tFilePath)) {
-				// 기본 테마의 것을 이용하고
-				$config['template']['main'] = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $config['theme'] . $_SERVER['SCRIPT_NAME'];
-			} else {
-				//그도 없으면 예외 처리
-				throw new Exception('메인이 설정되지 않았습니다. $template[\'main\']을 설정해 주세요');
-			}
-		}
+	if (empty($config['template']['main'])) {
+		
+		$config['template']['main'] =find_html($config['theme']);
+		
+		if (empty($config['template']['main']))
+			throw new Exception('레이아웃이 설정되지 않았습니다.$template[\'main\']을 설정해 주세요');
 	}
 
 	if (isset($_SESSION['ERROR_MESSAGE'])) {
