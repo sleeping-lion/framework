@@ -47,7 +47,26 @@ if (isset($_REQUEST['json'])) {
 	if (file_exists($theme_setting_file)) {
 		require_once $theme_setting_file;
 	}
+	
+	if(isset($sl_style)) {
+		if(is_array($sl_style)) {
+			$config['template']['theme_style']=$sl_style;
+		} else {
+			$config['template']['theme_style']=array();
+			$config['template']['theme_style'][0]=$sl_style;
+		}
+	}
+	
+	if(isset($sl_js)) {
+		if(is_array($sl_js)) {
+			$config['template']['theme_script']=$sl_js;
+		} else {
+			$config['template']['theme_script']=array();
+			$config['template']['theme_script'][0]=$sl_js;
+		}
+	}
 
+/*
 	// theme stylesheet 로드
 	$theme_style_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $sl_theme . DIRECTORY_SEPARATOR . 'stylesheets';
 	if (file_exists($theme_style_dir)) {
@@ -73,7 +92,7 @@ if (isset($_REQUEST['json'])) {
 			closedir($handle);
 		}
 	}
-
+*/
 	// main템플릿이 따로 입력되 않았으면
 	if (empty($config['template']['main'])) {
 

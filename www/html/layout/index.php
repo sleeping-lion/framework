@@ -3,10 +3,10 @@
 	<head>
 		<title>SL BOARD</title>
 		<meta charset="utf-8">
-		<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />
 		<?php if($config['use_boostrap']): ?>
 		<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 		<?php endif ?>
+		<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />		
 		<?php sl_style($config['template']['theme_style']); ?>
 		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 		<meta name="author" content="Sleeping-Lion" />

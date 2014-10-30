@@ -33,9 +33,9 @@
 			</tbody>
 		</table>
 	</article>
-	<?php echo pagination($data['total']) ?>
-	<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>
-	<div id="sl_index_bottom_buttons">
-		<a href="new.php"><?php echo _('new_link') ?></a>
+	<div id="sl_index_bottom_menu">
+		<?php echo pagination($data['total']) ?>
+		<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'search.php' ?>
+		<a href="new.php" class="btn btn-default"><?php echo _('new_link') ?></a>
 	</div>
 </section>

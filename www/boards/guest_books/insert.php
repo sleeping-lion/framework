@@ -2,8 +2,6 @@
 
 try {
 	require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'setting.php';
-	
-	print_r($_POST);
 
 	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'password' => FILTER_SANITIZE_STRING, 'password_confirm' => FILTER_SANITIZE_STRING, 'title' => FILTER_SANITIZE_STRING,'content'=>FILTER_SANITIZE_STRING));
 

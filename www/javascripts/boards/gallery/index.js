@@ -1,8 +1,8 @@
 $(document).ready(function() {	
 	$('#sl_gallery_right li a').hover(function(){
-		$(this).find('img').stop().animate({opacity:'0.8',width:'120%', height:'120%', marginTop:'-10%', marginLeft:'-10%'},400)
+		$(this).find('img').stop().animate({opacity:'0.8',width:'120%', height:'120%', marginTop:'-10%', marginLeft:'-10%'},400);
 	},function(){
-		$(this).find('img').stop().animate({opacity:'1',width:'100%', height:'100%', marginTop:'0%', marginLeft:'0%'},400)
+		$(this).find('img').stop().animate({opacity:'1',width:'100%', height:'100%', marginTop:'0%', marginLeft:'0%'},400);
 	});
 	
 	$("#sl_gallery_left  span").css({opacity:'0.8'});

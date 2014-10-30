@@ -12,7 +12,7 @@ try {
 		throw new Exception(_('invalid_password'), 1);
 	
 		// 커넥터(PDO) 가져오기
-	$con = getPDO($config_db);
+	$con = get_PDO($config_db);
 
 	$query_where = 'WHERE email=:email';
 
@@ -28,7 +28,7 @@ try {
 
 	// 게시물이 있으면
 	if ($data['total']) {
-		$stmt = $con -> prepare('SELECT 	id,name,encrypted_password FROM users ' . $query_where);
+		$stmt = $con -> prepare('SELECT 	id,name,encrypted_password,admin FROM users ' . $query_where);
 		$stmt->bindParam(':email',$clean['email'],PDO::PARAM_STR);
 		$stmt -> execute();
 		$user = $stmt -> fetch(PDO::FETCH_NUM);
@@ -43,6 +43,9 @@ try {
 	
 	$_SESSION['USER_ID']=$user[0];
 	$_SESSION['USER_NAME']=$user[1];
+	
+	if($user[3])
+		$_SESSION['ADMIN']=true;
 	
 	if ($clean['return_url']) {
 		$sl_redirect=$clean['return_url'];
