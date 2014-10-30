@@ -10,14 +10,14 @@ define('MODE', 'development');
 
 if (MODE == 'production') {
 	ini_set('display_errors', 'Off');
-
-	require_once 'config_db_production.php';
 } else {
 	ini_set('display_errors', 'On');
 	error_reporting(E_ALL & ~(E_NOTICE | E_STRICT));
-
-	require_once 'config_db_development.php';
 }
+
+
+/* database setting Load */
+require_once 'config_db.php';
 
 /* theme */
 $config['theme'] = 'default';
@@ -35,19 +35,19 @@ require_once FUNCTION_DIRECTORY . DIRECTORY_SEPARATOR . 'custom.php';
 /* site config */
 require_once 'site.php';
 
-//$locale='en_US';
-$locale = 'ko_KR';
-#$locale='zh_CN';
-putenv("LC_ALL=" . $locale);
-setlocale(LC_ALL, $locale);
-
-
 $config['template']['layout']='index.php';
 $config['template']['header']='header.php';
 $config['template']['footer']='footer.php';
 
+/* i18n locale */
+$locale = 'ko_KR';
 
+if(!function_exists('_'))
+	echo '없어!!';
+
+putenv("LC_ALL=" . $locale);
+setlocale(LC_ALL, $locale);
 $domain = 'messages';
-bindtextdomain($domain, realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'locale'));
+bindtextdomain($domain,ROOT_DIRECTORY. DIRECTORY_SEPARATOR . 'locale');
 textdomain($domain);
 bind_textdomain_codeset($domain, 'UTF-8');

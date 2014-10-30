@@ -1,9 +1,9 @@
 <form class="form-inline" role="form" method="get">
 	<select name="search_type" class="form-control">
-		<option value="title">제목</option>
-		<option value="content">내용</option>
-		<option value="title+content">제목+내용</option>
+		<option value="title"><?php echo _('label_title') ?></option>
+		<option value="content"><?php echo _('label_content') ?></option>
+		<option value="title+content"><?php echo _('label_title_and_content') ?></option>
 	</select>
-	<input type="text" name="search_text" maxlength="60" class="form-control" placeholder="검색어를 입력하세요" />
-	<input type="submit" class="btn btn-default" value="검색" />
+	<input type="text" name="search_text" maxlength="60" class="form-control" placeholder="<?php echo _('insert_search_word') ?>" />
+	<input type="submit" class="btn btn-default" value="<?php echo _('search') ?>" />
 </form>

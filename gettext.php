@@ -1,0 +1,1 @@
+find . -name *.php  | xargs xgettext --from-code=UTF-8 --default-domain=sleepinglion
