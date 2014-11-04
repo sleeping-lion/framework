@@ -3,16 +3,20 @@
 try {
 	require_once __DIR__.DIRECTORY_SEPARATOR.'setting.php';
 
-	$clean = filter_input_array(INPUT_POST, array('gallery_category_id'=>FILTER_VALIDATE_INT,'title' => FILTER_SANITIZE_STRING,'content'=>FILTER_SANITIZE_STRING));
+	$clean = filter_input_array(INPUT_POST, 
+	array('gallery_category_id'=>FILTER_VALIDATE_INT,
+	'title' =>FILTER_SANITIZE_STRING,
+	'content'=>FILTER_SANITIZE_STRING)
+	);
 	
 	if(empty($clean['gallery_category_id']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception(_('empty or invalid category_id'), 1);
 	
 	if(empty($clean['title']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception(_('empty or invalid title'), 1);
 	
 	if(empty($clean['content']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception(_('empty or invalid content'), 1);
 	
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);

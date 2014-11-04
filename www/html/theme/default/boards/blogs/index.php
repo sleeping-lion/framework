@@ -1,19 +1,16 @@
 <section id="sl_board_blog_index">
 	<?php if(isset($data['category'])): ?>
-	<ol class="nav nav-pills sl_categories hidden-lg">
-		<li <?php if($a): ?>class="active"<?php endif ?>><a href="" ></a></li>
-  	<?php if($b): ?>
-  	<?php foreach($data['category'] as $index=>$value): ?>
-  	<li <% if(@blog_category_id==blog_category.id) %>class="active"<% end %>>
-  	<a href="">
-  	<?php echo $value['title'] ?><span class="hidden-xs">(<?php echo '' ?>)</span>
-  	</a>
-  	</li>
-  	<?php endforeach ?>
-  	<?php else: ?>
-  	<li><?php echo _('no_data') ?></li>
+	<ol class="nav nav-tabs sl_categories">
+		<?php if(isset($data['category'])): ?>
+			<?php foreach($data['category'] as $index=>$value): ?>
+			<li <?php if($value): ?>class="active"<?php endif ?>>
+				<a href=""><?php echo $value['title'] ?></a>
+		  </li>
+			<?php endforeach ?>
+		<?php else: ?>	
+		<li><?php echo _('no_data') ?></li>
 		<?php endif ?>
-  </ol>
+	</ol>
   <?php endif ?>
   <section id="sl_blog" itemscope itemprop="blogPosts" itemtype="http://schema.org/Blog">
   <?php if(isset($data['list'])): ?>

@@ -11,7 +11,7 @@
   	</div>		
   	<div class="form-group">
   		<label for="sl_title"><?php echo _('label_title') ?></label>
-  		<input type="text" class="form-control" id="sl_title" name="title" required="required" />
+  		<input type="text" class="form-control" id="sl_title" name="title" maxlength="60" required="required" />
   	</div>
   	<div class="form-group">
   		<label for="sl_content"><?php echo _('label_content') ?></label>

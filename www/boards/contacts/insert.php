@@ -4,6 +4,20 @@ try {
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'email' => FILTER_VALIDATE_EMAIL, 'title' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
+	
+	if(empty($_SESSION['USER_ID'])) {
+		if(empty($clean['name']))
+			throw new Exception(_('empty or invalid name'), 1);
+	
+	if(empty($clean['email']))
+		throw new Exception(_('empty or invalid email'), 1);
+	}	
+	
+	if(empty($clean['title']))
+		throw new Exception(_('empty or invalid title'), 1);
+	
+	if(empty($clean['content']))
+		throw new Exception(_('empty or invalid title'), 1);		
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
@@ -19,10 +33,10 @@ try {
 
 	$clean['id'] = $con -> lastInsertId();
 
-	$stmt_content = $con -> prepare('INSERT INTO notices(id,title) VALUES(:id,:title)');
+	$stmt_content = $con -> prepare('INSERT INTO contact_contents(id,content) VALUES(:id,:content)');
 	$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt_content -> bindParam(':content', $clean['content'], PDO::PARAM_STR);
-	$stmt_content -> execute();	
+	$stmt_content -> execute();
 
 	/******** 커밋 **********/
 	$con -> commit();

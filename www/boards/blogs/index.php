@@ -27,7 +27,7 @@ try {
 		$data['category'] = $stmt_category -> fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	if (empty($clean['gallery_category_id'])) {
+	if (empty($clean['blog_category_id'])) {
 		if (isset($data['category'])) {
 			$blog_category_id = $data['category'][0]['id'];
 			$query_where = 'WHERE blog_category_id=:blog_category_id';
@@ -36,7 +36,7 @@ try {
 
 	// 본 목록 가져오기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM blogs ' . $query_where);
-	if(isset($gallery_category_id))
+	if(isset($blog_category_id))
 		$stmt_count->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);	
 	$stmt_count -> execute();
 	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
@@ -46,7 +46,7 @@ try {
 		$query_order = 'ORDER BY ID DESC';
 
 		$stmt = $con -> prepare('SELECT * FROM blogs ' . $query_where . ' ' . $query_order);
-		if(isset($gallery_category_id))
+		if(isset($blog_category_id))
 			$stmt->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);	
 		$stmt -> execute();
 		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
