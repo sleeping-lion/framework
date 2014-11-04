@@ -7,6 +7,49 @@
 		<hr class="none">
 		<section class="sub_main">
 				<section id="main_main">
+<section class="row">
+			<article id="sl_main_notice" class="sl_main_list">
+	<h3>공지사항</h3>
+	<ul>
+		<li>
+			<a href="/notices/3">이제 검색어만 치면 잠자...</a>
+			<span class="sl_created_at">2014-03-10</span>
+		</li>
+		<li>
+			<a href="/notices/2">잠자는-사자의 집 계속적...</a>
+			<span class="sl_created_at">2014-02-14</span>
+		</li>
+		<li>
+			<a href="/notices/1">잠자는-사자의 집이 다시...</a>
+			<span class="sl_created_at">2013-12-25</span>
+		</li>
+	</ul>
+	<a class="more" href="/notices">더보기</a>
+</article>
+		<article id="sl_main_question" class="sl_main_list">
+	<h3>질문, 답변</h3>
+	<ul>
+		<li>
+			<span class="sl_name">임민</span>
+			<a href="/questions/4">임민형 어렸을때</a>
+		</li>
+		<li>
+			<span class="sl_name">사장님</span>
+			<a href="/questions/3">억울해용.</a>
+		</li>
+		<li>
+			<span class="sl_name">사장님</span>
+			<a href="/questions/2">억울합니다.</a>
+		</li>
+		<li>
+			<span class="sl_name">녹스</span>
+			<a href="/questions/1">사장님 사이트제작 문의드립니다</a>
+		</li>
+	</ul>
+	<a class="more" href="/questions">더보기</a>
+</article>
+</section>	
+
 	<section class="row">
 		<article id="sl_main_gallery" class="sl_main_list">
 	<h3>사진첩</h3>
@@ -58,46 +101,7 @@
   </ul>
   <a class="more" href="/blogs">더보기</a>   
 </article>  
-		<article id="sl_main_notice" class="sl_main_list">
-	<h3>공지사항</h3>
-	<ul>
-		<li>
-			<a href="/notices/3">이제 검색어만 치면 잠자...</a>
-			<span class="sl_created_at">2014-03-10</span>
-		</li>
-		<li>
-			<a href="/notices/2">잠자는-사자의 집 계속적...</a>
-			<span class="sl_created_at">2014-02-14</span>
-		</li>
-		<li>
-			<a href="/notices/1">잠자는-사자의 집이 다시...</a>
-			<span class="sl_created_at">2013-12-25</span>
-		</li>
-	</ul>
-	<a class="more" href="/notices">더보기</a>
-</article>
-		<article id="sl_main_question" class="sl_main_list">
-	<h3>질문, 답변</h3>
-	<ul>
-		<li>
-			<span class="sl_name">임민</span>
-			<a href="/questions/4">임민형 어렸을때</a>
-		</li>
-		<li>
-			<span class="sl_name">사장님</span>
-			<a href="/questions/3">억울해용.</a>
-		</li>
-		<li>
-			<span class="sl_name">사장님</span>
-			<a href="/questions/2">억울합니다.</a>
-		</li>
-		<li>
-			<span class="sl_name">녹스</span>
-			<a href="/questions/1">사장님 사이트제작 문의드립니다</a>
-		</li>
-	</ul>
-	<a class="more" href="/questions">더보기</a>
-</article>
+
 	</section>
 </section>
 </section>

@@ -4,7 +4,7 @@
 		<ul class="nav nav-pills">
 			<li><a href="/boards/histories"><?php echo _('histroy') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
 			<li><a href="/boards/contacts/new.php"><?php echo _('contact') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
-			<li><a href="/blogs"><?php echo _('blog') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
+			<li><a href="/boards/blogs"><?php echo _('blog') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
 			<li><a href="/boards/galleries"><?php echo _('gallery') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
 			<li><a href="/boards/questions"><?php echo _('question') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>
 			<li><a href="/boards/faqs"><?php echo _('faq') ?><span class="visible-xs glyphicon glyphicon-chevron-right pull-right"></span></a></li>

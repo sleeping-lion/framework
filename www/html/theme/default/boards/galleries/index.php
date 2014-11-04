@@ -1,17 +1,15 @@
 <section id="sl_board_gallery_index">
-<?php if($setting['use_category']): ?>
 	<ol class="nav nav-tabs sl_categories">
 		<?php if(isset($data['category'])): ?>
 			<?php foreach($data['category'] as $index=>$value): ?>
 			<li <?php if($value): ?>class="active"<?php endif ?>>
-				
+				<a href=""><?php echo $value['title'] ?></a>
 		  </li>
 			<?php endforeach ?>
 		<?php else: ?>	
 		<li><?php echo _('no_data') ?></li>
 		<?php endif ?>
 	</ol>
-<?php endif ?>
 <div id="sl_gallery" <?php if(isset($data['content'])): ?>itemscope itemtype="http://schema.org/ImageObject"<?php endif ?>>
 	<?php if(isset($data['content'])): ?>
 	<div id="sl_gallery_left">
@@ -40,7 +38,9 @@
 		<a class="prev browse hidden-xs left"></a>
 		<div class="scrollable">
 			<div class="items">
-			
+				<?php foreach($data['list'] as $index=>$value): ?>
+				<a href=""><img src="<?php echo htmlspecialchars(phpThumbURL('src=gallery/'.$value['id'].'/'.$value['photo'].'&w=50', '/phpThumb/phpThumb.php')) ?>" /></a>
+				<?php endforeach ?>
 			</div>
 		</div>
 		<a class="next browse hidden-xs right"></a>

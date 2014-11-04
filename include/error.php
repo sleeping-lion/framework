@@ -20,6 +20,5 @@
 		$_SESSION['ERROR_MESSAGE']=$e->getMessage();		
 	?>
 	<?php endif ?>
-<?php 
+<?php
 	}
-?>

@@ -50,19 +50,24 @@ if (isset($_REQUEST['json'])) {
 	
 	if(isset($sl_style)) {
 		if(is_array($sl_style)) {
-			$config['template']['theme_style']=$sl_style;
+			foreach($sl_style as $index=>$value) {				
+				$config['template']['theme_style'][]= '/html/theme/'.$sl_theme .'/stylesheets/'.$value;
+			}
 		} else {
 			$config['template']['theme_style']=array();
-			$config['template']['theme_style'][0]=$sl_style;
+			$config['template']['theme_style'][0]='/html/theme/'.$sl_theme .'/stylesheets/'.$sl_style;
+			print_r($config['template']['theme_style']);
 		}
 	}
 	
 	if(isset($sl_js)) {
 		if(is_array($sl_js)) {
-			$config['template']['theme_script']=$sl_js;
+			foreach($sl_js as $index=>$value) {				
+				$config['template']['theme_script'][]= '/html/theme/'.$sl_theme .'/stylesheets/'.$value;
+			}
 		} else {
 			$config['template']['theme_script']=array();
-			$config['template']['theme_script'][0]=$sl_js;
+			$config['template']['theme_script'][0]='/html/theme/'.$sl_theme .'/stylesheets/'.$sl_js;
 		}
 	}
 

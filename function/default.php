@@ -59,6 +59,79 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 	return $html;
 }
 
+/*
+	function make_thumbnail($source_path, $width, $height, $thumbnail_path){
+	/*	$thumb = PhpThumbFactory::create($source_path);
+		//if($width<200) {
+		$thumb->resize($width, $height)->save($thumbnail_path);
+		//} else {
+		$im = new Imagick($source_path);
+		$im->thumbnailImage($width,$height,false);
+		$im->writeImage($thumbnail_path);
+	}
+*/	
+	function check_file($file) {
+		$error_code=$file['error'];
+		
+		switch($error_code) {
+			 case 1:
+				 throw new Exception("Error Processing Request", 1);
+				 break;
+			 case 2:
+				 throw new Exception('error_oversize', 1);
+				 break;
+			 case 3:
+				 throw new Exception("Error Processing Request", 1);
+				 break;
+			 case 4:
+				 throw new Exception("Error Processing Request", 1);
+				 break;
+		}
+		return $file;
+	}
+
+	function move_file($file,$folder_name,$id) {	
+		$directory=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.$folder_name;
+
+		if(!is_dir($directory)) {
+			if(!mkdir($directory)) {
+				throw new Exception('디렉토리 생성 실패 디렉토리('.UPLOAD_DIRECTORY.')의 존재여부 또는 권한을 확인해주세요');
+			}
+		}
+
+		$directory.=DIRECTORY_SEPARATOR.$id;
+
+		if(!is_dir($directory)) {
+			if(!mkdir($directory)) {
+				throw new Exception('디렉토리 생성 실패 ,  디렉토리('.UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.$folder_name.') 존재여부 또는 권한을 확인해주세요');
+			}
+		}
+
+	//	$targetName= md5($file['name'].time());
+		$targetName=$file['name'];
+		$targetPath=$directory.DIRECTORY_SEPARATOR.$targetName;
+
+		if(move_uploaded_file($file['tmp_name'], $targetPath)) {
+			/*foreach($this->thumbs as $index=>$value) {
+				if(!is_dir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
+					if(!mkdir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
+						throw new Exception('디렉토리 생성 실패 , 디렉토리 존재여부 또는 권한을 확인해주세요');
+					}
+				} 
+				$this->makeThumbnail($targetPath,$value[0],$value[1],$directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1].DIRECTORY_SEPARATOR.$targetName); 
+			//}
+
+			// $thumbPath=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.$targetName;
+			*/
+			$result['convert_name']=$targetName;;
+
+			return $request;
+		} else {
+			throw new Exception('파일이동 실패');
+		}
+	}
+
+
 function sl_style($sl_style) {
 	$count = count($sl_style);
 
