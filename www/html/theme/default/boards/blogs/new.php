@@ -1,13 +1,21 @@
 <section id="sl_board_blog_new" class="sub_main">
 	<form role="form" action="insert.php" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+  	<div class="form-group">
+  		<label for="sl_category"><?php echo _('label_category') ?></label>
+  		<select class="form-control" id="sl_category" name="blog_category_id" required="required">
+  			<?php foreach($data['category'] as $index=>$value): ?>
+  			<option value="<?php echo $value['id'] ?>"><?php echo $value['title'] ?></option>
+  			<?php endforeach ?>  				
+  		</select>
+  	</div>
   	<div class="form-group">
   		<label for="sl_title"><?php echo _('label_title') ?></label>
-  		<input type="text" class="form-control" id="sl_title" name="title" />
+  		<input type="text" class="form-control" id="sl_title" name="title" required="required" />
   	</div>
   	<div class="form-group">
   		<label for="sl_content"><?php echo _('label_content') ?></label>
-  		<textarea id="sl_content" name="content" class="form-control"></textarea>
+  		<textarea id="sl_content" name="content" class="form-control" required="required"></textarea>
   	</div>
   	<div class="form-group">
     	<label for="exampleInputFile"><?php echo _('label_photo') ?></label>

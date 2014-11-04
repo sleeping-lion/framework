@@ -22,6 +22,7 @@ try {
 	$stmt_content = $con -> prepare('INSERT INTO notices(id,title) VALUES(:id,:title)');
 	$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt_content -> bindParam(':content', $clean['content'], PDO::PARAM_STR);
+	$stmt_content -> execute();	
 
 	/******** 커밋 **********/
 	$con -> commit();

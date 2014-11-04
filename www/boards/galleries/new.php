@@ -3,7 +3,7 @@
 try {
 	require_once __DIR__.DIRECTORY_SEPARATOR.'setting.php';
 	
-	$clean = filter_input_array(INPUT_GET, array('category_id'=>FILTER_VALIDATE_INT));
+	$clean = filter_input_array(INPUT_GET, array('gallery_category_id'=>FILTER_VALIDATE_INT));
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);	
