@@ -6,22 +6,25 @@
 $config['site']['language'] = 'ko';
 
 //   사이트 타이들 <title>$site['title]</title>
-$config['site']['title'] = '비단향';
+$config['site']['title'] = 'SLBoard';
 
 // 사이트 주소
-$config['site']['url'] = 'sleepinglion.kr';
+$config['site']['url'] = 'slboard.kr';
 
 // 사이트 관리자 이메일
-$config['site']['email'] = 'admin@sleepinglion.kr';
+$config['site']['email'] = 'admin@slboard.kr';
 
 // 사이트 관리자명
-$config['site']['admin'] = '비단향 관리자';
+$config['site']['admin'] = 'SLBoard 관리자';
 
 //  <meta name="application-name" content="">
-$config['site']['application-name'] = '비단향';
+$config['site']['application-name'] = 'SLBoard';
 
 //  <meta name="keywords" content="">
-$config['site']['keywords'] = '웹표준,비단향';
+$config['site']['keywords'] = ',SLBoard,SL,Board,PHP,웹표준';
 
 //  <meta name="description" content="">
-$config['site']['description'] = '비단향홈페이지 입니다.';
+$config['site']['description'] = 'SLBoard홈페이지 입니다.';
+
+//  <meta name="author" content="">
+$config['site']['author']='Sleeping-Lion';

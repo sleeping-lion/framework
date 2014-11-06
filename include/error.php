@@ -1,4 +1,9 @@
 <?php
+
+/*
+ *  데이터 처리 성공후의 처리 
+ */
+
 	if(isset($_REQUEST['json'])) { 
   		echo json_encode(array('result'=>'error','code'=>$e->getCode(),'message'=>$e->getMessage()));
 	} else {

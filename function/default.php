@@ -18,17 +18,19 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 
 	$file_a = explode('/', $_SERVER['SCRIPT_NAME']);
 	$c_file_a = count($file_a);
+	$current_file = $file_a[$c_file_a - 1];
 
-	$file = $file_a[$c_file_a - 1];
-
-	if (isset($other_path)) {
-		$directory = $other_path;
+	if (isset($other_directory)) {
+		$directory = $other_directory;
 	} else {
-		$directory = str_replace($file, '', $_SERVER['SCRIPT_NAME']);
+		$directory = str_replace($current_file, '', $_SERVER['SCRIPT_NAME']);
 	}
 
-	if (isset($other_file))
+	if (isset($other_file)) {
 		$file = $other_file;
+	} else {
+		$file = $current_file;
+	}
 
 	// 현재 경로와 파일이 일치하면
 	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file)) {
@@ -59,78 +61,158 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 	return $html;
 }
 
-/*
-	function make_thumbnail($source_path, $width, $height, $thumbnail_path){
-	/*	$thumb = PhpThumbFactory::create($source_path);
-		//if($width<200) {
-		$thumb->resize($width, $height)->save($thumbnail_path);
-		//} else {
-		$im = new Imagick($source_path);
-		$im->thumbnailImage($width,$height,false);
-		$im->writeImage($thumbnail_path);
+function find_style_script($file = null,$theme = 'default', $type = 'script') {
+	$include_file = false;
+	$is_absolute_path=false;
+	$is_plugin=false;	
+
+	if (!strcmp($type, 'style') AND !strcmp($type, 'script'))
+		throw new Exception("Error Processing Request", 1);
+
+	
+	
+	$pp4=substr($file,0,4);
+	
+	if(strpos($pp4,'//') !== false  OR strpos($pp4,'http') !== false) {
+		return $include_file;
 	}
-*/	
-	function check_file($file) {
-		$error_code=$file['error'];
+	
+	$pp1=substr($file,0,1);
+	
+	if(strpos($pp1,'/') !== false) {
+		$is_absolute_path=true;
+	}
+	
+	if(!$is_absolute_path) {	
+		if (strcmp($type, 'style')) {
+			$base_directory = JAVASCRIPT_DIRECTORY;
+			$base_web_directory = 'javascripts';
+		} else {
+			$base_directory = STYLESHEET_DIRECTORY;
+			$base_web_directory = 'stylesheets';
+		}
+	}
+	
+	if(strpos($file, '/') !== false) {
+		$ee=explode('/',$file);
 		
-		switch($error_code) {
-			 case 1:
-				 throw new Exception("Error Processing Request", 1);
-				 break;
-			 case 2:
-				 throw new Exception('error_oversize', 1);
-				 break;
-			 case 3:
-				 throw new Exception("Error Processing Request", 1);
-				 break;
-			 case 4:
-				 throw new Exception("Error Processing Request", 1);
-				 break;
+		$cee=count($ee);
+		foreach($ee as $index=>$value) {
+			$new_file.=$value;
+			$new_web_file.=$value;
+			
+			if($index+1<$cee) {
+				$new_file.=DIRECTORY_SEPARATOR;
+				$new_web_file.='/';
+			} 
+		}		
+	} else {
+			$new_file=$file;
+			$new_web_file=$file;
+	}
+	
+	
+	
+	if($is_absolute_path) {
+		if (file_exists(WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.$new_file)) {
+			// 현재 경로것 이용
+			$include_file = $new_web_file;
 		}
-		return $file;
+	} else {
+		// 현재 경로와 파일이 일치하면
+		if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme .DIRECTORY_SEPARATOR. $new_file)) {
+			// 현재 경로것 이용
+			$include_file = '/' . $base_web_directory . '/theme/' . $theme  . '/' . $new_web_file;
+		} else {
+			// 그렇지 않으면 현 테마의 common경로 검색
+			if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $new_file)) {
+				// 있으면 common것을 사용
+				$include_file = '/' . $base_web_directory . '/theme/' . $theme . '/common/' . $new_web_file;
+			}  else {
+				
+			}
+		}
+	}
+	
+	if($include_file) {
+		return $include_file;
+	} else {
+		throw new Exception('not exist '.$type.' file', 1);	
+	}
+}
+
+/*
+ function make_thumbnail($source_path, $width, $height, $thumbnail_path){
+ /*	$thumb = PhpThumbFactory::create($source_path);
+ //if($width<200) {
+ $thumb->resize($width, $height)->save($thumbnail_path);
+ //} else {
+ $im = new Imagick($source_path);
+ $im->thumbnailImage($width,$height,false);
+ $im->writeImage($thumbnail_path);
+ }
+ */
+function check_file($file) {
+	$error_code = $file['error'];
+
+	switch($error_code) {
+		case 1 :
+			throw new Exception("Error Processing Request", 1);
+			break;
+		case 2 :
+			throw new Exception('error_oversize', 1);
+			break;
+		case 3 :
+			throw new Exception("Error Processing Request", 1);
+			break;
+		case 4 :
+			throw new Exception("Error Processing Request", 1);
+			break;
+	}
+	return $file;
+}
+
+function move_file($file, $folder_name, $id) {
+	$directory = UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . $folder_name;
+
+	if (!is_dir($directory)) {
+		if (!mkdir($directory)) {
+			throw new Exception('디렉토리 생성 실패 디렉토리(' . UPLOAD_DIRECTORY . ')의 존재여부 또는 권한을 확인해주세요');
+		}
 	}
 
-	function move_file($file,$folder_name,$id) {	
-		$directory=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.$folder_name;
+	$directory .= DIRECTORY_SEPARATOR . $id;
 
-		if(!is_dir($directory)) {
-			if(!mkdir($directory)) {
-				throw new Exception('디렉토리 생성 실패 디렉토리('.UPLOAD_DIRECTORY.')의 존재여부 또는 권한을 확인해주세요');
-			}
+	if (!is_dir($directory)) {
+		if (!mkdir($directory)) {
+			throw new Exception('디렉토리 생성 실패 ,  디렉토리(' . UPLOAD_DIRECTORY . DIRECTORY_SEPARATOR . $folder_name . ') 존재여부 또는 권한을 확인해주세요');
 		}
-
-		$directory.=DIRECTORY_SEPARATOR.$id;
-
-		if(!is_dir($directory)) {
-			if(!mkdir($directory)) {
-				throw new Exception('디렉토리 생성 실패 ,  디렉토리('.UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.$folder_name.') 존재여부 또는 권한을 확인해주세요');
-			}
-		}
+	}
 
 	//	$targetName= md5($file['name'].time());
-		$targetName=$file['name'];
-		$targetPath=$directory.DIRECTORY_SEPARATOR.$targetName;
+	$targetName = $file['name'];
+	$targetPath = $directory . DIRECTORY_SEPARATOR . $targetName;
 
-		if(move_uploaded_file($file['tmp_name'], $targetPath)) {
-			/*foreach($this->thumbs as $index=>$value) {
-				if(!is_dir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
-					if(!mkdir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
-						throw new Exception('디렉토리 생성 실패 , 디렉토리 존재여부 또는 권한을 확인해주세요');
-					}
-				} 
-				$this->makeThumbnail($targetPath,$value[0],$value[1],$directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1].DIRECTORY_SEPARATOR.$targetName); 
-			//}
+	if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+		/*foreach($this->thumbs as $index=>$value) {
+		 if(!is_dir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
+		 if(!mkdir($directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1])) {
+		 throw new Exception('디렉토리 생성 실패 , 디렉토리 존재여부 또는 권한을 확인해주세요');
+		 }
+		 }
+		 $this->makeThumbnail($targetPath,$value[0],$value[1],$directory.DIRECTORY_SEPARATOR.'thumbnail_'.$value[0].'x'.$value[1].DIRECTORY_SEPARATOR.$targetName);
+		 //}
 
-			// $thumbPath=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.$targetName;
-			*/
-			$result['convert_name']=$targetName;;
+		 // $thumbPath=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.$targetName;
+		 */
+		$result['convert_name'] = $targetName;
+		;
 
-			return $request;
-		} else {
-			throw new Exception('파일이동 실패');
-		}
+		return $request;
+	} else {
+		throw new Exception('파일이동 실패');
 	}
-
+}
 
 function sl_style($sl_style) {
 	$count = count($sl_style);

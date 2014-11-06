@@ -6,7 +6,7 @@ try {
 	
 	
 	
-	$sl_js[]='/ckeditor/ckeditor.js';
+	$sl_js=array('/ckeditor/ckeditor.js','boards/new.js');
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {

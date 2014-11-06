@@ -1,5 +1,9 @@
 <?php
 
+/*
+ *  데이터 처리 성공후의 처리 
+ */
+
 // $_REQUEST['json'] 이 있으면  출력
 if (isset($_REQUEST['json'])) {
 	$data['result'] = 'success';
@@ -48,14 +52,26 @@ if (isset($_REQUEST['json'])) {
 		require_once $theme_setting_file;
 	}
 	
+	// main템플릿이 따로 입력되 않았으면
+	if (empty($config['template']['main'])) {
+		
+		// find_html함수가 돌려주는것으로  main템플릿 설정		
+		$config['template']['main'] = find_html($sl_theme);
+		
+		// main템플릿이 없으면
+		if (empty($config['template']['main']))
+			throw new Exception('main이  설정되지 않았습니다.$template[\'main\']을 설정해 주세요');
+	}
+	
+	
 	if(isset($sl_style)) {
 		if(is_array($sl_style)) {
 			foreach($sl_style as $index=>$value) {				
-				$config['template']['theme_style'][]= '/html/theme/'.$sl_theme .'/stylesheets/'.$value;
+				$config['template']['theme_style'][]= find_style_script($value,$sl_theme,'style');
 			}
 		} else {
 			$config['template']['theme_style']=array();
-			$config['template']['theme_style'][0]='/html/theme/'.$sl_theme .'/stylesheets/'.$sl_style;
+			$config['template']['theme_style'][0]=find_style_script($sl_style,$sl_theme,'style');
 			print_r($config['template']['theme_style']);
 		}
 	}
@@ -63,49 +79,14 @@ if (isset($_REQUEST['json'])) {
 	if(isset($sl_js)) {
 		if(is_array($sl_js)) {
 			foreach($sl_js as $index=>$value) {				
-				$config['template']['theme_script'][]= '/html/theme/'.$sl_theme .'/javascripts/'.$value;
+				$config['template']['theme_script'][]=find_style_script($value,$sl_theme,'script');
 			}
 		} else {
 			$config['template']['theme_script']=array();
-			$config['template']['theme_script'][0]='/html/theme/'.$sl_theme .'/javascripts/'.$sl_js;
+			$config['template']['theme_script'][0]=find_style_script($sl_js,$sl_theme,'script');
 		}
 	}
-
-/*
-	// theme stylesheet 로드
-	$theme_style_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $sl_theme . DIRECTORY_SEPARATOR . 'stylesheets';
-	if (file_exists($theme_style_dir)) {
-		if ($handle = opendir($theme_style_dir)) {
-			while (false !== ($entry = readdir($handle))) {
-				if ($entry != "." && $entry != "..") {
-					$config['template']['theme_style'][$index] = '/html/theme/' . $sl_theme . '/stylesheets/' . $entry;
-				}
-			}
-			closedir($handle);
-		}
-	}
-
-	// theme javascript 로드
-	$theme_script_dir = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $sl_theme . DIRECTORY_SEPARATOR . 'javascripts';
-	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $sl_theme . DIRECTORY_SEPARATOR . 'javascripts')) {
-		if ($handle = opendir($theme_script_dir)) {
-			while (false !== ($entry = readdir($handle))) {
-				if ($entry != "." && $entry != "..") {
-					$config['template']['theme_script'][$index] = '/html/theme/' . $sl_theme . '/javascripts/' . $entry;
-				}
-			}
-			closedir($handle);
-		}
-	}
-*/
-	// main템플릿이 따로 입력되 않았으면
-	if (empty($config['template']['main'])) {
-
-		$config['template']['main'] = find_html($sl_theme);
-
-		if (empty($config['template']['main']))
-			throw new Exception('main이  설정되지 않았습니다.$template[\'main\']을 설정해 주세요');
-	}
+	
 
 	// 애러 메세지 세션이 있으면
 	if (isset($_SESSION['ERROR_MESSAGE'])) {

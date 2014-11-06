@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $config['site']['language'] ?>">
 	<head>
-		<title>SL BOARD</title>
+		<title><?php echo $config['site']['title'] ?></title>
 		<meta charset="utf-8">
 		<?php if($config['use_boostrap']): ?>
 		<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 		<?php endif ?>
 		<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />		
 		<?php sl_style($config['template']['theme_style']); ?>
-		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-		<meta name="author" content="Sleeping-Lion" />
+		<meta content="<?php echo $config['site']['description'] ?>" name="description" />
+		<meta content="<?php echo $config['site']['keywords'] ?>" name="keywords" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />		
+		<meta name="author" content="<?php echo $config['site']['author'] ?>" />
 		<!--[if IE]>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<![endif]-->
