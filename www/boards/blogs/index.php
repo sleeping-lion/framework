@@ -47,7 +47,7 @@ try {
 
 		$stmt = $con -> prepare('SELECT * FROM blogs ' . $query_where . ' ' . $query_order);
 		if(isset($blog_category_id))
-			$stmt->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);	
+			$stmt->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);
 		$stmt -> execute();
 		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -64,7 +64,6 @@ try {
 	}
 
 	$con = null;
-
 
  	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

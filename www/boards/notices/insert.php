@@ -4,6 +4,9 @@ try {
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	$clean = filter_input_array(INPUT_POST, array('title' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
+	
+	if(empty($_SESSION['USER_ID']))
+		throw new Exception("Error Processing Request", 1);
 
 	if (empty($clean['title']))
 		throw new Exception("Error Processing Request", 1);
@@ -18,13 +21,13 @@ try {
 	$con -> beginTransaction();
 
 	$stmt = $con -> prepare('INSERT INTO notices(user_id,title,created_at) VALUES(:user_id,:title,now())');
-	$stmt -> bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+	$stmt -> bindParam(':user_id', $_SESSION['USER_ID'], PDO::PARAM_INT);
 	$stmt -> bindParam(':title', $clean['title'], PDO::PARAM_STR, 60);
 	$stmt -> execute();
 	
 	$clean['id'] = $con -> lastInsertId();
 
-	$stmt_content = $con -> prepare('INSERT INTO notices(id,title) VALUES(:id,:title)');
+	$stmt_content = $con -> prepare('INSERT INTO notice_contents(id,content) VALUES(:id,:content)');
 	$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt_content -> bindParam(':content', $clean['content'], PDO::PARAM_STR);
 	$stmt_content -> execute();	

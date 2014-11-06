@@ -63,11 +63,11 @@ if (isset($_REQUEST['json'])) {
 	if(isset($sl_js)) {
 		if(is_array($sl_js)) {
 			foreach($sl_js as $index=>$value) {				
-				$config['template']['theme_script'][]= '/html/theme/'.$sl_theme .'/stylesheets/'.$value;
+				$config['template']['theme_script'][]= '/html/theme/'.$sl_theme .'/javascripts/'.$value;
 			}
 		} else {
 			$config['template']['theme_script']=array();
-			$config['template']['theme_script'][0]='/html/theme/'.$sl_theme .'/stylesheets/'.$sl_js;
+			$config['template']['theme_script'][0]='/html/theme/'.$sl_theme .'/javascripts/'.$sl_js;
 		}
 	}
 

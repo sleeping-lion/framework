@@ -17,8 +17,8 @@
   <?php foreach($data['list'] as $index=>$value): ?>
   <article class="media" itemscope itemprop="blogPost" itemtype="http://schema.org/Blog">
     <a href="" class="pull-left" ?>
-    <?php  if(isset($value['photo'])): ?>
-      <img src="" class="media-object" itemprop="thumbnailUrl" alt="" />
+    <?php  if(!empty($value['photo'])): ?>
+     <img width="100" height="100" class="media-object" itemprop="thumbnailUrl" src="<?php echo htmlspecialchars(phpThumbURL('src=/../uploads/'.$config['controller'].'/'.$value['id'].'/'.$value['photo'].'&w=100&h=100', '/phpThumb/phpThumb.php')) ?>" alt="<?php echo $data['content']['title'] ?>" />
     <?php endif ?>
    </a>
     <div class="media-body">

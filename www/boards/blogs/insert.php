@@ -35,12 +35,12 @@ try {
 
 	$clean['id'] = $con -> lastInsertId();
 
-	$stmt_content = $con -> prepare('INSERT INTO blog_content(id,content) VALUES(:id,:content)');
+	$stmt_content = $con -> prepare('INSERT INTO blog_contents(id,content) VALUES(:id,:content)');
 	$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt_content -> bindParam(':content', $clean['content'], PDO::PARAM_STR);
 	$stmt_content -> execute();
 
-	move_file($clean['photo'], 'blog', $clean['id']);
+	move_file($clean['photo'],$config['controller'], $clean['id']);
 
 	/******** 커밋 **********/
 	$con -> commit();

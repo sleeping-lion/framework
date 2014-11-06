@@ -64,7 +64,8 @@ try {
 	}
 
 	$con = null;
-
+	
+	$sl_js=array('plugin/jquery.easing.1.3.pack.js','plugin/jquery.fancybox.1.3.4.js','plugin/jquery.uri.js','galleries/index.js');
 
  	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

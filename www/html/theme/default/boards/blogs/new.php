@@ -14,12 +14,16 @@
   		<input type="text" class="form-control" id="sl_title" name="title" maxlength="60" required="required" />
   	</div>
   	<div class="form-group">
+  		<label for="sl_description"><?php echo _('label_description') ?></label>
+  		<input type="text" class="form-control" id="sl_description" name="description" maxlength="60" required="required" />
+  	</div>  	
+  	<div class="form-group">
   		<label for="sl_content"><?php echo _('label_content') ?></label>
   		<textarea id="sl_content" name="content" class="form-control" required="required"></textarea>
   	</div>
   	<div class="form-group">
-    	<label for="exampleInputFile"><?php echo _('label_photo') ?></label>
-    	<input type="file" id="exampleInputFile">
+    	<label for="sl_photo"><?php echo _('label_photo') ?></label>
+    	<input type="file" id="sl_photo" name="photo" />
    	 <p class="help-block">Example block-level help text here.</p>
   	</div>  	
   	<input type="submit" class="btn btn-primary" value="<?php echo _('submit') ?>" />

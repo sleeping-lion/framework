@@ -2,7 +2,6 @@
 
 require_once __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'setting.php';
 
-$boardName='blog';
-
+$config['controller']='blog';
 
 ?>

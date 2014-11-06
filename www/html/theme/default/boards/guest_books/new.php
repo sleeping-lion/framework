@@ -27,7 +27,7 @@
     <label for="sl_content"><?php echo _('label_content') ?></label>
     <textarea id="sl_content" name="content" class="form-control"></textarea>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <input type="submit" class="btn btn-primary" value="<?php echo _('submit') ?>" />
 </form>
 </section>
 
