@@ -20,9 +20,12 @@
 		<?php require_once $config['template']['header'] ?>
 		<div id="mom">
 			<div id="main" class="container">
-				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
+				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>				
+				<section class="sub_main">
 				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
 				<?php require_once $config['template']['main'] ?>
+				</section>
+				<?php require_once $config['template']['aside'] ?>
 			</div>
 		</div>
 		<?php require_once $config['template']['footer'] ?>

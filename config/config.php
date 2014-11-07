@@ -38,6 +38,7 @@ require_once 'site.php';
 $config['template']['layout']='index.php';
 $config['template']['header']='header.php';
 $config['template']['footer']='footer.php';
+$config['template']['aside']='aside.php';
 
 /* i18n locale */
 $locale = 'ko_KR';

@@ -1,6 +1,6 @@
 <section id="sl_board_blog_index">
 	<?php if(isset($data['category'])): ?>
-	<ol class="nav nav-tabs sl_categories">
+	<ol class="nav nav-tabs sl_categories hidden-lg">
 		<?php if(isset($data['category'])): ?>
 			<?php foreach($data['category'] as $index=>$value): ?>
 			<li <?php if($value): ?>class="active"<?php endif ?>>

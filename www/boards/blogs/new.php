@@ -18,7 +18,9 @@ try {
 		$stmt_category = $con -> prepare('SELECT * FROM blog_categories ORDER BY ID DESC');
 		$stmt_category -> execute();
 		$data['category'] = $stmt_category -> fetchAll(PDO::FETCH_ASSOC);
-	}	
+	}
+	
+	$sl_js=array('/ckeditor/ckeditor.js','boards/new.js');
 	
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {

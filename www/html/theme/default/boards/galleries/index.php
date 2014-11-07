@@ -14,7 +14,7 @@
 	<?php if(isset($data['content'])): ?>
 	<div id="sl_gallery_left">
 		<span class="none" itemprop="genre"><?php echo $data['content']['category_id'] ?></span>
-		<a href="">
+		<a href="" class="simple_image">
 		<img width="400" height="300" class="img-responsive" src="<?php echo htmlspecialchars(phpThumbURL('src=/../uploads/'.$config['controller'].'/'.$data['content']['id'].'/'.$data['content']['photo'].'&w=400&h=300', '/phpThumb/phpThumb.php')) ?>" alt="<?php echo $data['content']['title'] ?>" />
 		<span id="gallery<?php echo $data['content']['id'] ?>_img<?php echo $data['content']['id'] ?>_span" class="image_caption" itemprop="name"><?php echo $data['content']['title'] ?></span>
 		</a>

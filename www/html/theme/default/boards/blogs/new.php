@@ -16,7 +16,11 @@
   	<div class="form-group">
   		<label for="sl_description"><?php echo _('label_description') ?></label>
   		<input type="text" class="form-control" id="sl_description" name="description" maxlength="60" required="required" />
-  	</div>  	
+  	</div>
+  	<div class="form-group">
+  		<label for="sl_tag"><?php echo _('label_tag') ?></label>
+  		<input type="text" class="form-control" id="sl_tag" name="tag" maxlength="60" required="required" />
+  	</div>
   	<div class="form-group">
   		<label for="sl_content"><?php echo _('label_content') ?></label>
   		<textarea id="sl_content" name="content" class="form-control" required="required"></textarea>
