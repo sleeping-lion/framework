@@ -8,7 +8,7 @@
   </div>
 	<div class="box_content">
 		<ul>
-			<li <?php if(empty($clean['blog_category_id'])): ?>class="active"<?php endif ?>><a href=""><?php echo _('all_category') ?></li>
+			<li <?php if(empty($clean['blog_category_id'])): ?>class="active"<?php endif ?>><a href=""><?php echo _('all_category') ?></a></li>
     	<?php if(!empty($data['aside_blog_categories'])): ?>
     	<?php foreach($data['aside_blog_categories'] as $blog_category): ?>
     	<?php if($blog_category['blog_category_id']): ?>
@@ -16,7 +16,7 @@
       	<?php if($blog_category['leaf']): ?>
       	<a href=""><?php echo $blog_category['title'] ?><?php if($blog_category['leaf']): ?>(<?php echo $blog_category['blogs_count'] ?>)<?php endif ?></a>
       	<?php else: ?>
-      	<span class="c_pointer"><span><%=blog_category.title %></span><span class="cursor">&nbsp;&gt;&gt;</span></span>  	
+      	<span class="c_pointer"><span><?php echo $blog_category['title'] ?></span><span class="cursor">&nbsp;&gt;&gt;</span></span>  	
       	<?php endif ?>
       	<ul>
     			<?php foreach($data['aside_blog_categories'] as $blog_sub_category): ?>

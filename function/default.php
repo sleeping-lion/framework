@@ -248,7 +248,7 @@ function sl_debug($data) {
 	echo '</pre>';
 }
 
-function truncate($string, $length) {
+function truncate($string, $length=20) {
 	if (mb_strlen($string, 'UTF-8') > $length) {
 		return mb_substr($string, 0, $length, 'UTF-8') . '..';
 	} else {
