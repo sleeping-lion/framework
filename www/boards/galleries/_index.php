@@ -12,4 +12,5 @@ if ($data['total_gallery']) {
 	$stmt_gallery = $con -> prepare('SELECT * FROM galleries ORDER BY ID DESC LIMIT 50');
 	$stmt_gallery -> execute();
 	$data['gallery_list'] = $stmt_gallery -> fetchAll(PDO::FETCH_ASSOC);
+	$data['gallery_list']=array_chunk($data['gallery_list'],5);
 }
