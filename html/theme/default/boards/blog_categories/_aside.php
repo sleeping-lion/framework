@@ -8,10 +8,10 @@
   </div>
 	<div class="box_content">
 		<ul>
-			<li <?php if(empty($clean['blog_category_id'])): ?>class="active"<?php endif ?>><a href=""><?php echo _('all_category') ?></a></li>
-    	<?php if(!empty($data['aside_blog_categories'])): ?>
+			<li <?php if(empty($clean['blog_category_id'])): ?>class="active"<?php endif ?>><a href=""><?php echo _('all') ?></a></li>
+    	<?php if(isset($data['aside_blog_categories'])): ?>
     	<?php foreach($data['aside_blog_categories'] as $blog_category): ?>
-    	<?php if($blog_category['blog_category_id']): ?>
+    	<?php if(empty($blog_category['blog_category_id'])): ?>
 			<li>
       	<?php if($blog_category['leaf']): ?>
       	<a href=""><?php echo $blog_category['title'] ?><?php if($blog_category['leaf']): ?>(<?php echo $blog_category['blogs_count'] ?>)<?php endif ?></a>

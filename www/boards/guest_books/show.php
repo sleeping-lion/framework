@@ -8,6 +8,8 @@ try {
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
 	$query_where = 'WHERE n.id=:id';
 
@@ -18,6 +20,8 @@ try {
 
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_insert.php';	
 
 	/******** 커밋 **********/
 	$con -> commit();

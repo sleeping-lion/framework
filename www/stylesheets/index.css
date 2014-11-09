@@ -136,6 +136,23 @@ footer address {margin-top:10px }
 #main_main .sl_created_at {float:right;color:#ccc}
 
 
+/* SL main list */
+.sl_main_list {float:left;width:100%}
+.sl_main_list h3 {float:left;width:100%}
+.sl_main_list ul {float:left;width:100%;margin:0;padding:0 0 0 20px}
+.sl_main_list ul li {float:left;width:100%;margin:0;padding:0}
+
+/* Main Blog */
+#sl_main_blog ul {float: left;list-style: none outside none;margin: 0 0 10px;padding: 0;width: 100%;}
+#sl_main_blog li {float:left; margin:0 25px 0 0; padding:0; width:100px}
+#sl_main_blog li.nm {margin:0}
+
+/* Main Gallery */
+#sl_main_gallery .scrollable {float:left;position:relative;overflow:hidden;width:100%;margin:5px 0 0;height:100px}
+#sl_main_gallery .scrollable .items {width:20000em;position:absolute;clear:both}
+#sl_main_gallery .scrollable .items .item {float:left;margin:0;padding:0;width:750px;list-style:none}
+#sl_main_gallery .scrollable .items .item li {float:left;margin:0 25px 0 0;padding:0;width:100px}
+
 
 /* buttoms */
 #sl_bottom_menu {float:left;width:100%;padding:10px 0 0;}

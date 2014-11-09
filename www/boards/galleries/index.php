@@ -14,6 +14,8 @@ try {
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
 	// 카테고리 가져오기
 	$stmt_category_count = $con -> prepare('SELECT COUNT(*) FROM gallery_categories');
@@ -36,8 +38,8 @@ try {
 
 	// 본 목록 가져오기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM galleries ' . $query_where);
-	if(isset($gallery_category_id))
-		$stmt_count->bindParam(':gallery_category_id',$gallery_category_id,PDO::PARAM_INT);	
+	if (isset($gallery_category_id))
+		$stmt_count -> bindParam(':gallery_category_id', $gallery_category_id, PDO::PARAM_INT);
 	$stmt_count -> execute();
 	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
 	$total = $total_a[0];
@@ -46,28 +48,29 @@ try {
 		$query_order = 'ORDER BY ID DESC';
 
 		$stmt = $con -> prepare('SELECT * FROM galleries ' . $query_where . ' ' . $query_order);
-		if(isset($gallery_category_id))
-			$stmt->bindParam(':gallery_category_id',$gallery_category_id,PDO::PARAM_INT);	
+		if (isset($gallery_category_id))
+			$stmt -> bindParam(':gallery_category_id', $gallery_category_id, PDO::PARAM_INT);
 		$stmt -> execute();
 		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+		$data['list'] = array_chunk($data['list'], 5);
 	}
 
 	// 본문 가져오기
-	if(isset($clean['id'])) {
+	if (isset($clean['id'])) {
 		$stmt_content = $con -> prepare('SELECT * FROM galleries WHERE id=:id');
-		$stmt_content -> bindParam(':id',$clean['id'],PDO::PARAM_INT);
+		$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 		$stmt_content -> execute();
 		$data['content'] = $stmt_content -> fetch(PDO::FETCH_ASSOC);
 	} else {
-		if(isset($data['list']))
-			$data['content']=$data['list'][0];
+		if (isset($data['list']))
+			$data['content'] = $data['list'][0];
 	}
 
 	$con = null;
-	
-	$sl_js=array('plugin/jquery.easing.1.3.pack.js','plugin/jquery.fancybox.1.3.4.js','plugin/jquery.uri.js','boards/galleries/index.js');
 
- 	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
+	$sl_js = array('plugin/jquery.easing.1.3.pack.js', 'plugin/jquery.fancybox.1.3.4.js', 'plugin/jquery.uri.js', 'boards/galleries/index.js');
+
+	require_once WEBROOT_DIRECTORY . DIRECTORY_SEPARATOR . 'phpThumb' . DIRECTORY_SEPARATOR . 'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	$con = null;

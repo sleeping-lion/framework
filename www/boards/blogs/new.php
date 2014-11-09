@@ -6,7 +6,9 @@ try {
 	$clean = filter_input_array(INPUT_GET, array('blog_category_id'=>FILTER_VALIDATE_INT));
 
 	// 커넥터(PDO) 가져오기
-	$con = get_PDO($config_db);	
+	$con = get_PDO($config_db);
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';		
 	
 	// 카테고리 가져오기
 	$stmt_category_count = $con -> prepare('SELECT COUNT(*) FROM blog_categories');

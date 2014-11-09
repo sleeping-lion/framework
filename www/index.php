@@ -5,6 +5,8 @@ try {
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';		
 
 	// 공지사항 가져오기
 	require_once BOARD_DIRECTORY.DIRECTORY_SEPARATOR.'notices'.DIRECTORY_SEPARATOR.'_index.php';
@@ -20,6 +22,8 @@ try {
 
 	// 커넥터(PDO)  해제
 	$con = null;
+	
+	$config['controller']='home';
 
  	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

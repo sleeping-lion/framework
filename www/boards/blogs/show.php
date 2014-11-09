@@ -6,6 +6,8 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
+	
 	$query_where = 'WHERE n.id=:id';
 
 	$stmt = $con -> prepare('SELECT * FROM notices As n Inner Join notice_contents As nc ON n.id=nc.id ' . $query_where);
@@ -16,9 +18,7 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();	
 	
-	// 조회 입력
-	$stmt_tag = $con -> prepare('INSERT INTO impressions(impressionable_type,impressionable_id,user_id,controller_name,action_name,view_name,request_hash,ip_address,session_hash,referrer,created_at) 
-	VALUES(:impressionable_type,:impressionable_id,:user_id,:controller_name,:action_name,:view_name,:request_hash,:ip_address,:session_hash,:referrer,now()) ON DUPLICATE KEY UPDATE SET updated_at=now()');	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'insert_impressions.php';
 
 	/******** 커밋 **********/
 	$con -> commit();
