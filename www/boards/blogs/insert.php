@@ -71,7 +71,7 @@ try {
 		$tag_id=$con -> lastInsertId();
 
 		$stmt_taging -> bindParam(':tag_id', $tag_id, PDO::PARAM_INT);
-		$stmt_taging -> bindParam(':taggable_id', $clean['taggable_id'], PDO::PARAM_INT);
+		$stmt_taging -> bindParam(':taggable_id', $clean['id'], PDO::PARAM_INT);
 		$stmt_taging -> bindParam(':taggable_type', $config['controller'], PDO::PARAM_STR);
 		$stmt_taging -> bindValue(':context', 'tags');
 		$stmt_taging -> execute();

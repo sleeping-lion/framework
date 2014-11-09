@@ -6,8 +6,8 @@
 	</div>
 	<div id="tags">
 		<ul>
-			<?php foreach($tag_cloud as $index=>$value): ?>
-			<li><a href="" class="css_class"></a></li>
+			<?php foreach($data['aside_tags'] as $index=>$value): ?>
+			<li><a href="" class="css_class"><?php echo $value['name'] ?></a></li>
 			<?php endforeach ?>
 		</ul>
 	</div>
