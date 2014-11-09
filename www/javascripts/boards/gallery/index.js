@@ -21,7 +21,7 @@ $(document).ready(function() {
 	
 	function clickThumbnail(){
 		$("#sl_gallery_left span").text($(this).attr('title')).css('bottom',-30);
-		$("#sl_gallery_left img").attr('src',$(this).attr('href')).animate({ opacity: "1" }, 400,function(){	$("#sl_gallery_left span").animate({bottom:5,opacity:'0.8'},400)});
+		$("#sl_gallery_left img").attr('src',$(this).attr('href')).animate({ opacity: "1" }, 400,function(){	$("#sl_gallery_left span").animate({bottom:5,opacity:'0.8'},400);});
 		/*
 		$("#sl_gallery_left li span").css({'opacity':0,'bottom':'-30px'});
 		*/

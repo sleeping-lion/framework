@@ -23,8 +23,7 @@ try {
 	// 전체 카운터 뽑기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM questions ' . $query_where);
 	$stmt_count -> execute();
-	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
-	$data['total'] = $total_a[0];
+	$data['total'] = $stmt_count -> fetchColumn();
 
 	// 게시물이 있으면
 	if ($data['total']) {

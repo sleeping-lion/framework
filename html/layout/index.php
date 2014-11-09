@@ -3,9 +3,7 @@
 	<head>
 		<title><?php echo $config['site']['title'] ?></title>
 		<meta charset="utf-8">
-		<?php if($config['use_boostrap']): ?>
 		<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
-		<?php endif ?>
 		<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />		
 		<?php sl_style($config['template']['theme_style']); ?>
 		<meta content="<?php echo $config['site']['description'] ?>" name="description" />
@@ -29,6 +27,7 @@
 	</div>
 <?php endif ?>				
 				<section class="sub_main">
+				<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>					
 				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
 				<?php require_once $config['template']['main'] ?>
 				</section>
@@ -36,13 +35,8 @@
 			</div>
 		</div>
 		<?php require_once $config['template']['footer'] ?>
-		<?php if($config['use_boostrap'] OR $config['use_jquery']):
-		?>
 		<script type="text/javascript" src="/javascripts/jquery-2.1.1.min.js"></script>
-		<?php endif ?>
-		<?php if($config['use_boostrap']): ?>
 		<script type="text/javascript" src="/javascripts/bootstrap.min.js" ></script>
-		<?php endif ?>
 		<?php sl_js($config['template']['theme_script']); ?>
 	</body>
 </html>

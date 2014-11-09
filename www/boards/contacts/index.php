@@ -12,10 +12,9 @@ try {
 	
 	$stmt_count=$con->prepare('SELECT COUNT(*) FROM notices '.$query_where);
 	$stmt_count->execute();
-	$total_a=$stmt_count->fetch(PDO::FETCH_NUM);
-	$total=$total_a[0];
+	$data['total'] = $stmt_count -> fetchColumn();
 
-	if($total) {
+	if($data['total']) {
 		$query_order='ORDER BY ID DESC';
 		
 		$stmt=$con->prepare('SELECT * FROM notices '.$query_where.' '.$query_order);

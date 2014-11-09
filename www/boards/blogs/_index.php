@@ -3,12 +3,11 @@
 // 전체 카운터 뽑기
 $stmt_count_blog = $con -> prepare('SELECT COUNT(*) FROM blogs');
 $stmt_count_blog -> execute();
-$total_blog_a = $stmt_count_blog -> fetch(PDO::FETCH_NUM);
-$data['blog_total'] = $total_blog_a[0];
+$data['blog_total'] = $stmt_count_blog -> fetchColumn();
 
 // 게시물이 있으면
 if ($data['blog_total']) {
-	$stmt_blog = $con -> prepare('SELECT * FROM blogs ORDER BY ID DESC LIMIT 10');
+	$stmt_blog = $con -> prepare('SELECT * FROM blogs ORDER BY ID DESC LIMIT 6');
 	$stmt_blog -> execute();
 	$data['blog_list'] = $stmt_blog -> fetchAll(PDO::FETCH_ASSOC);
 }

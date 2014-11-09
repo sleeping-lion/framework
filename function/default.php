@@ -45,13 +45,13 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 			// 기본 테마가 아니면
 			if (!strcmp($theme, 'default')) {
 				// 기본 테마의 현재 경로것을 사용
-				if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . $directory . $file)) {
-					$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . $directory . $file;
+				if (file_exists(HTML_DIRECTORY .  DIRECTORY_SEPARATOR  . $directory . $file)) {
+					$html = HTML_DIRECTORY .  DIRECTORY_SEPARATOR  . $directory . $file;
 				} else {
 					// 그렇지 않으면 기본  테마의 common경로 검색
-					if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
+					if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
 						// 있으면 common것을 사용
-						$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
+						$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
 					}
 				}
 			}
@@ -397,7 +397,7 @@ function pagination($allCount, $perPage = 10, $prevNext = true, $linkPage = 'ind
 	$pager = SLPager::factory($params);
 	$link = $pager -> getLinks();
 
-	return '<ul class="pagination">' . $link['all'] . '</ul>';
+	return '<div class="text-center"><ul class="pagination">' . $link['all'] . '</ul></div>';
 }
 
 /*  오늘은 시간 표시, 그밖에는 날짜만 표시 */
