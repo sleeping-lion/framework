@@ -32,58 +32,55 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 		$file = $current_file;
 	}
 
-	// 현재 경로와 파일이 일치하면
-	if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file)) {
-		// 현재 경로것 이용
-		$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file;
-	} else {
-		// 그렇지 않으면 현 테마의 common경로 검색
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
-			// 있으면 common것을 사용
-			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
+	// 기본 테마가 아니면
+	if (strcmp($theme, 'default')) {
+		// 현재 경로와 파일이 일치하면
+		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file)) {
+			// 현재 경로것 이용
+			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file;
 		} else {
-			// 기본 테마가 아니면
-			if (!strcmp($theme, 'default')) {
-				// 기본 테마의 현재 경로것을 사용
-				if (file_exists(HTML_DIRECTORY .  DIRECTORY_SEPARATOR  . $directory . $file)) {
-					$html = HTML_DIRECTORY .  DIRECTORY_SEPARATOR  . $directory . $file;
-				} else {
-					// 그렇지 않으면 기본  테마의 common경로 검색
-					if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
-						// 있으면 common것을 사용
-						$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
-					}
-				}
+			// 그렇지 않으면 현 테마의 common경로 검색
+			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
+				// 있으면 common것을 사용
+				$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
+			}
+		}
+	} else {
+		// 기본 테마의 현재 경로것을 사용
+		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file)) {
+			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file;
+		} else {
+			// 그렇지 않으면 기본  테마의 common경로 검색
+			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
+				// 있으면 common것을 사용
+				$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
 			}
 		}
 	}
-
 	return $html;
 }
 
-function find_style_script($file = null,$theme = 'default', $type = 'script') {
+function find_style_script($file = null, $theme = 'default', $type = 'script') {
 	$include_file = false;
-	$is_absolute_path=false;
-	$is_plugin=false;	
+	$is_absolute_path = false;
+	$is_plugin = false;
 
 	if (!strcmp($type, 'style') AND !strcmp($type, 'script'))
 		throw new Exception("Error Processing Request", 1);
 
-	
-	
-	$pp4=substr($file,0,4);
-	
-	if(strpos($pp4,'//') !== false  OR strpos($pp4,'http') !== false) {
+	$pp4 = substr($file, 0, 4);
+
+	if (strpos($pp4, '//') !== false OR strpos($pp4, 'http') !== false) {
 		return $include_file;
 	}
-	
-	$pp1=substr($file,0,1);
-	
-	if(strpos($pp1,'/') !== false) {
-		$is_absolute_path=true;
+
+	$pp1 = substr($file, 0, 1);
+
+	if (strpos($pp1, '/') !== false) {
+		$is_absolute_path = true;
 	}
-	
-	if(!$is_absolute_path) {	
+
+	if (!$is_absolute_path) {
 		if (strcmp($type, 'style')) {
 			$base_directory = JAVASCRIPT_DIRECTORY;
 			$base_web_directory = 'javascripts';
@@ -92,52 +89,64 @@ function find_style_script($file = null,$theme = 'default', $type = 'script') {
 			$base_web_directory = 'stylesheets';
 		}
 	}
-	
-	if(strpos($file, '/') !== false) {
-		$ee=explode('/',$file);
-		
-		$cee=count($ee);
-		foreach($ee as $index=>$value) {
-			$new_file.=$value;
-			$new_web_file.=$value;
-			
-			if($index+1<$cee) {
-				$new_file.=DIRECTORY_SEPARATOR;
-				$new_web_file.='/';
-			} 
-		}		
+
+	if (strpos($file, '/') !== false) {
+		$ee = explode('/', $file);
+
+		$cee = count($ee);
+		foreach ($ee as $index => $value) {
+			$new_file .= $value;
+			$new_web_file .= $value;
+
+			if ($index + 1 < $cee) {
+				$new_file .= DIRECTORY_SEPARATOR;
+				$new_web_file .= '/';
+			}
+		}
 	} else {
-			$new_file=$file;
-			$new_web_file=$file;
+		$new_file = $file;
+		$new_web_file = $file;
 	}
-	
-	
-	
-	if($is_absolute_path) {
-		if (file_exists(WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.$new_file)) {
+
+	if ($is_absolute_path) {
+		if (file_exists(WEBROOT_DIRECTORY . DIRECTORY_SEPARATOR . $new_file)) {
 			// 현재 경로것 이용
 			$include_file = $new_web_file;
 		}
 	} else {
-		// 현재 경로와 파일이 일치하면
-		if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme .DIRECTORY_SEPARATOR. $new_file)) {
-			// 현재 경로것 이용
-			$include_file = '/' . $base_web_directory . '/theme/' . $theme  . '/' . $new_web_file;
-		} else {
-			// 그렇지 않으면 현 테마의 common경로 검색
-			if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $new_file)) {
-				// 있으면 common것을 사용
-				$include_file = '/' . $base_web_directory . '/theme/' . $theme . '/common/' . $new_web_file;
-			}  else {
-				
+
+		// 기본 테마가 아니면
+		if (strcmp($theme, 'default')) {
+			// 현재 경로와 파일이 일치하면
+			if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . $new_file)) {
+				// 현재 경로것 이용
+				$include_file = '/' . $base_web_directory . '/theme/' . $theme . '/' . $new_web_file;
+			} else {
+				// 그렇지 않으면 현 테마의 common경로 검색
+				if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $new_file)) {
+					// 있으면 common것을 사용
+					$include_file = '/' . $base_web_directory . '/theme/' . $theme . '/common/' . $new_web_file;
+				}
 			}
+		} else {
+			if (file_exists($base_directory . DIRECTORY_SEPARATOR . $new_file)) {
+				// 현재 경로것 이용
+				$include_file = '/' . $base_web_directory . '/' . $new_web_file;
+			} else {
+				// 그렇지 않으면 현 테마의 common경로 검색
+				if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $new_file)) {
+					// 있으면 common것을 사용
+					$include_file = '/' . $base_web_directory . '/common/' . $new_web_file;
+				}
+			}
+
 		}
 	}
-	
-	if($include_file) {
+
+	if ($include_file) {
 		return $include_file;
 	} else {
-		throw new Exception('not exist '.$type.' file', 1);	
+		throw new Exception('not exist ' . $type . ' file', 1);
 	}
 }
 
@@ -205,8 +214,7 @@ function move_file($file, $folder_name, $id) {
 
 		 // $thumbPath=UPLOAD_DIRECTORY.DIRECTORY_SEPARATOR.'thumbnail'.DIRECTORY_SEPARATOR.$targetName;
 		 */
-		$result['convert_name'] = $targetName;
-		;
+		$result['convert_name'] = $targetName; ;
 
 		return $request;
 	} else {
@@ -248,7 +256,7 @@ function sl_debug($data) {
 	echo '</pre>';
 }
 
-function truncate($string, $length=20) {
+function truncate($string, $length = 20) {
 	if (mb_strlen($string, 'UTF-8') > $length) {
 		return mb_substr($string, 0, $length, 'UTF-8') . '..';
 	} else {
@@ -401,7 +409,6 @@ function pagination($allCount, $perPage = 10, $prevNext = true, $linkPage = 'ind
 }
 
 /*  오늘은 시간 표시, 그밖에는 날짜만 표시 */
-
 function get_format_date($date, $type = null, $noTodayTime = false) {
 	$date = date('Y-m-d', strtotime($date));
 	$date2 = explode('-', $date);
@@ -455,4 +462,3 @@ function get_format_date($date, $type = null, $noTodayTime = false) {
 			}
 	}
 }
-?>

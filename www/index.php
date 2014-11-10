@@ -24,6 +24,7 @@ try {
 	$con = null;
 	
 	$config['controller']='home';
+	$sl_script=array('plugin/jquery.tools.min.js','main.js');
 
  	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

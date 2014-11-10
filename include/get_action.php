@@ -1,7 +1,10 @@
 <?php
 
+
+if(empty($config['action'])) {
 $action_a = explode('/', $_SERVER['PHP_SELF']);
 $action_count = count($action_a);
+
 
 switch($action_a[$action_count-1]) {
 	case 'index.php' :
@@ -26,5 +29,5 @@ switch($action_a[$action_count-1]) {
 		$sl_action = 'delete';
 		break;
 }
-
 $config['action'] = $sl_action;
+}

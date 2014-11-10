@@ -14,16 +14,15 @@ try {
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
-	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
+
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
 	// 카테고리 가져오기
 	$stmt_category_count = $con -> prepare('SELECT COUNT(*) FROM blog_categories');
 	$stmt_category_count -> execute();
-	$total_category_a = $stmt_category_count -> fetch(PDO::FETCH_NUM);
-	$total_category = $total_category_a[0];
+	$data['total_category'] = $stmt_category_count -> fetchColumn();
 
-	if ($total_category) {
+	if ($data['total_category']) {
 		$stmt_category = $con -> prepare('SELECT * FROM blog_categories ORDER BY ID DESC');
 		$stmt_category -> execute();
 		$data['category'] = $stmt_category -> fetchAll(PDO::FETCH_ASSOC);
@@ -38,36 +37,35 @@ try {
 
 	// 본 목록 가져오기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM blogs ' . $query_where);
-	if(isset($blog_category_id))
-		$stmt_count->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);	
+	if (isset($blog_category_id))
+		$stmt_count -> bindParam(':blog_category_id', $blog_category_id, PDO::PARAM_INT);
 	$stmt_count -> execute();
-	$total_a = $stmt_count -> fetch(PDO::FETCH_NUM);
-	$total = $total_a[0];
+	$data['total'] = $stmt_count -> fetchColumn();
 
-	if ($total) {
+	if ($data['total']) {
 		$query_order = 'ORDER BY ID DESC';
 
 		$stmt = $con -> prepare('SELECT * FROM blogs ' . $query_where . ' ' . $query_order);
-		if(isset($blog_category_id))
-			$stmt->bindParam(':blog_category_id',$blog_category_id,PDO::PARAM_INT);
+		if (isset($blog_category_id))
+			$stmt -> bindParam(':blog_category_id', $blog_category_id, PDO::PARAM_INT);
 		$stmt -> execute();
 		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-	}
 
-	// 본문 가져오기
-	if(isset($clean['id'])) {
-		$stmt_content = $con -> prepare('SELECT * FROM blogs WHERE id=:id');
-		$stmt_content -> bindParam(':id',$clean['id'],PDO::PARAM_INT);
-		$stmt_content -> execute();
-		$data['content'] = $stmt_content -> fetch(PDO::FETCH_ASSOC);
-	} else {
-		if(isset($data['list']))
-			$data['content']=$data['list'][0];
+		// 본문 가져오기
+		if (isset($clean['id'])) {
+			$stmt_content = $con -> prepare('SELECT * FROM blogs WHERE id=:id');
+			$stmt_content -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+			$stmt_content -> execute();
+			$data['content'] = $stmt_content -> fetch(PDO::FETCH_ASSOC);
+		} else {
+			if (isset($data['list']))
+				$data['content'] = $data['list'][0];
+		}
 	}
 
 	$con = null;
 
- 	require_once WEBROOT_DIRECTORY.DIRECTORY_SEPARATOR.'phpThumb'.DIRECTORY_SEPARATOR.'phpThumb.config.php';
+	require_once WEBROOT_DIRECTORY . DIRECTORY_SEPARATOR . 'phpThumb' . DIRECTORY_SEPARATOR . 'phpThumb.config.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	$con = null;

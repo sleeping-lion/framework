@@ -1,6 +1,11 @@
 $(document).ready(function() {
-	$('header nav ul').superfish({delay:400,animation:{opacity:'show', height:'show'},speed:400,autoArrows:  false,dropShadows: false});	
-	$("#section_main .scrollable").scrollable({circular: true }).autoscroll({interval: 2000}).navigator(".navi");;	
+	//$('header nav ul').superfish({delay:400,animation:{opacity:'show', height:'show'},speed:400,autoArrows:  false,dropShadows: false});	
+  $(".scrollable").scrollable({
+    circular: true,
+    mousewheel: true
+  }).navigator().autoscroll({
+    interval: 3000
+  });
 });
 
 /**

@@ -3,9 +3,7 @@
 	<head>
 		<title><?php echo $config['site']['title'] ?></title>
 		<meta charset="utf-8">
-		<link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
-		<link type="text/css" rel="stylesheet" href="/stylesheets/index.css" />		
-		<?php sl_style($config['template']['theme_style']); ?>
+		<?php sl_style($config['template']['stylesheets']); ?>
 		<meta content="<?php echo $config['site']['description'] ?>" name="description" />
 		<meta content="<?php echo $config['site']['keywords'] ?>" name="keywords" />
 		<meta content="width=device-width, initial-scale=1.0" name="viewport" />		
@@ -35,8 +33,6 @@
 			</div>
 		</div>
 		<?php require_once $config['template']['footer'] ?>
-		<script type="text/javascript" src="/javascripts/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="/javascripts/bootstrap.min.js" ></script>
-		<?php sl_js($config['template']['theme_script']); ?>
+		<?php sl_js($config['template']['javascripts']); ?>
 	</body>
 </html>
