@@ -236,13 +236,13 @@ function sl_style($sl_style) {
 	}
 }
 
-function sl_js($sl_js) {
-	$count = count($sl_js);
+function sl_script($sl_script) {
+	$count = count($sl_script);
 
 	if (!$count)
 		return false;
 
-	foreach ($sl_js as $index => $value) {
+	foreach ($sl_script as $index => $value) {
 		echo '<script type="text/javascript" src="' . $value . '"></script>';
 
 		if ($count < $index + 1)
@@ -264,34 +264,35 @@ function truncate($string, $length = 20) {
 	}
 }
 
-function show_link($id, $pageId = null, $link = 'show.php') {
-	if (strstr($link, '?')) {
-		$link .= '&id=' . $id;
-	} else {
-		$link .= '?id=' . $id;
-	}
-
-	if ($pageId) {
-		if ($_GET['pageID']) {
-			$link .= '&amp;pageID=' . $_GET['pageID'];
-		} else {
-			$link .= '&amp;pageID=' . $pageId;
+function show_link($id,$link = 'show.php') {
+	parse_str($_SERVER['QUERY_STRING'], $qs_a);
+	
+	$count_qs_a= count($qs_a);
+	$query_string.='id='.$id;
+	if($count_qs_a) {
+		foreach($qs_a as $key=>$value) {
+			if(strcmp($key,'id'))				
+				$query_string.='&'.$key.'='.$value;
 		}
 	}
-
-	return $link;
+	
+	return $link.'?'.$query_string;
 }
 
-function index_link($pageId = null, $link = 'index.php') {
-	if ($_GET['pageID']) {
-		if (strstr($link, '?')) {
-			$link .= '&pageID=' . $pageId;
-		} else {
-			$link .= '?pageID=' . $pageId;
-		}
-	}
+function index_link($link = 'index.php') {
+	
+	parse_str($_SERVER['QUERY_STRING'], $qs_a);
 
-	return $link;
+	$count_qs_a= count($qs_a);
+	$query_string.='';
+	if($count_qs_a) {
+		foreach($qs_a as $key=>$value) {
+			if(strcmp($key,'id'))
+				$query_string.='&'.$key.'='.$value;
+		}
+	} 
+	
+	return $link.'?'.substr($query_string,1);
 }
 
 function get_limit_query($pageID, $pageSize = 10) {

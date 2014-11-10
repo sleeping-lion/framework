@@ -20,7 +20,7 @@
 				<?php foreach($data['list'] as $index=>$value): ?>
 				<tr <?php if($clean['id'] == $value['id']): ?>class="selected"<?php endif ?>>
 					<td><?php echo $value['id'] ?></td>
-					<td><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['title'] ?></a></td>
+					<td><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['title'] ?></a></td>
 					<td><?php echo $value['count'] ?></td>
 					<td class="sl_created_at"><?php echo get_format_date($value['created_at']) ?></td>
 				</tr>

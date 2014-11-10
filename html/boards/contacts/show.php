@@ -1,5 +1,4 @@
 <section id="sl_board_contract_show" class="sub_main">
-	<form action="insert.php" method="post">
 	<table id="sl_main_show" border="0" cellpadding="0" cellspacing="0">
 		<colgroup>
 			<col />
@@ -26,5 +25,7 @@
 			</tr>					
 		</tbody>
 	</table>
-	</form>
+	<div id="sl_index_bottom_buttons">
+		<a href="<?php echo index_link() ?>"><?php echo _('index_link') ?></a>
+	</div>
 </section>

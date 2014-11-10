@@ -22,7 +22,7 @@
     			<?php foreach($data['aside_blog_categories'] as $blog_sub_category): ?>
       		<?php if($blog_sub_category['blog_category_id']==$blog_category['id']): ?>
       		<li <?php if($clean['blog_category_id']==$blog_sub_category): ?>class="active"<?php endif ?>>
-      			<a href=""><?php echo $blog_sub_category['title'] ?>(<?php echo $blog_category['blogs_count'] ?>)</a>
+      			<a href="/blogs/index.php?blog_category_id=<?php echo $blog_sub_category['id'] ?>"><?php echo $blog_sub_category['title'] ?>(<?php echo $blog_category['blogs_count'] ?>)</a>
       		</li>
       		<?php endif ?>
       		<?php endforeach ?>

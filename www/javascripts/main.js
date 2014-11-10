@@ -6,6 +6,13 @@ $(document).ready(function() {
   }).navigator().autoscroll({
     interval: 3000
   });
+
+	$('.modal_link').click(function(event){
+  	event.preventDefault();
+  	$('#myModal').removeData("modal");
+  	$('#myModal').modal({'remote':$(this).attr('href')+'?no_layout=true'});
+	});  
+  
 });
 
 /**

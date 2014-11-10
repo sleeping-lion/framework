@@ -21,9 +21,9 @@
 	<div class="jumbotron hero-unit">
 		<h1>최신의 PHP 게시판 시스템 SLBoard</h1>
 		<p class="lead">PHP 5.3.0버전 부터 사용가능합니다.</p>
-		<a class="modal_link btn btn-large btn-success" data-target="#myModal" data-toggle="modal" href="/home/popup">깨끗한 웹을 꿈꾸고 있습니다</a>
+		<a class="modal_link btn btn-large btn-success" data-target="#myModal" data-toggle="modal" href="/popup.php">깨끗한 웹을 꿈꾸고 있습니다</a>
 	</div>
-<?php endif ?>				
+<?php endif ?>
 				<section class="sub_main">
 				<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>					
 				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
@@ -32,7 +32,9 @@
 				<?php require_once $config['template']['aside'] ?>
 			</div>
 		</div>
+<div class="slboard_overlay" id="overlay"></div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"></div>		
 		<?php require_once $config['template']['footer'] ?>
-		<?php sl_js($config['template']['javascripts']); ?>
+		<?php sl_script($config['template']['javascripts']); ?>
 	</body>
 </html>

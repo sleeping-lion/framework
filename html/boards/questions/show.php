@@ -17,4 +17,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<div id="sl_index_bottom_buttons">
+		<a href="<?php echo index_link() ?>"><?php echo _('index_link') ?></a>
+	</div>	
 </section>

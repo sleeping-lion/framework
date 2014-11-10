@@ -12,12 +12,6 @@ $(document).ready(function(){
      $("#tags ul").css({'margin':0,'padding':0,'list-style':'none'});
      $("#tags ul li").css({'float':'left','margin':'0 10px'});     
    }
-   
-	$('.modal_link').click(function(event){
-  	event.preventDefault();
-  	$('#myModal').removeData("modal");
-  	$('#myModal').modal({'remote':$(this).attr('href')+'?no_layout=true'});
-	});
 
 	$(".btn_minimize").click(function(){
 		var i=$(this).parent().find('i:first');
@@ -36,11 +30,13 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$("#sl_blog_categories .box_content ul span.c_pointer").toggle(function(){
+	$("#sl_blog_categories .box_content ul span.c_pointer").click(function(){
+		if($(this).parent().find('ul').is(':visible')) {
 		$(this).parent().find('ul').hide();
 		$(this).find('span:eq(1)').html('&nbsp;&lt;&lt;');
-	},function(){
+		} else {
 		$(this).parent().find('ul').show();
 		$(this).find('span:eq(1)').html('&nbsp;&gt;&gt;');
+		}
 	});
 });
