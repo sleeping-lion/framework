@@ -21,6 +21,7 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
 	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'insert_impressions.php';	
 
 	/******** 커밋 **********/
 	$con -> commit();

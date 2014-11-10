@@ -56,7 +56,7 @@ footer div {margin:0.3em 0 0}
 
 /* header */
 header {position:relative}
-header h1 {float:left;margin:0.5em 0 0 0.5em;padding:0}
+header h1 {float:left;margin:1em 0 0 0;padding:0}
 header h1 a:active {color:red}
 header nav { position: relative; z-index: 999; margin:0; padding:0}
 header nav ul { float: right; margin: 1.5em 0 0 0; padding: 0}

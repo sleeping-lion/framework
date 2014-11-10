@@ -3,7 +3,7 @@
 try {
 	require_once __DIR__. DIRECTORY_SEPARATOR . 'setting.php';
 
-	// 입력 필터
+	// 입력 필터 
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT));
 
 	// 커넥터(PDO) 가져오기
@@ -21,7 +21,7 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
 	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_insert.php';	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'insert_impressions.php';	
 
 	/******** 커밋 **********/
 	$con -> commit();
