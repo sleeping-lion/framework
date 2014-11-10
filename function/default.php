@@ -264,6 +264,22 @@ function truncate($string, $length = 20) {
 	}
 }
 
+
+function category_link($id,$category_name,$link = 'index.php') {
+	parse_str($_SERVER['QUERY_STRING'], $qs_a);
+	
+	$count_qs_a= count($qs_a);
+	$query_string='id='.$id;
+	if($count_qs_a) {
+		foreach($qs_a as $key=>$value) {
+			if(strcmp($key,'id'))				
+				$query_string.='&'.$key.'='.$value;
+		}
+	}
+	
+	return $link.'?'.$query_string;
+}
+
 function show_link($id,$link = 'show.php') {
 	parse_str($_SERVER['QUERY_STRING'], $qs_a);
 	

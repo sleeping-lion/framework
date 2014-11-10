@@ -35,6 +35,7 @@ require_once FUNCTION_DIRECTORY . DIRECTORY_SEPARATOR . 'custom.php';
 /* site config */
 require_once 'site.php';
 
+/* template filename */
 $config['template']['layout']='index.php';
 $config['template']['header']='header.php';
 $config['template']['footer']='footer.php';

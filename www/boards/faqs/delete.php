@@ -8,7 +8,9 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
+	$stmt_delete = $con -> prepare('DELETE * FROM faqs WHERE id=:id');
+	$stmt_delete -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt_delete -> execute();
 	
 	$con=null;	
 

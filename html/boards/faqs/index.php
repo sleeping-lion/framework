@@ -1,35 +1,25 @@
 <section id="sl_board_notice_index" class="sub_main">
 	<article>
 		<ol id="faqCategoryList">
-			<li class="on">
-				<a class="title" href="/faqs?faq_category_id=1">진규의 잘생김</a>
+			<?php foreach($data['category'] as $index=>$value): ?>
+			<li <?php if(!strcmp($clean['faq_category_id'],$value['id'])): ?><?php echo 'class="on"' ?><?php endif ?>>
+				<a class="title" href="<?php echo category_link() ?>"><?php echo $value['title'] ?></a>
 			</li>
-			<li >
-				<a class="title" href="/faqs?faq_category_id=2">진규의 귀여움</a>
-			</li>
-			<li >
-				<a class="title" href="/faqs?faq_category_id=3">최고의 아내</a>
-			</li>
-			<li >
-				<a class="title" href="/faqs?faq_category_id=4">멍멍이</a>
-			</li>
+			<?php endforeach ?>
 		</ol>		
 	</article>
 	<article>
 		<dl id="faqList">
-			<dt >
-				<a class="title" href="/faqs?id=3">키가 약간 아쉽내요?</a>
+			<?php if($data['total']): ?>			
+			<?php foreach($data['list'] as $index=>$value): ?>
+			<dt <?php if(!strcmp($clean['id'],$value['id'])): ?><?php echo 'class="on"' ?><?php endif ?>>
+				<a class="title" href="<?php echo show_link($value['id'],'index.php') ?>"><?php echo $value['title'] ?></a>
 			</dt>
-			
-			<dt >
-				<a class="title" href="/faqs?id=2">진규는  목이 어떻게 그리 긴가요?</a>
-			</dt>
-			
-			<dt >
-				<a class="title" href="/faqs?id=1">진규는 어떻게 이렇게 잘생겼나요?</a>
-			</dt>
-			
-		</dl>
+			<?php endforeach ?>
+			<?php else: ?>
+			<dt><?php echo _('no_data') ?></dt>
+			<?php endif ?>
+		</dl>		
 	</article>
 	<div id="sl_index_bottom_menu">
 		<?php echo pagination($data['total']) ?>

@@ -4,7 +4,7 @@ try {
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	// 입력 필터
-	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING, 'pageID' => FILTER_VALIDATE_INT, 'desc' => FILTER_VALIDATE_INT, 'order' => FILTER_SANITIZE_STRING));
+	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT,'faq_category_id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING, 'pageID' => FILTER_VALIDATE_INT, 'desc' => FILTER_VALIDATE_INT, 'order' => FILTER_SANITIZE_STRING));
 
 	if (empty($clean['order'])) {
 		$clean['order'] = 'id';
