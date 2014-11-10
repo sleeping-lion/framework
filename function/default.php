@@ -268,7 +268,7 @@ function show_link($id,$link = 'show.php') {
 	parse_str($_SERVER['QUERY_STRING'], $qs_a);
 	
 	$count_qs_a= count($qs_a);
-	$query_string.='id='.$id;
+	$query_string='id='.$id;
 	if($count_qs_a) {
 		foreach($qs_a as $key=>$value) {
 			if(strcmp($key,'id'))				
@@ -284,15 +284,19 @@ function index_link($link = 'index.php') {
 	parse_str($_SERVER['QUERY_STRING'], $qs_a);
 
 	$count_qs_a= count($qs_a);
-	$query_string.='';
+	
 	if($count_qs_a) {
 		foreach($qs_a as $key=>$value) {
 			if(strcmp($key,'id'))
 				$query_string.='&'.$key.'='.$value;
 		}
-	} 
+	}
 	
-	return $link.'?'.substr($query_string,1);
+	if(isset($query_string)) {
+		return $link.'?'.substr($query_string,1);
+	} else {
+		return $link;
+	}
 }
 
 function get_limit_query($pageID, $pageSize = 10) {

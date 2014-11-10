@@ -20,10 +20,9 @@ try {
 	// 카테고리 가져오기
 	$stmt_category_count = $con -> prepare('SELECT COUNT(*) FROM gallery_categories');
 	$stmt_category_count -> execute();
-	$total_category_a = $stmt_category_count -> fetch(PDO::FETCH_NUM);
-	$total_category = $total_category_a[0];
+	$data['total_category'] =  $stmt_category_count -> fetchColumn();
 
-	if ($total_category) {
+	if ($data['total_category']) {
 		$stmt_category = $con -> prepare('SELECT * FROM gallery_categories ORDER BY ID DESC');
 		$stmt_category -> execute();
 		$data['category'] = $stmt_category -> fetchAll(PDO::FETCH_ASSOC);
@@ -31,15 +30,17 @@ try {
 
 	if (empty($clean['gallery_category_id'])) {
 		if (isset($data['category'])) {
-			$gallery_category_id = $data['category'][0]['id'];
+			$clean['gallery_category_id'] = $data['category'][0]['id'];
 			$query_where = 'WHERE gallery_category_id=:gallery_category_id';
 		}
+	}	else {
+		$query_where = 'WHERE gallery_category_id=:gallery_category_id';
 	}
 
 	// 본 목록 가져오기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM galleries ' . $query_where);
-	if (isset($gallery_category_id))
-		$stmt_count -> bindParam(':gallery_category_id', $gallery_category_id, PDO::PARAM_INT);
+	if (isset($clean['gallery_category_id']))
+		$stmt_count -> bindParam(':gallery_category_id', $clean['gallery_category_id'], PDO::PARAM_INT);
 	$stmt_count -> execute();
 	$data['total'] = $stmt_count -> fetchColumn();
 
@@ -47,8 +48,8 @@ try {
 		$query_order = 'ORDER BY ID DESC';
 
 		$stmt = $con -> prepare('SELECT * FROM galleries ' . $query_where . ' ' . $query_order);
-		if (isset($gallery_category_id))
-			$stmt -> bindParam(':gallery_category_id', $gallery_category_id, PDO::PARAM_INT);
+	if (isset($clean['gallery_category_id']))
+			$stmt -> bindParam(':gallery_category_id', $clean['gallery_category_id'], PDO::PARAM_INT);
 		$stmt -> execute();
 		$data['list'] = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 

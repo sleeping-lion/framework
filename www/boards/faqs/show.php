@@ -2,26 +2,17 @@
 
 try {
 	require_once __DIR__.DIRECTORY_SEPARATOR.'setting.php';
-
+	
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 	
-	
-	$con=null;
-	
+	$con=null;	
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
-	if($con) {
-		if($con->inTransaction())
-		/******** 롤백 **********/			
-		$con->rollback();
-		$con=null;
-	}
-
-	require_once $foramtErrorData;
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 
 ?>
