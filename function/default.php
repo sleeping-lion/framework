@@ -269,10 +269,10 @@ function category_link($id,$category_name,$link = 'index.php') {
 	parse_str($_SERVER['QUERY_STRING'], $qs_a);
 	
 	$count_qs_a= count($qs_a);
-	$query_string='id='.$id;
+	$query_string=$category_name.'='.$id;
 	if($count_qs_a) {
 		foreach($qs_a as $key=>$value) {
-			if(strcmp($key,'id'))				
+			if(strcmp($key,$category_name))
 				$query_string.='&'.$key.'='.$value;
 		}
 	}

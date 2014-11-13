@@ -3,7 +3,7 @@
 try {
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
-	$clean = filter_input_array(INPUT_GET, array('gallery_caetegory_id' => FILTER_VALIDATE_INT, 'id' => FILTER_VALIDATE_INT));
+	$clean = filter_input_array(INPUT_GET, array('gallery_category_id' => FILTER_VALIDATE_INT, 'id' => FILTER_VALIDATE_INT));
 
 	if (empty($clean['order'])) {
 		$clean['order'] = 'id';
@@ -23,11 +23,11 @@ try {
 	$data['total_category'] =  $stmt_category_count -> fetchColumn();
 
 	if ($data['total_category']) {
-		$stmt_category = $con -> prepare('SELECT * FROM gallery_categories ORDER BY ID DESC');
+		$stmt_category = $con -> prepare('SELECT * FROM gallery_categories ORDER BY ID ASC');
 		$stmt_category -> execute();
 		$data['category'] = $stmt_category -> fetchAll(PDO::FETCH_ASSOC);
 	}
-
+	
 	if (empty($clean['gallery_category_id'])) {
 		if (isset($data['category'])) {
 			$clean['gallery_category_id'] = $data['category'][0]['id'];
@@ -36,7 +36,7 @@ try {
 	}	else {
 		$query_where = 'WHERE gallery_category_id=:gallery_category_id';
 	}
-
+	
 	// 본 목록 가져오기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM galleries ' . $query_where);
 	if (isset($clean['gallery_category_id']))

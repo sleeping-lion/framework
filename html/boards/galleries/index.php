@@ -2,8 +2,8 @@
 	<ol class="nav nav-tabs sl_categories">
 		<?php if(isset($data['category'])): ?>
 			<?php foreach($data['category'] as $index=>$value): ?>
-			<li <?php if($value): ?>class="active"<?php endif ?>>
-				<a href=""><?php echo $value['title'] ?></a>
+			<li <?php if(!strcmp($value['id'],$clean['gallery_category_id'])): ?>class="active"<?php endif ?>>
+				<a href="<?php echo category_link($value['id'], 'gallery_category_id') ?>"><?php echo $value['title'] ?></a>
 		  </li>
 			<?php endforeach ?>
 		<?php else: ?>	
