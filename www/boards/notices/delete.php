@@ -11,9 +11,7 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
 
-	$query_where = 'WHERE id=:id';
-
-	$stmt = $con -> prepare('DELETE * FROM notices ' . $query_where);
+	$stmt = $con -> prepare('DELETE * FROM notices WHERE id=:id');
 	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt -> execute();
 

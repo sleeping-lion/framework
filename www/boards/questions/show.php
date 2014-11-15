@@ -6,10 +6,25 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
+	// 전체 카운터 뽑기
+	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM questions WHERE id=:id');
+	$stmt_count -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt_count -> execute();
+	
+	if(!$stmt_count -> fetchColumn())
+		throw new Exception("Error Processing Request", 1);
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
+	
+	$stmt = $con -> prepare('SELECT * FROM questions As q Inner Join question_contents As qc ON q.id=qc.id WHERE q.id=:id');
+	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt -> execute();
+	$data['content'] = $stmt -> fetch(PDO::FETCH_ASSOC);
 
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'insert_impressions.php';	
 
 	/******** 커밋 **********/
 	$con -> commit();

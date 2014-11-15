@@ -6,6 +6,14 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
+	// 카운터 뽑기
+	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM galleries WHERE id=:id');
+	$stmt_count -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt_count -> execute();
+	
+	if(!$stmt_count -> fetchColumn())
+		throw new Exception("Error Processing Request", 1);	
+	
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 	
 

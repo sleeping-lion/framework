@@ -11,14 +11,15 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
 
-	require_once $setContentClassPath;
-	$setContent = new SetBlog($con);
-	$setContent -> delete(new SetBlogRequestType( array('id' => $_POST['id'])));
+	$stmt = $con -> prepare('DELETE * FROM questions WHERE id=:id');
+	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt -> execute();
 
 	/******** 커밋 **********/
 	$con -> commit();
 	$con = null;
 
+	$sl_redirect = 'index.php';
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	if ($con) {

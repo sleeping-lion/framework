@@ -6,11 +6,17 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
+	// 카운터 뽑기
+	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM blogs WHERE id=:id');
+	$stmt_count -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
+	$stmt_count -> execute();
 	
-	$query_where = 'WHERE n.id=:id';
+	if(!$stmt_count -> fetchColumn())
+		throw new Exception("Error Processing Request", 1);	
+	
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
-	$stmt = $con -> prepare('SELECT * FROM notices As n Inner Join notice_contents As nc ON n.id=nc.id ' . $query_where);
+	$stmt = $con -> prepare('SELECT * FROM blogs As b Inner Join blog_contents As bc ON b.id=bc.id WHERE b.id=:id');
 	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt -> execute();
 	$data['content'] = $stmt -> fetch(PDO::FETCH_ASSOC);	
