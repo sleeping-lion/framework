@@ -5,24 +5,24 @@
 				<col />
 				<col />
 				<col />
-				<col class="sl_created_at" />
+				<col />
 			</colgroup>
 			<thead>
 				<tr>
-					<th><?php echo get_order_link(_('label_id'),'id',$clean['order'],$clean['desc']) ?></th>
-					<th><?php echo get_order_link(_('label_title'),'title',$clean['order'],$clean['desc']) ?></th>
-					<th><?php echo get_order_link(_('label_count'),'count',$clean['order'],$clean['desc']) ?></th>
-					<th class="sl_created_at"><?php echo get_order_link(_('label_created_at'),'created',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_id"><?php echo get_order_link(_('label_id'),'id',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_title"><?php echo get_order_link(_('label_title'),'title',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_count"><?php echo get_order_link(_('label_count'),'count',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_created_at"><?php echo get_order_link(_('label_created_at'),'created',$clean['order'],$clean['desc']) ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if($data['total']): ?>
 				<?php foreach($data['list'] as $index=>$value): ?>
 				<tr <?php if($clean['id'] == $value['id']): ?>class="selected"<?php endif ?>>
-					<td><?php echo $value['id'] ?></td>
-					<td><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['title'] ?></a></td>
-					<td><?php echo $value['count'] ?></td>
-					<td class="sl_created_at"><?php echo get_format_date($value['created_at']) ?></td>
+					<td class="sl_t_id"><?php echo $value['id'] ?></td>
+					<td class="sl_t_title"><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['title'] ?></a></td>
+					<td class="sl_t_count"><?php echo $value['count'] ?></td>
+					<td class="sl_t_created_at"><?php echo get_format_date($value['created_at']) ?></td>
 				</tr>
 				<?php endforeach ?>
 				<?php else: ?>

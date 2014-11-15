@@ -3,7 +3,7 @@
 try {
 	require_once __DIR__. DIRECTORY_SEPARATOR . 'setting.php';
 
-	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'password' => FILTER_SANITIZE_STRING, 'password_confirm' => FILTER_SANITIZE_STRING, 'title' => FILTER_SANITIZE_STRING));
+	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'password' => FILTER_SANITIZE_STRING, 'password_confirm' => FILTER_SANITIZE_STRING, 'title' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
 
 	if ($clean['password'] != $clean['password_confirm'])
 		throw new Exception("Error Processing Request", 1);
