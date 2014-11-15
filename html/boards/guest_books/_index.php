@@ -4,7 +4,7 @@
 	<ul>
 		<?php foreach($data['guest_book_list'] as $index=>$guest_book_value): ?>
 		<li>
-			<a href="/guest_book/<?php echo $guest_book_value['id'] ?>"><?php echo truncate($guest_book_value['title']) ?></a>
+			<a href="/boards/guest_book/show.php?id=<?php echo $guest_book_value['id'] ?>"><?php echo truncate($guest_book_value['title']) ?></a>
 			<span class="sl_created_at"><?php echo get_format_date($guest_book_value['created_at']) ?></span>
 		</li>
 		<?php endforeach ?>
@@ -12,5 +12,5 @@
 	<?php else: ?>
 	<p><?php echo _('no_data') ?></p>
 	<?php endif ?>
-	<a class="more" href="/guest_book"><?php echo _('link_more') ?></a>
+	<a class="more" href="/boards/guest_books"><?php echo _('link_more') ?></a>
 </article>

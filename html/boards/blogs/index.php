@@ -23,7 +23,7 @@
    </a>
     <div class="media-body">
       <h4 class="media-heading" itemprop="name"><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['title'] ?></a></h4>
-      <p itemprop="description"><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['description'] ?></a></p>
+      <p itemprop="description"><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['description'] ?></a></p>
     </div>
   </article>
   <?php endforeach ?>

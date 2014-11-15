@@ -4,7 +4,7 @@
 	<ul>
 		<?php foreach($data['question_list'] as $index=>$question_value): ?>
 		<li>
-			<a href="/questions/<?php echo $question_value['id'] ?>"><?php echo truncate($question_value['title']) ?></a>
+			<a href="/boards/questions/show.php?id=<?php echo $question_value['id'] ?>"><?php echo truncate($question_value['title']) ?></a>
 			<span class="sl_created_at"><?php echo get_format_date($question_value['created_at']) ?></span>
 		</li>
 		<?php endforeach ?>
@@ -12,5 +12,5 @@
 	<?php else: ?>
 	<p><?php echo _('no_data') ?></p>
 	<?php endif ?>
-	<a class="more" href="/questions"><?php echo _('link_more') ?></a>
+	<a class="more" href="/boards/questions"><?php echo _('link_more') ?></a>
 </article>

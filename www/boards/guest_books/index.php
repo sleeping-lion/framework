@@ -11,7 +11,7 @@ try {
 		$clean['desc'] = true;
 	}
 
-	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');
+	$order_a = array('id' => 'id', 'title' => 'title', 'count'=>'count', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);

@@ -9,8 +9,10 @@ try {
 		$clean['order'] = 'id';
 		$clean['desc'] = true;
 	}
+	
+	$order_a = array('id' => 'id', 'title' => 'title', 'count'=>'count', 'created' => 'created_at', 'updated' => 'updated_at');	
 
-	$query_where = 'WHERE 1=1';
+	$query_where = 'WHERE enable=1';
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);

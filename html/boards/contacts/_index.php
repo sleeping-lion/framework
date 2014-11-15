@@ -12,5 +12,5 @@
 	<?php else: ?>
 	<p><?php echo _('no_data') ?></p>
 	<?php endif ?>
-	<a class="more" href="/contacts"><?php echo _('link_more') ?></a>
+	<a class="more" href="/boards/contacts"><?php echo _('link_more') ?></a>
 </article>

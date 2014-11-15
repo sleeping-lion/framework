@@ -11,14 +11,14 @@ try {
 		$clean['desc'] = true;
 	}
 
-	$order_a = array('id' => 'id', 'title' => 'title', 'created' => 'created_at', 'updated' => 'updated_at');
+	$order_a = array('id' => 'id', 'title' => 'title', 'count'=>'count', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
 
-	$query_where = 'WHERE 1=1';
+	$query_where = 'WHERE enable=1';
 
 	// 전체 카운터 뽑기
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM notices ' . $query_where);

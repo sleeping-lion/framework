@@ -3,7 +3,7 @@
 		<ol id="faqCategoryList">
 			<?php foreach($data['category'] as $index=>$value): ?>
 			<li <?php if(!strcmp($clean['faq_category_id'],$value['id'])): ?><?php echo 'class="on"' ?><?php endif ?>>
-				<a class="title" href="<?php echo category_link() ?>"><?php echo $value['title'] ?></a>
+				<a class="title" href="<?php echo category_link($value['id'],'faq_category_id') ?>"><?php echo $value['title'] ?></a>
 			</li>
 			<?php endforeach ?>
 		</ol>		
@@ -15,6 +15,11 @@
 			<dt <?php if(!strcmp($clean['id'],$value['id'])): ?><?php echo 'class="on"' ?><?php endif ?>>
 				<a class="title" href="<?php echo show_link($value['id'],'index.php') ?>"><?php echo $value['title'] ?></a>
 			</dt>
+			<?php if(strcmp($clean['id'],$value['id'])): ?>
+			<dd style="display:none"></dd>
+			<?php else: ?>								
+			<dd><?php echo nl2br($data['content']['content']) ?></dd>
+			<?php endif ?>		
 			<?php endforeach ?>
 			<?php else: ?>
 			<dt><?php echo _('no_data') ?></dt>

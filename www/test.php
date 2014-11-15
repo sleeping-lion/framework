@@ -1,7 +1,8 @@
 <?php
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 	
-	echo show_link(1);
 	
+	$a='gallery';
+	echo strtoupper(substr($a,0,1)).substr($a,1);
 	
 ?>

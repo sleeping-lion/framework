@@ -8,5 +8,5 @@
     <li ><a href="/blogs/22" title="루비온 레일즈 소개 및 설치방법"><img alt="루비온 레일즈 소개 및 설치방법" src="https://slhome.s3.amazonaws.com/blog/photo/22/small_thumb_rails.png" /></a></li>
     <li class="nm"><a href="/blogs/10" title="중국 유자"><img alt="중국 유자" src="https://slhome.s3.amazonaws.com/blog/photo/10/small_thumb_yuz1.jpg" /></a></li>
   </ul>
-  <a class="more" href="/blogs"><?php echo _('link_more') ?></a>   
+  <a class="more" href="/boards/blogs"><?php echo _('link_more') ?></a>   
 </article>
