@@ -20,8 +20,8 @@ if (MODE == 'production') {
 require_once 'config_db.php';
 
 /* theme */
-// $config['theme'] = 'default';
-$config['theme'] = 'black';
+ $config['theme'] = 'default';
+//$config['theme'] = 'black';
 
 /* path */
 require_once 'path.php';

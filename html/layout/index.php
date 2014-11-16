@@ -29,7 +29,7 @@
 				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
 				<?php require_once $config['template']['main'] ?>
 				</section>
-				<?php echo $config['template']['aside'] ?>
+				<?php require_once $config['template']['aside'] ?>
 			</div>
 		</div>
 <div class="slboard_overlay" id="overlay"></div>
