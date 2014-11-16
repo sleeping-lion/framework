@@ -34,6 +34,3 @@
 		</table>
 	</article>
 </section>
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'footer.php';
-?>

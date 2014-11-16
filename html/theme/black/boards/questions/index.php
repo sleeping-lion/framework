@@ -1,40 +1,41 @@
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'header.php';
- ?>
-<section>
-	<table id="sl_main_list" border="0" cellpadding="0" cellspacing="0">
-		<colgroup>
-			<col />
-			<col />
-			<col />
-			<col />
-		</colgroup>
-		<thead>
-			<tr>
-				<th><?php echo get_order_link('아이디','id',$clean['desc']) ?></th>
-				<th><?php echo get_order_link('제목','title',$clean['desc']) ?></th>
-				<th><?php echo get_order_link('조회','count',$clean['desc']) ?></th>
-				<th><?php echo get_order_link('입력일','created',$clean['desc']) ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php if($data['total']): ?>
-			<?php foreach($data['list'] as $index=>$value): ?>
-			<tr <?php if($tBook_SQ == $booksq): ?>class="selected"<?php endif ?>>
-				<td><?php echo $value['id'] ?></td>
-				<td><a href="show.php?id=<?php echo $value['id'] ?>"><?php echo $value['title'] ?></a></td>
-				<td><?php echo $value['count'] ?></td>
-				<td><?php echo $value['created_at'] ?></td>
-			</tr>
-			<?php endforeach ?>
-			<?php else: ?>
-			<tr>
-				<td colspan="4" class="no_data"> 등록된 데이터가 없습니다. </td>
-			</tr>
-			<?php endif ?>
-	</tbody>
-</table>
+<section id="sl_board_question_index" class="sub_main">
+	<article class="table-responsive">
+		<table class="table table-striped" border="0" cellpadding="0" cellspacing="0">
+			<colgroup>
+				<col />
+				<col />
+				<col />
+				<col />
+			</colgroup>
+			<thead>
+				<tr>
+					<th class="sl_t_id"><?php echo get_order_link(_('label_id'),'id',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_title"><?php echo get_order_link(_('label_title'),'title',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_count"><?php echo get_order_link(_('label_count'),'count',$clean['order'],$clean['desc']) ?></th>
+					<th class="sl_t_created_at"><?php echo get_order_link(_('label_created_at'),'created',$clean['order'],$clean['desc']) ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if($data['total']): ?>
+				<?php foreach($data['list'] as $index=>$value): ?>
+				<tr <?php if($clean['id'] == $value['id']): ?>class="selected"<?php endif ?>>
+					<td class="sl_t_id"><?php echo $value['id'] ?></td>
+					<td class="sl_t_title"><a href="<?php echo show_link($value['id']) ?>"><?php echo $value['title'] ?></a></td>
+					<td class="sl_t_count"><?php echo $value['count'] ?></td>
+					<td class="sl_t_created_at"><?php echo get_format_date($value['created_at']) ?></td>
+				</tr>
+				<?php endforeach ?>
+				<?php else: ?>
+				<tr>
+					<td colspan="4" class="no_data"><?php echo _('no_data') ?></td>
+				</tr>
+				<?php endif ?>
+			</tbody>
+		</table>
+	</article>
+	<div id="sl_index_bottom_menu">
+		<?php echo pagination($data['total']) ?>
+		<?php require_once find_html($sl_theme,'search.php') ?>
+		<a href="new.php" class="btn btn-default"><?php echo _('new_link') ?></a>
+	</div>
 </section>
-<?php
-require_once LAYOUT_HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'footer.php';
-?>

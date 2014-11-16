@@ -25,11 +25,11 @@
 	</div>
 <?php endif ?>
 				<section class="sub_main">
-				<?php require_once COMMON_HTML_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>					
+				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>	
 				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
 				<?php require_once $config['template']['main'] ?>
 				</section>
-				<?php require_once $config['template']['aside'] ?>
+				<?php echo $config['template']['aside'] ?>
 			</div>
 		</div>
 <div class="slboard_overlay" id="overlay"></div>

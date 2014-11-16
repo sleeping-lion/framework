@@ -20,17 +20,16 @@ if (MODE == 'production') {
 require_once 'config_db.php';
 
 /* theme */
-$config['theme'] = 'default';
+// $config['theme'] = 'default';
+$config['theme'] = 'black';
 
 /* path */
 require_once 'path.php';
 
 
 /* include default function */
-require_once FUNCTION_DIRECTORY . DIRECTORY_SEPARATOR . 'default.php';
+require_once SLBOARD_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'default.php';
 
-/* include custom function */
-require_once FUNCTION_DIRECTORY . DIRECTORY_SEPARATOR . 'custom.php';
 
 /* site config */
 require_once 'site.php';

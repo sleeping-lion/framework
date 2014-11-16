@@ -3,6 +3,9 @@
 /*
  *  데이터 처리 성공후의 처리
  */
+ 
+ 
+
 
 // $_REQUEST['json'] 이 있으면  출력
 if (isset($_REQUEST['json'])) {
@@ -16,6 +19,7 @@ if (isset($_REQUEST['json'])) {
 
 	if (empty($sl_theme))
 		$sl_theme = $config['theme'];
+	
 
 	//echo HTML_DIRECTORY . DIRECTORY_SEPARATOR. $config['theme'].DIRECTORY_SEPARATOR. $value;
 	foreach ($config['template'] as $index => $value) {
@@ -35,16 +39,18 @@ if (isset($_REQUEST['json'])) {
 		require_once $theme_setting_file;
 	}
 
+
 	// main템플릿이 따로 입력되지  않았으면
 	if (empty($config['template']['main'])) {
 
 		// find_html함수가 돌려주는것으로  main템플릿 설정
 		$config['template']['main'] = find_html($sl_theme);
-
+		
 		// main템플릿이 없으면
 		if (empty($config['template']['main']))
 			throw new Exception('main이  설정되지 않았습니다.$template[\'main\']을 설정해 주세요');
 	}
+
 
 	//  template style이 따로 입력 되지 않았으면
 	if (empty($config['template']['stylesheets'])) {
@@ -91,6 +97,9 @@ if (isset($_REQUEST['json'])) {
 			}
 		}
 	}
+	
+	
+	
 
 	// 애러 메세지 세션이 있으면
 	if (isset($_SESSION['ERROR_MESSAGE'])) {
@@ -111,11 +120,15 @@ if (isset($_REQUEST['json'])) {
 		$data['message'] = $_SESSION['MESSAGE'];
 		unset($_SESSION['MESSAGE']);
 		// 데이터로 이동하고 세션 삭제
-	}
+	}	
 
 	if (isset($_REQUEST['no_layout'])) {
 		require_once $config['template']['main'];
 	} else {
 		require_once $config['template']['layout'];
 	}
+	
+	
+	
+
 }

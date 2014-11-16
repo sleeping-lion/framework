@@ -13,9 +13,7 @@ function get_PDO($config_db) {
 	return $pdo;
 }
 
-function find_html($theme = 'default', $other_directory = null, $other_file = null) {
-	$html = false;
-
+function find_html($theme = 'default', $other_file = null, $other_directory = null) {
 	$file_a = explode('/', $_SERVER['SCRIPT_NAME']);
 	$c_file_a = count($file_a);
 	$current_file = $file_a[$c_file_a - 1];
@@ -45,7 +43,9 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 				$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
 			}
 		}
-	} else {
+	}	
+	
+	if(!isset($html)) {
 		// 기본 테마의 현재 경로것을 사용
 		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file)) {
 			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file;
@@ -55,8 +55,9 @@ function find_html($theme = 'default', $other_directory = null, $other_file = nu
 				// 있으면 common것을 사용
 				$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
 			}
-		}
+		}		
 	}
+	
 	return $html;
 }
 
@@ -128,7 +129,12 @@ function find_style_script($file = null, $theme = 'default', $type = 'script') {
 					$include_file = '/' . $base_web_directory . '/theme/' . $theme . '/common/' . $new_web_file;
 				}
 			}
-		} else {
+		}
+	}
+	
+
+	
+	if (empty($include_file)) {	
 			if (file_exists($base_directory . DIRECTORY_SEPARATOR . $new_file)) {
 				// 현재 경로것 이용
 				$include_file = '/' . $base_web_directory . '/' . $new_web_file;
@@ -139,8 +145,6 @@ function find_style_script($file = null, $theme = 'default', $type = 'script') {
 					$include_file = '/' . $base_web_directory . '/common/' . $new_web_file;
 				}
 			}
-
-		}
 	}
 
 	if ($include_file) {
@@ -420,7 +424,7 @@ function pagination($allCount, $perPage = 10, $prevNext = true, $linkPage = 'ind
 	if ($allCount <= $perPage)
 		return '';
 
-	require_once LIB_DIRECTORY . DIRECTORY_SEPARATOR . 'SLPager' . DIRECTORY_SEPARATOR . 'SLPager.php';
+	require_once SLBOARD_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'SLPager' . DIRECTORY_SEPARATOR . 'SLPager.php';
 
 	$params = array('mode' => 'Jumping', 'totalItems' => $allCount, 'delta' => 10, 'perPage' => $perPage, 'prevImg' => '◀', 'nextImg' => '▶', 'firstPageText' => '맨처음', 'lastPageText' => '마지막', 'curPageLinkClassName' => 'active');
 	$pager = SLPager::factory($params);
