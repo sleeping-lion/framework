@@ -28,3 +28,6 @@ $config['site']['description'] = 'SLBoard홈페이지 입니다.';
 
 //  <meta name="author" content="">
 $config['site']['author']='Sleeping-Lion';
+
+//  <meta name="author" content="">
+$config['site']['address']='아프리카 초원 사자굴';

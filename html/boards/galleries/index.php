@@ -56,10 +56,8 @@
 	<?php endif ?>
 	<div id="sl_index_bottom_menu">
 		<?php echo pagination($data['total']) ?>
-		<?php require_once find_html($sl_theme,'search.php') ?>	
-		<?php if(isset($_SESSION['ADMIN'])): ?>		
-		<a href="new.php" class="btn btn-default"><?php echo _('new_link') ?></a>
-		<?php endif ?>		
+		<a href="new.php" class="btn btn-default btn btn-default col-xs-12 col-md-2"><?php echo _('new_link') ?></a>
+		<?php require_once find_html($sl_theme,'search.php') ?>
 	</div>
 </div>
 </section>

@@ -33,9 +33,9 @@ function find_html($theme = 'default', $other_file = null, $other_directory = nu
 	// 기본 테마가 아니면
 	if (strcmp($theme, 'default')) {
 		// 현재 경로와 파일이 일치하면
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file)) {
+		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory. DIRECTORY_SEPARATOR. $file)) {
 			// 현재 경로것 이용
-			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . $file;
+			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory. DIRECTORY_SEPARATOR. $file;
 		} else {
 			// 그렇지 않으면 현 테마의 common경로 검색
 			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
@@ -47,8 +47,8 @@ function find_html($theme = 'default', $other_file = null, $other_directory = nu
 	
 	if(!isset($html)) {
 		// 기본 테마의 현재 경로것을 사용
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file)) {
-			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . $file;
+		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory. DIRECTORY_SEPARATOR. $file)) {
+			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory. DIRECTORY_SEPARATOR. $file;
 		} else {
 			// 그렇지 않으면 기본  테마의 common경로 검색
 			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {

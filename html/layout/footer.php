@@ -1,5 +1,3 @@
 <footer>
-	<address>
-		
-	</address>
+	<address><?php echo $config['site']['address'] ?></address>
 </footer>
