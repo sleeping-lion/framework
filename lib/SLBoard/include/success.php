@@ -14,7 +14,7 @@ if (isset($_REQUEST['json'])) {
 } else {
 	if (isset($sl_redirect)) {
 		header('Location:' . $sl_redirect);
-		exit ;
+		exit;
 	}
 
 	if (empty($sl_theme))

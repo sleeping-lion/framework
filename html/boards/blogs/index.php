@@ -34,7 +34,7 @@
   <?php endif ?>
 	<div id="sl_index_bottom_menu">
 		<?php echo pagination($data['total']) ?>
-		<a href="new.php" class="btn btn-default btn btn-default col-xs-12 col-md-2"><?php echo _('new_link') ?></a>
+		<a href="new.php" class="btn btn-default col-xs-12 col-md-2"><?php echo _('new_link') ?></a>
 		<?php require_once find_html($sl_theme,'search.php') ?>
 	</div>
 	</section>

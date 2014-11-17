@@ -6,9 +6,9 @@
 		<article>
 		
 		</article>
-		<input type="submit" value="동의함" />
+		<input type="submit" class="btn btn-primary" value="<?php echo _('agree') ?>" />
 	</form>	
 	<div id="sl_bottom_menu">
-		<a href="">동의안함</a>
+		<a href=""  class="btn btn-default"><?php echo _('disagree') ?></a>
 	</div>
 </section>
