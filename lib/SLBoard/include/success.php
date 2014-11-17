@@ -104,6 +104,14 @@ if (isset($_REQUEST['json'])) {
 	if (isset($_SESSION['ERROR_MESSAGE'])) {
 		$data['error_code'] = $_SESSION['ERROR_CODE'];
 		$data['error_message'] = $_SESSION['ERROR_MESSAGE'];
+		
+		if(isset($_SESSION['ERROR_LEVEL'])) {
+			$data['error_level']=$_SESSION['ERROR_LEVEL'];
+			unset($_SESSION['ERROR_LEVEL']);
+		} else {
+			$data['error_level']='danger';
+		}
+
 		unset($_SESSION['ERROR_CODE']);
 		unset($_SESSION['ERROR_MESSAGE']);
 		// 데이터로 이동하고 세션 삭제
