@@ -19,9 +19,13 @@ try {
 		$template['main']='admin/login.html';
 	}
 
-	require_once $foramtSuccessData;
+	$con = null;
+
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
-	require_once $foramtErrorData;
+	$con = null;
+
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 
 ?>

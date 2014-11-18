@@ -99,7 +99,7 @@ if (isset($_REQUEST['json'])) {
 			}
 		}
 	}
-
+	
 	// 애러 메세지 세션이 있으면
 	if (isset($_SESSION['ERROR_MESSAGE'])) {
 		$data['error_code'] = $_SESSION['ERROR_CODE'];

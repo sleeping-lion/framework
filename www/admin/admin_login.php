@@ -21,13 +21,13 @@ try {
 	$data['account_name']=$_SESSION['ACCOUNT_NAME'];
 	$data['admin']=$_SESSION['ADMIN'];
 
-	$template='index.php';
-	require_once $foramtSuccessData;
-} catch(Exception $e) {
-	$con=null;
+	$con = null;
 
-	$template='index.php';
-	require_once $foramtErrorData;
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+} catch(Exception $e) {
+	$con = null;
+
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 
 ?>

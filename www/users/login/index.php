@@ -13,17 +13,6 @@ try {
 
 	$con = null;
 
-	if ($_SESSION['ERROR_MESSAGE']) {
-		$data['error_code'] = $_SESSION['ERROR_CODE'];
-		$data['error_message'] = $_SESSION['ERROR_MESSAGE'];
-		unset($_SESSION['ERROR_CODE']);
-		unset($_SESSION['ERROR_MESSAGE']);
-
-		if ($_SESSION['BACK_DATA']['USER_ID'])
-			$data['user_id'] = $_SESSION['BACK_DATA']['USER_ID'];
-		unset($_SESSION['BACK_DATA']['USER_ID']);
-	}
-
 	$data['token'] = md5(uniqid(rand(), true));
 	$_SESSION['LOGIN_TOKEN'] = $data['token'];
 

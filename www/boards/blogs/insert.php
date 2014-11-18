@@ -2,6 +2,8 @@
 
 try {
 	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
+		
+	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'admin_only.php';
 
 	$clean = filter_input_array(INPUT_POST, array('blog_category_id' => FILTER_VALIDATE_INT, 'title' => FILTER_SANITIZE_STRING, 'description' => FILTER_SANITIZE_STRING, 'tag' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
 
