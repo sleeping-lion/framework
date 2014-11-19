@@ -1,7 +1,7 @@
 <?php
 
 try {
-	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
+	require __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	$clean = filter_input_array(INPUT_GET, array('gallery_caetegory_id' => FILTER_VALIDATE_INT, 'id' => FILTER_VALIDATE_INT));
 
@@ -17,7 +17,7 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
 	// 카테고리 가져오기
 	$stmt_category_count = $con -> prepare('SELECT COUNT(*) FROM blog_categories');
@@ -67,10 +67,10 @@ try {
 
 	$con = null;
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	$con = null;
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 ?>

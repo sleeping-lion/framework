@@ -11,11 +11,11 @@ $(document).ready(function() {
 			$("#faqList").empty();
 			if(data.faqs.length) {
 				$.each(data.faqs,function(index,value){
-					var a=$('<a class="title" href="/faqs?id='+value.id+'">'+value.title+'</a>').click(getContent);
+					var a=$('<a class="title" href="/boards/faqs?id='+value.id+'">'+value.title+'</a>').click(getContent);
 					if(data.admin) {
 						var div=$('<div class="sl_faq_menu"><a></a> &nbsp; | &nbsp; <a rel="nofollow" data-method="delete" data-confirm=""></a></div>');
-						div.find('a:first').attr('href','/faqs/'+value.id+'/edit');
-						div.find('a:eq(1)').attr('href','/faqs/'+value.id);
+						div.find('a:first').attr('href','/boards/faqs/edit.php?id='+value.id);
+						div.find('a:eq(1)').attr('href','/boards/faqs/index.php?id='+value.id);
 						$('<dt>').appendTo("#faqList").append(a).append(div);
 					} else {
 						$('<dt>').appendTo("#faqList").append(a);
@@ -33,8 +33,8 @@ $(document).ready(function() {
 			if(data.admin) {
 				$("#faqCategoryList li .sl_faq_category_menu").remove();
 				var dd=$('<div class="sl_faq_category_menu"><a></a><br /><a rel="nofollow" data-method="delete" data-confirm=""></a></div>');
-				dd.find('a:first').attr('href','/faq_categories/'+faqCategoryId+'/edit');
-				dd.find('a:eq(1)').attr('href','/faq_categories/'+faqCategoryId);
+				dd.find('a:first').attr('href','/boards/faq_categories/edit.php?id='+faqCategoryId);
+				dd.find('a:eq(1)').attr('href','/boards/faq_categories/index.php?id='+faqCategoryId);
 				parent.append(dd);
 			}
 			
@@ -46,7 +46,7 @@ $(document).ready(function() {
 	function getContent(){
 		var gid=$.uri.setUri($(this).attr('href')).param("id");
 		var parent=$(this).parent();
-		$.getJSON('/boards/faqs/'+gid+'.json',function(value){
+		$.getJSON('/boards/faqs/show.php?id='+gid,function(value){
 			if(parent.next().get(0)) {
 				if(parent.next().get(0).tagName!='DD') {
 					parent.after('<dd>');	

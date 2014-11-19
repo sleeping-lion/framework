@@ -1,14 +1,14 @@
 <?php
 
 try {
-	require_once __DIR__.DIRECTORY_SEPARATOR.'setting.php';
+	require __DIR__.DIRECTORY_SEPARATOR.'setting.php';
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR .'admin_only.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR .'admin_only.php';
 	
 	$con=get_PDO($db_config);
 	
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	if($con) {
 		if($con->inTransaction())
@@ -17,7 +17,7 @@ try {
 		$con=null;
 	}
 
-	require_once $foramtErrorData;
+	require $foramtErrorData;
 }
 
 ?>

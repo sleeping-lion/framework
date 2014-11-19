@@ -1,7 +1,7 @@
 <?php
 
 try {
-	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
+	require __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	// 입력 필터
 	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT, 'name' => FILTER_SANITIZE_STRING, 'password' => FILTER_SANITIZE_STRING, 'password_confirm' => FILTER_SANITIZE_STRING, 'title' => FILTER_SANITIZE_STRING,'content'=>FILTER_SANITIZE_STRING));
@@ -37,7 +37,7 @@ try {
 	$_SESSION['MESSAGE']='성공적으로 글 써졌음';
 
 	$sl_redirect = 'index.php';
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	if ($con) {
 		if ($con -> inTransaction()) {
@@ -47,6 +47,6 @@ try {
 		$con = null;
 	}
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 ?>

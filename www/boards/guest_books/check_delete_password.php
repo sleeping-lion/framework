@@ -1,13 +1,11 @@
 <?php
 
 try {
-	require_once __DIR__.DIRECTORY_SEPARATOR.'setting.php';
+	require __DIR__.DIRECTORY_SEPARATOR.'setting.php';
 	
-	$template['main']=$boardHtmlPath.DIRECTORY_SEPARATOR.'checkDeletePassword.html';
-	
-	require_once $foramtSuccessData;
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
-	require_once $foramtErrorData;
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 
 ?>

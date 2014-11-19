@@ -1,7 +1,7 @@
 <?php
 
 try {
-	require_once __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
+	require __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
 
 	// 입력 필터
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT,'faq_category_id' => FILTER_VALIDATE_INT, 'search_type' => FILTER_SANITIZE_STRING, 'search_word' => FILTER_SANITIZE_STRING, 'pageID' => FILTER_VALIDATE_INT, 'desc' => FILTER_VALIDATE_INT, 'order' => FILTER_SANITIZE_STRING));
@@ -16,7 +16,7 @@ try {
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
 	
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
 
 	$query_where = 'WHERE enable=1';
 	
@@ -73,10 +73,10 @@ try {
 
 	$con = null;
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	$con = null;
 
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 ?>

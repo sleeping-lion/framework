@@ -1,7 +1,7 @@
 <?php
 
 try {
-	require_once __DIR__. DIRECTORY_SEPARATOR . 'setting.php';
+	require __DIR__. DIRECTORY_SEPARATOR . 'setting.php';
 
 	// 입력 필터
 	$clean = filter_input_array(INPUT_GET, array('id' => FILTER_VALIDATE_INT));
@@ -17,7 +17,7 @@ try {
 	$con = null;
 
 	$redirect = 'index.php';
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';
 } catch(Exception $e) {
 	if ($con) {
 		if ($con -> inTransaction()) {
@@ -26,6 +26,6 @@ try {
 		}
 		$con = null;
 	}
-	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'error.php';
 }
 ?>

@@ -9,21 +9,21 @@ $(document).ready(function() {
         'closeEffect' : 'elastic'
       });
 	
-  $("#sl_gallery_slide .item a").click(function(){    
-    var galleryId=$.uri.setUri($(this).attr('href')).segment(1);
+  $("#sl_gallery_slide .item a").click(function(){
+    var galleryId=$.uri.setUri($(this).attr('href')).param('id');
     
-    $.get('/galleries/'+galleryId+'.json',function(data){
-      $("#sl_gallery_left a").attr('href',data.photo.url).attr('title',data.title);
-      $("#sl_gallery_left span").text(data.title).css('bottom',-30);
-      $("#sl_gallery_left img").attr('src',data.photo.large_thumb.url).animate({ opacity: "1" }, 400,function(){	
+    $.getJSON('/boards/galleries/show.php?id='+galleryId,{'json':true},function(data){
+      $("#sl_gallery_left a").attr('href',data.content.photo).attr('title',data.content.title);
+      $("#sl_gallery_left span").text(data.content.title).css('bottom',-30);
+      $("#sl_gallery_left img").attr('src',data.content.large_thumb).animate({ opacity: "1" }, 400,function(){	
         $("#sl_gallery_left span").animate({bottom:0,opacity:'0.8'},400);
               });
-      $("#sl_gallery_right div:first").html(nl2br(data.content));
-      $("#sl_gallery_menu a:first").attr('href','/galleries/'+data.id+'/edit');
-      $("#sl_gallery_menu a:eq(1)").attr('href','/galleries/'+data.id);
-      document.title=data.title+''+'';
+      $("#sl_gallery_right div:first").html(nl2br(data.content.content));
+      $("#sl_gallery_menu a:first").attr('href','/boards/galleries/edit.php?id='+data.content.id);
+      $("#sl_gallery_menu a:eq(1)").attr('href','/boards/galleries/delete_confirm.php?id='+data.content.id);
+      document.title=data.content.title+''+'';
       if (history && history.pushState) {
-      history.pushState('','gallery_'+galleryId,'/galleries/'+galleryId);
+      history.pushState('','gallery_'+galleryId,'/boards/galleries/index.php?id='+galleryId);
             }
           });
     return false;

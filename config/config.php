@@ -17,22 +17,22 @@ if (MODE == 'production') {
 
 
 /* database setting Load */
-require_once 'config_db.php';
+require 'config_db.php';
 
 /* theme */
  $config['theme'] = 'default';
 //$config['theme'] = 'black';
 
 /* path */
-require_once 'path.php';
+require 'path.php';
 
 
 /* include default function */
-require_once SLBOARD_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'default.php';
+require SLBOARD_CORE_DIRECTORY . DIRECTORY_SEPARATOR.'function'.DIRECTORY_SEPARATOR. 'default.php';
 
 
 /* site config */
-require_once 'site.php';
+require 'site.php';
 
 /* template filename */
 $config['template']['layout']='index.php';

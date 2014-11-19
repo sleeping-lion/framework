@@ -61,6 +61,54 @@ function find_html($theme = 'default', $other_file = null, $other_directory = nu
 	return $html;
 }
 
+function find_json($theme = 'default', $other_file = null, $other_directory = null) {
+	$file_a = explode('/', $_SERVER['SCRIPT_NAME']);
+	$c_file_a = count($file_a);
+	$current_file = $file_a[$c_file_a - 1];
+
+	if (isset($other_directory)) {
+		$directory = $other_directory;
+	} else {
+		$directory = str_replace($current_file, '', $_SERVER['SCRIPT_NAME']);
+	}
+
+	if (isset($other_file)) {
+		$file = $other_file;
+	} else {
+		$file = $current_file;
+	}
+
+	// 기본 테마가 아니면
+	if (strcmp($theme, 'default')) {
+		// 현재 경로와 파일이 일치하면
+		if (file_exists(JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file)) {
+			// 현재 경로것 이용
+			$json = JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file;
+		} else {
+			// 그렇지 않으면 현 테마의 common경로 검색
+			if (file_exists(JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
+				// 있으면 common것을 사용
+				$json = JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
+			}
+		}
+	}
+
+	if (!isset($json)) {
+		// 기본 테마의 현재 경로것을 사용
+		if (file_exists(JSON_DIRECTORY . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file)) {
+			$json = JSON_DIRECTORY . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file;
+		} else {
+			// 그렇지 않으면 기본  테마의 common경로 검색
+			if (file_exists(JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
+				// 있으면 common것을 사용
+				$json = JSON_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
+			}
+		}
+	}
+
+	return $json;
+}
+
 function find_setting($theme = 'default', $other_file = null, $other_directory = null) {
 	$file_a = explode('/', $_SERVER['SCRIPT_NAME']);
 	$c_file_a = count($file_a);

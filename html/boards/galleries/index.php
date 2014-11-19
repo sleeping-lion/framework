@@ -41,7 +41,7 @@
 				<?php foreach($data['list'] as $gallery_a): ?>
 				<ul class="item">
 				<?php foreach($gallery_a as $value): ?>
-					<li><a href=""><img width="100" height="100" src="<?php echo htmlspecialchars(phpThumbURL('src=/../uploads/gallery/'.$value['id'].'/'.$value['photo'].'&w=100&h=100', '/phpThumb/phpThumb.php')) ?>" alt="<?php echo $value['title'] ?>" /></a></li>
+					<li><a href="<?php echo show_link($value['id']) ?>"><img width="100" height="100" src="<?php echo htmlspecialchars(phpThumbURL('src=/../uploads/gallery/'.$value['id'].'/'.$value['photo'].'&w=100&h=100', '/phpThumb/phpThumb.php')) ?>" alt="<?php echo $value['title'] ?>" /></a></li>
 				<?php endforeach ?>
 				</ul>
 				<?php endforeach ?>
