@@ -1,42 +1,86 @@
-$(document).ready(function(){
-	if(!$('#myCanvas').tagcanvas({
-     outlineThickness : 1,
-     maxSpeed : 0.05,
- 			textFont: null,
- 			textColour: null,
- 			weight: true,   
-     depth : 1
-   },'tags')) {
-     // TagCanvas failed to load
-     $('#myCanvasContainer').hide();
-     $("#tags ul").css({'margin':0,'padding':0,'list-style':'none'});
-     $("#tags ul li").css({'float':'left','margin':'0 10px'});     
-   }
+$(document).ready(function() {
+	//$('header nav ul').superfish({delay:400,animation:{opacity:'show', height:'show'},speed:400,autoArrows:  false,dropShadows: false});	
+  $(".scrollable").scrollable({
+    circular: true,
+    mousewheel: true
+  }).navigator().autoscroll({
+    interval: 3000
+  });
 
-	$(".btn_minimize").click(function(){
-		var i=$(this).parent().find('i:first');
-        if(i.hasClass('glyphicon-chevron-down')) {
-            i.removeAttr('class').addClass('glyphicon').addClass('glyphicon-chevron-up');
-            $(this).parent().parent().parent().find('.box_content').slideDown();
-        } else {
-            i.removeAttr('class').addClass('glyphicon').addClass('glyphicon-chevron-down');
-            $(this).parent().parent().parent().find('.box_content').slideUp();
-        }
-		return false;
-	});
-	
-	$(".btn_close").click(function(){
-		$(this).parent().parent().parent().remove();
-		return false;
-	});
-	
-	$("#sl_blog_categories .box_content ul span.c_pointer").click(function(){
-		if($(this).parent().find('ul').is(':visible')) {
-		$(this).parent().find('ul').hide();
-		$(this).find('span:eq(1)').html('&nbsp;&lt;&lt;');
-		} else {
-		$(this).parent().find('ul').show();
-		$(this).find('span:eq(1)').html('&nbsp;&gt;&gt;');
-		}
-	});
+	$('.modal_link').click(function(event){
+  	event.preventDefault();
+  	$('#myModal').removeData("modal");
+  	$('#myModal').modal({'remote':$(this).attr('href')+'?no_layout=true'});
+	});  
+  
 });
+
+/**
+ * 쿠키값 추출
+ * @param cookieName 쿠키명
+ */
+function getCookie( cookieName )
+{
+ var search = cookieName + "=";
+ var cookie = document.cookie;
+
+ // 현재 쿠키가 존재할 경우
+ if( cookie.length > 0 )
+ {
+  // 해당 쿠키명이 존재하는지 검색한 후 존재하면 위치를 리턴.
+  startIndex = cookie.indexOf( cookieName );
+  // 만약 존재한다면
+  if( startIndex != -1 )
+  {
+   // 값을 얻어내기 위해 시작 인덱스 조절
+   startIndex += cookieName.length;
+
+   // 값을 얻어내기 위해 종료 인덱스 추출
+   endIndex = cookie.indexOf( ";", startIndex );
+
+   // 만약 종료 인덱스를 못찾게 되면 쿠키 전체길이로 설정
+   if( endIndex == -1) endIndex = cookie.length;
+
+   // 쿠키값을 추출하여 리턴
+   return cookie.substring( startIndex + 1, endIndex ) ;
+  }
+  else
+  {
+   // 쿠키 내에 해당 쿠키가 존재하지 않을 경우
+   return false;
+  }
+ }
+ else
+ {
+  // 쿠키 자체가 없을 경우
+  return false;
+ }
+}
+
+
+/**
+ * 쿠키 설정
+ * @param cookieName 쿠키명
+ * @param cookieValue 쿠키값
+ * @param expireDay 쿠키 유효날짜
+ */
+function setCookie( cookieName, cookieValue, expireDate )
+{
+ var today = new Date();
+ today.setDate( today.getDate() + parseInt( expireDate ) );
+ document.cookie = cookieName + "=" + cookieValue + "; path=/; expires=" + today.toGMTString() + ";";
+}
+
+
+/**
+ * 쿠키 삭제
+ * @param cookieName 삭제할 쿠키명
+*/
+function deleteCookie( cookieName )
+{
+ var expireDate = new Date();
+
+ //어제 날짜를 쿠키 소멸 날짜로 설정한다.
+ expireDate.setDate( expireDate.getDate() - 1 );
+ document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString() + "; path=/";
+}

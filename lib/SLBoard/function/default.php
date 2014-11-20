@@ -109,7 +109,7 @@ function find_json($theme = 'default', $other_file = null, $other_directory = nu
 	return $json;
 }
 
-function find_setting($theme = 'default', $other_file = null, $other_directory = null) {
+function find_style_script_setting($theme = 'default', $type = 'script', $other_file = null, $other_directory = null) {
 	$file_a = explode('/', $_SERVER['SCRIPT_NAME']);
 	$c_file_a = count($file_a);
 	$current_file = $file_a[$c_file_a - 1];
@@ -123,34 +123,29 @@ function find_setting($theme = 'default', $other_file = null, $other_directory =
 	if (isset($other_file)) {
 		$file = $other_file;
 	} else {
-		$file = 'setting.php';
+		$file = $current_file;
 	}
-
-
-
+	
+		if (strcmp($type, 'style')) {
+			$base_directory = JAVASCRIPT_DIRECTORY;
+			$base_web_directory = 'javascripts';
+		} else {
+			$base_directory = STYLESHEET_DIRECTORY;
+			$base_web_directory = 'stylesheets';
+		}
 		// 기본 테마의 현재 경로것을 사용
-
 
 	// 기본 테마가 아니면
 	if (strcmp($theme, 'default')) {
 		// 현재 경로와 파일이 일치하면
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file)) {
+		if (file_exists($base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file)) {
 			// 현재 경로것 이용
-			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file;
-		} else {
-			// 그렇지 않으면 현 테마의 common경로 검색
-			if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file)) {
-				// 있으면 common것을 사용
-				$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . $file;
-			}
-		}
+			$html = $base_directory . DIRECTORY_SEPARATOR . 'theme' . DIRECTORY_SEPARATOR . $theme . $directory . DIRECTORY_SEPARATOR . $file;
+		} 
 	} else {
-		if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file))
-			$html = HTML_DIRECTORY . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file;
+		if (file_exists($base_directory . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file))
+			$html = $base_directory . DIRECTORY_SEPARATOR . $directory . DIRECTORY_SEPARATOR . $file;
 	}
-
-
-
 	return $html;
 }
 

@@ -13,12 +13,14 @@ if (empty($sl_theme)) {
 	}
 }
 
-if (isset($_REQUEST['json'])) {
+if (isset($_REQUEST['json'])) {	
 	unset($data['site']);
+	unset($data['code']);	
 	unset($data['message']);
-//	header('Content-type: application/x-json');
-//	echo find_json($sl_theme);
-	require find_json($sl_theme);
+	$data['result']='success';
+	//	header('Content-type: application/x-json');
+	//	echo find_json($sl_theme);
+	require find_json($sl_theme,'success.php');
 	exit ;
 }
 
@@ -34,16 +36,6 @@ foreach ($config['template'] as $index => $value) {
 if (empty($config['template']['layout']))
 	throw new Exception('레이아웃이 설정되지 않았습니다.$template[\'layout\']을 설정해 주세요');
 
-// theme setting 로드
-if (file_exists(HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . 'setting.php')) {
-	require HTML_DIRECTORY . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . 'setting.php';
-}
-
-$sl_style_script_setting = find_setting($sl_theme);
-if ($sl_style_script_setting)
-	require $sl_style_script_setting;
-// theme setting 로드 끝
-
 // main템플릿이 따로 입력되지  않았으면
 if (empty($config['template']['main'])) {
 
@@ -54,6 +46,25 @@ if (empty($config['template']['main'])) {
 	if (empty($config['template']['main']))
 		throw new Exception('main이  설정되지 않았습니다.$template[\'main\']을 설정해 주세요');
 }
+
+if (file_exists(JAVASCRIPT_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php')) {
+	// 현재 경로것 이용
+	require JAVASCRIPT_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php';
+}
+
+if (file_exists(STYLESHEET_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php')) {
+	// 현재 경로것 이용
+	require STYLESHEET_DIRECTORY . DIRECTORY_SEPARATOR . 'common.php';
+}
+
+$sl_script_setting = find_style_script_setting($sl_theme);
+if ($sl_script_setting)
+	require $sl_script_setting;
+
+$sl_style_setting = find_style_script_setting($sl_theme, 'style');
+if ($sl_style_setting)
+	require $sl_style_setting;
+// theme setting 로드 끝
 
 //  template style이 따로 입력 되지 않았으면
 if (empty($config['template']['stylesheets'])) {

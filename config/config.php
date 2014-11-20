@@ -55,3 +55,10 @@ $domain = 'messages';
 bindtextdomain($domain,ROOT_DIRECTORY. DIRECTORY_SEPARATOR . 'locale');
 textdomain($domain);
 bind_textdomain_codeset($domain, 'UTF-8');
+
+
+if (isset($_REQUEST['json'])) {
+	$data['result']='error';
+	$data['code']=1;
+	$data['message']='Unkown Error';	
+}

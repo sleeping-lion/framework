@@ -2,8 +2,8 @@
 
 try {
 	require __DIR__ . DIRECTORY_SEPARATOR . 'setting.php';
-	
-	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'admin_only.php';	
+
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'admin_only.php';
 
 	$clean = filter_input_array(INPUT_POST, array('id' => FILTER_VALIDATE_INT));
 
