@@ -1,3 +1,4 @@
+<?php require WEBROOT_DIRECTORY . DIRECTORY_SEPARATOR . 'phpThumb' . DIRECTORY_SEPARATOR . 'phpThumb.config.php'; ?>
 <section id="sl_board_blog_index">
 	<?php if(isset($data['category'])): ?>
 	<ol class="nav nav-tabs sl_categories hidden-lg">

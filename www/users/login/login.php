@@ -3,7 +3,7 @@
 try {
 	require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'setting.php';
 	
-	$clean = filter_input_array(INPUT_POST, array('email' => FILTER_VALIDATE_EMAIL, 'password' => FILTER_SANITIZE_STRING));
+	$clean = filter_input_array(INPUT_POST, array('email' => FILTER_VALIDATE_EMAIL, 'password' => FILTER_SANITIZE_STRING,'return_url'=>FILTER_SANITIZE_STRING));
 	
 	if(empty($clean['email']))
 		throw new Exception(_('invalid_email'), 1);
@@ -47,10 +47,10 @@ try {
 	if($user[3])
 		$_SESSION['ADMIN']=true;
 	
-	if ($clean['return_url']) {
-		$sl_redirect=$clean['return_url'];
-	} else {
+	if (empty($clean['return_url'])) {
 		$sl_redirect='/index.php';
+	} else {
+		$sl_redirect=$clean['return_url'];
 	}
 
 	require_once INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'success.php';

@@ -1,17 +1,17 @@
 $(document).ready(function() {
-	$("#slboard_login_form").submit(function(){
-		var userId=$.trim($("#sl_user_id").val());
-		var password=$.trim($("#sl_password").val());
+	$("#sl_login_form").submit(function(){
+		var userId=$.trim($("#sl_user_email").val());
+		var password=$.trim($("#sl_user_password").val());
 		var token=$(this).find('input[name="token"]').val();
-		$("#slboard_login_form .error_message").html('');
+		$("#sl_login_form .error_message").html('');
 		
 		if(userId=='') {
-			$("#slboard_login_form .error_message").html('아이디를 입력해주세요');
+			$("#sl_login_form .error_message").html('아이디를 입력해주세요');
 			return false;
 		}
 		
 		if(password=='') {
-			$("#slboard_login_form .error_message").html('비밀번호를 입력해주세요');
+			$("#sl_login_form .error_message").html('비밀번호를 입력해주세요');
 			return false;
 		}
 		
@@ -24,7 +24,7 @@ $(document).ready(function() {
 			if(data.result=='success') {
 				alert('로그인 성공');
 			} else {
-				$('#slboard_login_form .error_message').text(data.error_message);
+				$('#sl_login_form .error_message').text(data.error_message);
 			}
 		},'json'); 
 		return false;

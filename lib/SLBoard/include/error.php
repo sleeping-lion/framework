@@ -1,6 +1,6 @@
 <?php
 
-if($sl_redirect) {
+if(isset($sl_redirect)) {
 	$_SESSION['BACK_DATA'] = $_REQUEST;
 	$_SESSION['ERROR_MESSAGE'] = $this -> data -> getMessage();
 	$_SESSION['ERROR_CODE'] = $this -> data -> getCode();
@@ -16,3 +16,15 @@ if(isset($_REQUEST['json'])) {
 	echo find_json($sl_theme);
 	exit ;
 }
+
+?>
+<!DOCTYPE html>
+<html>
+<title>기본코드</title>
+<meta charset="utf-8">
+<body>
+<?php print_r($e) ?>
+<?php echo $e->getMessage(); ?>
+<?php //print_r($e); ?>
+</body>
+</html>
