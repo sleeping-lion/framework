@@ -20,7 +20,7 @@ if (isset($_REQUEST['json'])) {
 	$data['result']='success';
 	//	header('Content-type: application/x-json');
 	//	echo find_json($sl_theme);
-	require find_json($sl_theme,'success.php');
+	require find_json($sl_theme);
 	exit ;
 }
 
@@ -114,14 +114,14 @@ if (empty($config['template']['javascripts'])) {
 
 // 애러 메세지 세션이 있으면
 if (isset($_SESSION['ERROR_MESSAGE'])) {
-	$data['error_code'] = $_SESSION['ERROR_CODE'];
-	$data['error_message'] = $_SESSION['ERROR_MESSAGE'];
+	$data['code'] = $_SESSION['ERROR_CODE'];
+	$data['message'] = $_SESSION['ERROR_MESSAGE'];
 
 	if (isset($_SESSION['ERROR_LEVEL'])) {
-		$data['error_level'] = $_SESSION['ERROR_LEVEL'];
+		$data['alert_type'] = $_SESSION['ERROR_LEVEL'];
 		unset($_SESSION['ERROR_LEVEL']);
 	} else {
-		$data['error_level'] = 'danger';
+		$data['alert_type'] = 'danger';
 	}
 
 	unset($_SESSION['ERROR_CODE']);
@@ -136,6 +136,14 @@ if (isset($_SESSION['ERROR_MESSAGE'])) {
 
 // 메세지 세션이 있으면
 if (isset($_SESSION['MESSAGE'])) {
+	
+	if (isset($_SESSION['SUCCESS_LEVEL'])) {
+		$data['alert_type'] = $_SESSION['SUCCESS_LEVEL'];
+		unset($_SESSION['SUCCESS_LEVEL']);
+	} else {
+		$data['alert_type'] = 'success';
+	}
+	
 	$data['message'] = $_SESSION['MESSAGE'];
 	unset($_SESSION['MESSAGE']);
 	// 데이터로 이동하고 세션 삭제

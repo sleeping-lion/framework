@@ -10,10 +10,8 @@ if(isset($sl_redirect)) {
 
 
 if(isset($_REQUEST['json'])) {
-	unset($data['site']);
-	unset($data['message']);
-	header('Content-type: application/x-json');
-	echo find_json($sl_theme);
+//	header('Content-type: application/x-json');
+	echo json_encode(array('result'=>'error','code'=>$e->getCode(),'message'=>$e->getMessage()));
 	exit ;
 }
 

@@ -11,12 +11,12 @@ try {
 		$clean['desc'] = true;
 	}
 
-	$order_a = array('id' => 'id', 'title' => 'title', 'count'=>'count', 'created' => 'created_at', 'updated' => 'updated_at');
+	$order_a = array('id' => 'id', 'title' => 'title', 'count' => 'count', 'created' => 'created_at', 'updated' => 'updated_at');
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
-	
-	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';	
+
+	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
 	$query_where = 'WHERE enable=1';
 
@@ -24,7 +24,7 @@ try {
 	$stmt_count = $con -> prepare('SELECT COUNT(*) FROM notices ' . $query_where);
 	$stmt_count -> execute();
 	$data['total'] = $stmt_count -> fetchColumn();
-	
+
 	// 게시물이 있으면
 	if ($data['total']) {
 		$query_order = get_order_query($order_a, $clean['order'], $clean['desc']);

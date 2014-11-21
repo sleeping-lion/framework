@@ -1,36 +1,50 @@
 $(document).ready(function() {
+	var cookie=getCookie('user_email');
+	
+	if(cookie)
+		$("#sl_user_email").val(cookie);
+	
 	$("#sl_login_form").submit(function(){
-		var userId=$.trim($("#sl_user_email").val());
-		var password=$.trim($("#sl_user_password").val());
+		var userEmail=$.trim($("#sl_user_email").val());
+		var userPassword=$.trim($("#sl_user_password").val());
 		var token=$(this).find('input[name="token"]').val();
-		$("#sl_login_form .error_message").html('');
 		
-		if(userId=='') {
-			$("#sl_login_form .error_message").html('아이디를 입력해주세요');
+		if(userEmail=='') {
+			display_message($("#message_no_email").val());
 			return false;
 		}
 		
-		if(password=='') {
-			$("#sl_login_form .error_message").html('비밀번호를 입력해주세요');
+		if(userPassword=='') {
+			display_message($("#message_no_password").val());
 			return false;
 		}
 		
-		if($("#remember_id").is(":checked")) {
-			setCookie('user_id',userId);
+		if($("#remember_email").is(":checked")) {
+			setCookie('user_email',userEmail);
 		}
 		
-		var password=hex_sha1(password);
-		$.post($(this).attr('action'),{'user_id':userId,'token':token,'password':password,'crypt':true,'json':true},function(data){
+		//var userPassword=hex_sha1(userPassword);
+		$.post($(this).attr('action'),{'email':userEmail,'token':token,'password':userPassword,'crypt':true,'json':true},function(data){
 			if(data.result=='success') {
 				alert('로그인 성공');
 			} else {
-				$('#sl_login_form .error_message').text(data.error_message);
+				display_message(data.message);
 			}
 		},'json'); 
 		return false;
 	});
 });
 
+function display_message(message,alert_type) {	
+	if(!alert_type)
+		alert_type='danger';
+	if($("#sl_message").length) {
+		$("#sl_message").empty();
+		$("#sl_message").html('<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">close</span></button>'+message);
+	} else {
+		$("#sl_login_form").before('<div id="sl_message" role="alert" class="alert alert-'+alert_type+'"><button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">close</span></button>'+message+'</div>');
+	}
+}
 
 
 /**

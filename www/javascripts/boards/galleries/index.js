@@ -11,7 +11,6 @@ $(document).ready(function() {
 	
   $("#sl_gallery_slide .item a").click(function(){
     var galleryId=$.uri.setUri($(this).attr('href')).param('id');
-    
     $.getJSON('/boards/galleries/show.php?id='+galleryId,{'json':true},function(data){
       $("#sl_gallery_left a").attr('href',data.content.photo).attr('title',data.content.title);
       $("#sl_gallery_left span").text(data.content.title).css('bottom',-30);

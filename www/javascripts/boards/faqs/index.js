@@ -9,8 +9,8 @@ $(document).ready(function() {
 		
 		$.getJSON($(this).attr('href')+'&format=json',{'json':true},function(data){
 			$("#faqList").empty();
-			if(data.lists.length) {
-				$.each(data.lists,function(index,value){
+			if(data.list.length) {
+				$.each(data.list,function(index,value){
 					var a=$('<a class="title" href="/boards/faqs/index.php?id='+value.id+'">'+value.title+'</a>').click(getContent);
 					if(data.admin) {
 						var div=$('<div class="sl_faq_menu"><a></a> &nbsp; | &nbsp; <a rel="nofollow" data-method="delete" data-confirm=""></a></div>');

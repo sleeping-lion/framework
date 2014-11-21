@@ -1,2 +1,2 @@
 <?php 
-	$sl_script=array('users/login/index.js');
+	$sl_script=array('users/sha1.js','users/login/index.js');

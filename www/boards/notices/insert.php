@@ -6,13 +6,13 @@ try {
 	$clean = filter_input_array(INPUT_POST, array('title' => FILTER_SANITIZE_STRING, 'content' => FILTER_SANITIZE_STRING));
 	
 	if(empty($_SESSION['USER_ID']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception('invalid_user_id', 1);
 
 	if (empty($clean['title']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception('invalid_title', 1);
 
 	if (empty($clean['content']))
-		throw new Exception("Error Processing Request", 1);
+		throw new Exception('invalid_content', 1);
 
 	// 커넥터(PDO) 가져오기
 	$con = get_PDO($config_db);
