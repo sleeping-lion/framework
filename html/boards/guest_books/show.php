@@ -1,23 +1,14 @@
-<section id="sl_board_guest_book_show" class="sub_main">
-	<table id="sl_main_show" border="0" cellpadding="0" cellspacing="0">
-		<colgroup>
-			<col />
-			<col />
-		</colgroup>
-		<thead>
-			<tr>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td></td>
-				<td><?php echo nl2br($data['content']['content']); ?></td>
-			</tr>
-		</tbody>
-	</table>
-	<div id="sl_index_bottom_buttons">
-		<a href="<?php echo index_link() ?>"><?php echo _('index_link') ?></a>
+<section id="sl_board_question_show" class="sub_main">
+  <div class="slboard_content">
+    <div class="sl_content_header">
+      <h3 itemprop="name"><?php echo $data['content']['title'] ?></h3>
+    </div>
+    <div class="sl_content_main">
+     		<p class="sl_content_info"><?php echo _('label_name') ?> : <span  itemprop="author"><?php echo $data['content']['name'] ?></span>&nbsp;&nbsp;&nbsp; <?php echo _('label_created_at') ?> : <span itemprop="dateCreated"><?php echo $data['content']['created_at'] ?></span><span class="none" itemprop="dateModified"><?php $data['content']['updated_at'] ?></span></p>    	
+      <div class="sl_content_text" itemprop="text"><?php echo nl2br($data['content']['content']) ?></div>
+    </div>
+  </div>
+	<div id="sl_content_bottom_buttons">
+		<a href="<?php echo index_link() ?>" class="btn btn-default"><?php echo _('index_link') ?></a>
 	</div>
 </section>

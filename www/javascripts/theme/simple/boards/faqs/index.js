@@ -1,35 +1,32 @@
 $(document).ready(function() {
 	
-	$("#sl_board_faq_index ol li a").click(getList);
-	$("#sl_board_faq_index article h3 a").click(getContent);
+	$("#faqCategoryList a.title").click(getList);
+	$("#faqList dt a.title").click(getContent);
 	
 	function getList() {
 		var tt=$(this);
 		var parent=$(this).parent();		
 		
 		$.getJSON($(this).attr('href')+'&format=json',{'json':true},function(data){
-			$("#sl_board_faq_index article").empty();
+			$("#faqList").empty();
 			if(data.list.length) {
 				$.each(data.list,function(index,value){
 					var a=$('<a class="title" href="/boards/faqs/index.php?id='+value.id+'">'+value.title+'</a>').click(getContent);
-					var panel_heading=$('<h3>').addClass('panel-heading');
-					var panel=$('<div>').addClass('panel panel-default');
-					var panel_body=$('<div>').addClass('panel-body').hide();
-					panel_heading.append(a).appendTo(panel);
-					panel_body.appendTo(panel);
-					$("#sl_board_faq_index article").append(panel);
 					if(data.admin) {
 						var div=$('<div class="sl_faq_menu"><a></a> &nbsp; | &nbsp; <a rel="nofollow" data-method="delete" data-confirm=""></a></div>');
 						div.find('a:first').attr('href','/boards/faqs/edit.php?id='+value.id);
 						div.find('a:eq(1)').attr('href','/boards/faqs/index.php?id='+value.id);
+						$('<dt>').appendTo("#faqList").append(a).append(div);
+					} else {
+						$('<dt>').appendTo("#faqList").append(a);
 					}
 				});
 			} else {
 				$('<dt></dt>').appendTo("#faqList");
 			}
 
-			$("#sl_board_faq_index ol li").removeClass('active');
-			parent.addClass('active');
+			$("#faqCategoryList li").removeClass('on');
+			parent.addClass('on');
 			
 			var faqCategoryId=$.uri.setUri(tt.attr('href')).param("faq_category_id");			
 			
@@ -48,15 +45,19 @@ $(document).ready(function() {
 	
 	function getContent(){
 		var gid=$.uri.setUri($(this).attr('href')).param("id");
-		var panel=$(this).parent().parent();
-		
-		
+		var parent=$(this).parent();
 		$.getJSON('/boards/faqs/show.php?id='+gid,{'json':true},function(value){
-			
-			$("#sl_board_faq_index article div.panel").removeClass('panel-primary');
-			$("#sl_board_faq_index article div.panel-body").hide();	
-			panel.addClass('panel-primary');
-			panel.find('.panel-body').html('<p>'+nl2br(value.content.content)+'</p>').slideDown();			
+			if(parent.next().get(0)) {
+				if(parent.next().get(0).tagName!='DD') {
+					parent.after('<dd>');	
+				}
+			} else {
+				parent.after('<dd>');
+			}
+			$("#faqList dt").removeClass('on');
+			$("#faqList dd").hide();
+			parent.addClass('on');
+			parent.next().html('<p>'+nl2br(value.content.content)+'</p>').slideDown();			
 		});
 
 		return false;

@@ -19,7 +19,7 @@ try {
 	
 	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 	
-	$stmt = $con -> prepare('SELECT * FROM questions As q Inner Join question_contents As qc ON q.id=qc.id WHERE q.id=:id');
+	$stmt = $con -> prepare('SELECT q.*,qc.content,IF(q.user_id,u.name,q.name) as name FROM questions As q Inner Join question_contents As qc ON q.id=qc.id Left Join users As u On q.user_id=u.id WHERE q.id=:id');
 	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt -> execute();
 	$data['content'] = $stmt -> fetch(PDO::FETCH_ASSOC);

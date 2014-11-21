@@ -11,7 +11,7 @@
 		<li><?php echo _('no_data') ?></li>
 		<?php endif ?>
 	</ol>
-<div id="sl_gallery" <?php if(isset($data['content'])): ?>itemscope itemtype="http://schema.org/ImageObject"<?php endif ?>>
+<article <?php if(isset($data['content'])): ?>itemscope itemtype="http://schema.org/ImageObject"<?php endif ?>>
 	<?php if(isset($data['content'])): ?>
 	<div id="sl_gallery_left">
 		<span class="none" itemprop="genre"><?php echo $data['content']['category_id'] ?></span>
@@ -55,10 +55,10 @@
 		<p><?php echo _('no_data') ?></p>
 	</div>
 	<?php endif ?>
+	</article>	
 	<div id="sl_index_bottom_menu">
 		<?php echo pagination($data['total']) ?>
 		<a href="new.php" class="btn btn-default btn btn-default col-xs-12 col-md-2"><?php echo _('new_link') ?></a>
 		<?php require_once find_html($sl_theme,'search.php') ?>
 	</div>
-</div>
 </section>

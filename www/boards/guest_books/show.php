@@ -19,7 +19,7 @@ try {
 	
 	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
-	$stmt = $con -> prepare('SELECT * FROM guest_books As gb Inner Join guest_book_contents As gbc ON gb.id=gbc.id WHERE gb.id=:id');
+	$stmt = $con -> prepare('SELECT gb.*,gbc.content,IF(gb.user_id,u.name,gb.name) as name FROM guest_books As gb Inner Join guest_book_contents As gbc ON gb.id=gbc.id Left Join users As u On gb.user_id=u.id WHERE gb.id=:id');
 	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt -> execute();
 	$data['content'] = $stmt -> fetch(PDO::FETCH_ASSOC);

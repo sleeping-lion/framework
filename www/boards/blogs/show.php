@@ -18,7 +18,7 @@ try {
 	
 	require INCLUDE_DIRECTORY . DIRECTORY_SEPARATOR . 'common_select.php';
 
-	$stmt = $con -> prepare('SELECT * FROM blogs As b Inner Join blog_contents As bc ON b.id=bc.id WHERE b.id=:id');
+	$stmt = $con -> prepare('SELECT b.*,bc.content,u.name FROM blogs As b Inner Join blog_contents As bc On b.id=bc.id Inner Join users AS u On b.user_id=u.id WHERE b.id=:id');
 	$stmt -> bindParam(':id', $clean['id'], PDO::PARAM_INT);
 	$stmt -> execute();
 	$data['content'] = $stmt -> fetch(PDO::FETCH_ASSOC);	

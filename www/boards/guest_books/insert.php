@@ -17,7 +17,8 @@ try {
 	/******** 트랙잭션 시작 **********/
 	$con -> beginTransaction();
 
-	$stmt = $con -> prepare('INSERT INTO guest_books(name,encrypted_password,title,created_at) VALUES(:name,:encrypted_password,:title,now())');
+	$stmt = $con -> prepare('INSERT INTO guest_books(user_id,name,encrypted_password,title,created_at) VALUES(:user_id,:name,:encrypted_password,:title,now())');
+	$stmt -> bindParam(':user_id', $_SESSION['USER_ID'], PDO::PARAM_INT);
 	$stmt -> bindParam(':name', $clean['name'], PDO::PARAM_STR, 60);
 	$stmt -> bindParam(':encrypted_password', $clean['encrypted_password'], PDO::PARAM_STR, 255);
 	$stmt -> bindParam(':title', $clean['title'], PDO::PARAM_STR, 60);
