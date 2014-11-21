@@ -15,8 +15,8 @@ try {
 	}
 
 	if (empty($_SESSION['ADMIN'])) {
-		$template['layout']='layout/admin/login.html';
-		$template['main']='admin/login.html';
+		$config['template']['layout']='admin/login.php';
+		$config['template']['main']='login.php';
 	}
 
 	$con = null;
