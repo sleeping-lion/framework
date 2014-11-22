@@ -1,8 +1,8 @@
 <section id="sl_board_user_new">
 	<form action="insert.php" method="post">
   <div class="form-group">
-    <label for="sl_name"><?php echo _('label_name') ?></label>
-    <input type="text" class="form-control" id="sl_name" name="name" maxlength="60" required="required" />
+    <label for="sl_email"><?php echo _('label_email') ?></label>
+    <input type="email" class="form-control" id="sl_email" name="email" maxlength="255" required="required" />
   </div>
   <div class="form-group">
     <label for="sl_name"><?php echo _('label_password') ?></label>

@@ -13,10 +13,10 @@
 		<![endif]-->
 	</head>
 	<body id="sl_main_page">
-		<?php require_once $config['template']['header'] ?>
+		<?php require $config['template']['header'] ?>
 		<div id="mom">
 			<div id="main" class="container">
-				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
+				<?php require INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'breadcrumbs.php' ?>
 <?php if(!strcmp($config['controller'],'home')): ?>
 	<div class="jumbotron hero-unit">
 		<h1>최신의 PHP 게시판 시스템 SLBoard</h1>
@@ -25,16 +25,16 @@
 	</div>
 <?php endif ?>
 				<section class="sub_main">
-				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>	
-				<?php require_once INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
-				<?php require_once $config['template']['main'] ?>
+				<?php require INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'ad.php' ?>	
+				<?php require INCLUDE_DIRECTORY.DIRECTORY_SEPARATOR.'message.php' ?>
+				<?php require $config['template']['main'] ?>
 				</section>
-				<?php require_once $config['template']['aside'] ?>
+				<?php require $config['template']['aside'] ?>
 			</div>
 		</div>
 <div class="slboard_overlay" id="overlay"></div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"></div>		
-		<?php require_once $config['template']['footer'] ?>
+		<?php require $config['template']['footer'] ?>
 		<?php sl_script($config['template']['javascripts']); ?>
 	</body>
 </html>
